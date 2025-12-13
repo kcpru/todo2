@@ -1,5 +1,3 @@
-# todo2
-Uni project
 <img width="2800" height="1420" alt="image" src="https://github.com/user-attachments/assets/5a2b90ef-a79f-4eee-b199-4ff9c1d15319" />
 <img width="2800" height="1420" alt="image" src="https://github.com/user-attachments/assets/e83b8c95-471d-4c7d-9aca-8f478525a0ad" />
 <img width="2800" height="1420" alt="image" src="https://github.com/user-attachments/assets/81c0e10d-9d73-4207-9d68-7c9548810be0" />
