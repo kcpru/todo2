@@ -1,3 +1,7 @@
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using todo2.Database;
+
 namespace todo2;
 
 public class Program
@@ -11,6 +15,17 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
+
+        var keepAliveConnection = new SqliteConnection("Data Source=:memory:");
+        keepAliveConnection.Open();
+
+        builder.Services.AddSingleton(keepAliveConnection);
+
+        builder.Services.AddDbContext<AppDbContext>((sp, opt) =>
+        {
+            var conn = sp.GetRequiredService<SqliteConnection>();
+            opt.UseSqlite(conn);
+        });
 
         var app = builder.Build();
 
