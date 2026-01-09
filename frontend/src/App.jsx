@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import confetti from "canvas-confetti";
 import { useTheme } from "./ThemeContext";
 import "./App.css";
 
@@ -16,6 +17,18 @@ function App() {
   const { isDarkMode, toggleTheme } = useTheme();
 
   const toggleTodo = (id) => {
+    const todo = todos.find((t) => t.id === id);
+
+    // Trigger confetti when marking as completed
+    if (todo && !todo.completed) {
+      confetti({
+        particleCount: 50,
+        spread: 70,
+        origin: { y: 0.6 },
+        duration: 2000,
+      });
+    }
+
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
