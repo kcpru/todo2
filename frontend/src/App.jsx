@@ -1,15 +1,50 @@
 import { useState } from "react";
 import { useTheme } from "./ThemeContext";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([
+    { id: 1, text: "NOTE #1", completed: false },
+    { id: 2, text: "NOTE #2", completed: true },
+    { id: 3, text: "NOTE #3", completed: false },
+  ]);
+  const [filter, setFilter] = useState("ALL");
+  const [searchTerm, setSearchTerm] = useState("");
   const { isDarkMode, toggleTheme } = useTheme();
 
+  const toggleTodo = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  const addTodo = () => {
+    const newTodo = {
+      id: Math.max(...todos.map((t) => t.id), 0) + 1,
+      text: "New note",
+      completed: false,
+    };
+    setTodos([...todos, newTodo]);
+  };
+
+  const filteredTodos = todos.filter((todo) => {
+    const matchesSearch = todo.text
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    if (filter === "ALL") return matchesSearch;
+    if (filter === "ACTIVE") return !todo.completed && matchesSearch;
+    if (filter === "COMPLETED") return todo.completed && matchesSearch;
+    return matchesSearch;
+  });
+
   return (
-    <>
+    <div className="app">
       <button
         className="theme-toggle"
         onClick={toggleTheme}
@@ -18,27 +53,69 @@ function App() {
       >
         {isDarkMode ? "☀️" : "🌙"}
       </button>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+
+      <div className="container">
+        <h1 className="title">TODO LIST</h1>
+
+        <div className="controls">
+          <div className="search-container">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search note..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <span className="search-icon">🔍</span>
+          </div>
+
+          <select
+            className="filter-select"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="ALL">ALL</option>
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="COMPLETED">COMPLETED</option>
+          </select>
+
+          <button className="theme-button" onClick={toggleTheme}>
+            {isDarkMode ? "⚙️" : "🌙"}
+          </button>
+        </div>
+
+        <div className="todo-list">
+          {filteredTodos.map((todo) => (
+            <div key={todo.id} className="todo-item">
+              <input
+                type="checkbox"
+                className="todo-checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+              <span
+                className={`todo-text ${todo.completed ? "completed" : ""}`}
+              >
+                {todo.text}
+              </span>
+              <div className="todo-actions">
+                <button className="todo-action-btn edit-btn">✏️</button>
+                <button
+                  className="todo-action-btn delete-btn"
+                  onClick={() => deleteTodo(todo.id)}
+                >
+                  🗑️
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button className="add-btn" onClick={addTodo}>
+          +
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
 
