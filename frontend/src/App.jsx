@@ -39,28 +39,44 @@ function App() {
         spread: 26,
         startVelocity: 55,
       });
-      
-      setTimeout(() => fire(0.2, {
-        spread: 60,
-      }), 50);
-      
-      setTimeout(() => fire(0.35, {
-        spread: 100,
-        decay: 0.91,
-        scalar: 0.8,
-      }), 100);
-      
-      setTimeout(() => fire(0.1, {
-        spread: 120,
-        startVelocity: 25,
-        decay: 0.92,
-        scalar: 1.2,
-      }), 150);
-      
-      setTimeout(() => fire(0.1, {
-        spread: 120,
-        startVelocity: 45,
-      }), 200);
+
+      setTimeout(
+        () =>
+          fire(0.2, {
+            spread: 60,
+          }),
+        50
+      );
+
+      setTimeout(
+        () =>
+          fire(0.35, {
+            spread: 100,
+            decay: 0.91,
+            scalar: 0.8,
+          }),
+        100
+      );
+
+      setTimeout(
+        () =>
+          fire(0.1, {
+            spread: 120,
+            startVelocity: 25,
+            decay: 0.92,
+            scalar: 1.2,
+          }),
+        150
+      );
+
+      setTimeout(
+        () =>
+          fire(0.1, {
+            spread: 120,
+            startVelocity: 45,
+          }),
+        200
+      );
     }
 
     setTodos(
