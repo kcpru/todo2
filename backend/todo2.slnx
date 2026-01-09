@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="todo2.csproj" />
+  <Project Path="todo2.UnitTests/todo2.UnitTests.csproj" Id="6d2a366f-3024-4c50-9dce-6290e08a79d5" />
+  <Project Path="todo2/todo2.csproj" />
 </Solution>
