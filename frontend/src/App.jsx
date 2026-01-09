@@ -10,6 +10,8 @@ function App() {
   ]);
   const [filter, setFilter] = useState("ALL");
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState("");
   const { isDarkMode, toggleTheme } = useTheme();
 
   const toggleTodo = (id) => {
@@ -31,6 +33,28 @@ function App() {
       completed: false,
     };
     setTodos([...todos, newTodo]);
+  };
+
+  const startEdit = (todo) => {
+    setEditingId(todo.id);
+    setEditingText(todo.text);
+  };
+
+  const saveEdit = () => {
+    if (editingText.trim()) {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === editingId ? { ...todo, text: editingText } : todo
+        )
+      );
+    }
+    setEditingId(null);
+    setEditingText("");
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditingText("");
   };
 
   const filteredTodos = todos.filter((todo) => {
@@ -99,7 +123,12 @@ function App() {
                 {todo.text}
               </span>
               <div className="todo-actions">
-                <button className="todo-action-btn edit-btn">✏️</button>
+                <button
+                  className="todo-action-btn edit-btn"
+                  onClick={() => startEdit(todo)}
+                >
+                  ✏️
+                </button>
                 <button
                   className="todo-action-btn delete-btn"
                   onClick={() => deleteTodo(todo.id)}
@@ -114,6 +143,30 @@ function App() {
         <button className="add-btn" onClick={addTodo}>
           +
         </button>
+
+        {editingId && (
+          <div className="modal-overlay" onClick={cancelEdit}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <h2 className="modal-title">NEW NOTE</h2>
+              <input
+                type="text"
+                className="modal-input"
+                value={editingText}
+                onChange={(e) => setEditingText(e.target.value)}
+                placeholder="Input your note..."
+                autoFocus
+              />
+              <div className="modal-buttons">
+                <button className="modal-btn cancel-btn" onClick={cancelEdit}>
+                  CANCEL
+                </button>
+                <button className="modal-btn apply-btn" onClick={saveEdit}>
+                  APPLY
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
