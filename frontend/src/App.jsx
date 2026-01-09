@@ -70,15 +70,6 @@ function App() {
 
   return (
     <div className="app">
-      <button
-        className="theme-toggle"
-        onClick={toggleTheme}
-        aria-label="Toggle dark mode"
-        title={isDarkMode ? "Przełącz na light mode" : "Przełącz na dark mode"}
-      >
-        {isDarkMode ? "☀️" : "🌙"}
-      </button>
-
       <div className="container">
         <h1 className="title">TODO LIST</h1>
 
