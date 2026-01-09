@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "./ThemeContext";
 import "./App.css";
 
@@ -109,64 +110,94 @@ function App() {
         </div>
 
         <div className="todo-list">
-          {filteredTodos.map((todo) => (
-            <div key={todo.id} className="todo-item">
-              <input
-                type="checkbox"
-                className="todo-checkbox"
-                checked={todo.completed}
-                onChange={() => toggleTodo(todo.id)}
-              />
-              <span
-                className={`todo-text ${todo.completed ? "completed" : ""}`}
+          <AnimatePresence mode="popLayout">
+            {filteredTodos.map((todo) => (
+              <motion.div
+                key={todo.id}
+                className="todo-item"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.2 }}
               >
-                {todo.text}
-              </span>
-              <div className="todo-actions">
-                <button
-                  className="todo-action-btn edit-btn"
-                  onClick={() => startEdit(todo)}
+                <input
+                  type="checkbox"
+                  className="todo-checkbox"
+                  checked={todo.completed}
+                  onChange={() => toggleTodo(todo.id)}
+                />
+                <span
+                  className={`todo-text ${todo.completed ? "completed" : ""}`}
                 >
-                  ✏️
-                </button>
-                <button
-                  className="todo-action-btn delete-btn"
-                  onClick={() => deleteTodo(todo.id)}
-                >
-                  🗑️
-                </button>
-              </div>
-            </div>
-          ))}
+                  {todo.text}
+                </span>
+                <div className="todo-actions">
+                  <button
+                    className="todo-action-btn edit-btn"
+                    onClick={() => startEdit(todo)}
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    className="todo-action-btn delete-btn"
+                    onClick={() => deleteTodo(todo.id)}
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
-        <button className="add-btn" onClick={addTodo}>
+        <motion.button
+          className="add-btn"
+          onClick={addTodo}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
           +
-        </button>
+        </motion.button>
 
-        {editingId && (
-          <div className="modal-overlay" onClick={cancelEdit}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-              <h2 className="modal-title">NEW NOTE</h2>
-              <input
-                type="text"
-                className="modal-input"
-                value={editingText}
-                onChange={(e) => setEditingText(e.target.value)}
-                placeholder="Input your note..."
-                autoFocus
-              />
-              <div className="modal-buttons">
-                <button className="modal-btn cancel-btn" onClick={cancelEdit}>
-                  CANCEL
-                </button>
-                <button className="modal-btn apply-btn" onClick={saveEdit}>
-                  APPLY
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {editingId && (
+            <motion.div
+              className="modal-overlay"
+              onClick={cancelEdit}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.div
+                className="modal"
+                onClick={(e) => e.stopPropagation()}
+                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <h2 className="modal-title">NEW NOTE</h2>
+                <input
+                  type="text"
+                  className="modal-input"
+                  value={editingText}
+                  onChange={(e) => setEditingText(e.target.value)}
+                  placeholder="Input your note..."
+                  autoFocus
+                />
+                <div className="modal-buttons">
+                  <button className="modal-btn cancel-btn" onClick={cancelEdit}>
+                    CANCEL
+                  </button>
+                  <button className="modal-btn apply-btn" onClick={saveEdit}>
+                    APPLY
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
