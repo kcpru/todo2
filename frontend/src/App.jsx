@@ -320,6 +320,13 @@ function App() {
                 <div className="profile-email">{user?.email}</div>
               </div>
               <button
+                className="profile-theme-btn"
+                onClick={toggleTheme}
+                title={isDarkMode ? "Light Mode" : "Dark Mode"}
+              >
+                {isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+              </button>
+              <button
                 className="profile-logout"
                 onClick={() => {
                   logout();
@@ -426,10 +433,6 @@ function App() {
                   <option value="ACTIVE">ACTIVE</option>
                   <option value="COMPLETED">COMPLETED</option>
                 </select>
-
-                <button className="theme-button" onClick={toggleTheme}>
-                  {isDarkMode ? "⚙️" : "🌙"}
-                </button>
               </div>
 
               {loadingTodos ? (
