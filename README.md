@@ -34,6 +34,11 @@ Zadania, które automatycznie pojawią się każdego dnia jako jednorazowe. Wyko
 
 Na początku miesiąca mamy pustą doniczkę z małym pędem i zależnie od regularności oraz ilości wykonywanych zadań, roślina pod koniec miesiąca kwitnie i nagradza użytkownika dużą ilością nagród.
 
+Szkic:
+
+<img width="286" height="428" alt="kwiotki" src="https://github.com/user-attachments/assets/dea40634-2768-4e9d-abbb-e2b3084a1614" />
+
+
 **Przykład:**
 1. Użytkownik dodaje zadania powtarzalne: umyć zęby, zjeść żurek, co sobotę posprzątać pokój.
 2. Użytkownik wykonuje wszystkie zadania w miesiącu.
@@ -44,6 +49,9 @@ Ten system spełnia założenia gratyfikacji odroczonej.
 
 ### System nagród
 Monety.
+
+<img width="268" height="234" alt="monety" src="https://github.com/user-attachments/assets/34777e36-433f-4ea7-88c8-41efe6a4b1ef" />
+
 
 ##### In review
 Aplikacja nakłada blokadę na aplikację pomagające w prokrastynacji. Blokadę można zdjąć na X minut za monety.
