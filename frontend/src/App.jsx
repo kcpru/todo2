@@ -186,13 +186,11 @@ function App() {
         t.id === id ? { ...t, isCompleted: !t.isCompleted } : t
       );
       setTodos(updatedTodos);
-      
+
       // Update lists with updated items
       setLists(
         lists.map((list) =>
-          list.id === selectedListId
-            ? { ...list, items: updatedTodos }
-            : list
+          list.id === selectedListId ? { ...list, items: updatedTodos } : list
         )
       );
     } catch (err) {
@@ -205,13 +203,11 @@ function App() {
       await deleteTask(id);
       const updatedTodos = todos.filter((todo) => todo.id !== id);
       setTodos(updatedTodos);
-      
+
       // Update lists with new item count
       setLists(
         lists.map((list) =>
-          list.id === selectedListId
-            ? { ...list, items: updatedTodos }
-            : list
+          list.id === selectedListId ? { ...list, items: updatedTodos } : list
         )
       );
     } catch (err) {
@@ -244,13 +240,11 @@ function App() {
         );
         const updatedTodos = [...todos, newTask];
         setTodos(updatedTodos);
-        
+
         // Update lists with new item count
         setLists(
           lists.map((list) =>
-            list.id === selectedListId
-              ? { ...list, items: updatedTodos }
-              : list
+            list.id === selectedListId ? { ...list, items: updatedTodos } : list
           )
         );
       } else {
@@ -264,13 +258,11 @@ function App() {
           todo.id === editingId ? updatedTask : todo
         );
         setTodos(updatedTodos);
-        
+
         // Update lists with updated items
         setLists(
           lists.map((list) =>
-            list.id === selectedListId
-              ? { ...list, items: updatedTodos }
-              : list
+            list.id === selectedListId ? { ...list, items: updatedTodos } : list
           )
         );
       }
