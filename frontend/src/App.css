@@ -6,7 +6,8 @@
   justify-content: flex-start;
   padding: 0;
   min-height: 100vh;
-  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
@@ -303,7 +304,8 @@
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   font-size: 1rem;
-  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-input::placeholder {
