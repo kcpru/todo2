@@ -74,11 +74,18 @@ public class Program
             opt.UseSqlite(conn);
         });
 
+        var spaOrigin = builder.Configuration["Cors:SpaOrigin"];
+
+        if (string.IsNullOrWhiteSpace(spaOrigin))
+        {
+            throw new InvalidOperationException("Missing configuration value: Cors:SpaOrigin");
+        }
+
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("spa", policy =>
             {
-                policy.WithOrigins("http://localhost:4200")
+                policy.WithOrigins(spaOrigin)
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
