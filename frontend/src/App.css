@@ -91,6 +91,24 @@
   transform: translateY(-2px);
 }
 
+.profile-theme-btn {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+.profile-theme-btn:hover {
+  background-color: rgba(100, 108, 255, 0.1);
+  border-color: #5568d3;
+}
+
 .container {
   width: 100%;
   max-width: 800px;
@@ -307,23 +325,6 @@
   outline: none;
 }
 
-.theme-button {
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  background-color: #5568d3;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform 0.2s;
-  min-width: 50px;
-  height: 48px;
-}
-
-.theme-button:hover {
-  transform: scale(1.05);
-}
-
 .todo-list {
   display: flex;
   flex-direction: column;
@@ -479,8 +480,7 @@
     gap: 0.5rem;
   }
 
-  .filter-select,
-  .theme-button {
+  .filter-select {
     width: 100%;
   }
 
