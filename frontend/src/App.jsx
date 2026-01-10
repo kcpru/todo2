@@ -1,11 +1,30 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import confetti from "canvas-confetti";
 import { useTheme } from "./ThemeContext";
+import { useAuth } from "./AuthContext";
 import "./App.css";
 import demoVideo from "./assets/video.mp4";
 
 function App() {
+  const navigate = useNavigate();
+  const { user, logout, isAuthenticated, loading } = useAuth();
+  const [showProfile, setShowProfile] = useState(false);
+
+  // Redirect to login if not authenticated
+  if (loading) {
+    return (
+      <div className="app">
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    navigate("/login");
+    return null;
+  }
   const [todos, setTodos] = useState([
     { id: 1, text: "NOTE #1", completed: false },
     { id: 2, text: "NOTE #2", completed: true },
@@ -134,6 +153,45 @@ function App() {
 
   return (
     <div className="app">
+      {/* User Profile Button */}
+      <div className="profile-container">
+        <motion.button
+          className="profile-button"
+          onClick={() => setShowProfile(!showProfile)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title={user?.username}
+        >
+          {user?.username?.charAt(0).toUpperCase() || "U"}
+        </motion.button>
+
+        <AnimatePresence>
+          {showProfile && (
+            <motion.div
+              className="profile-menu"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="profile-info">
+                <div className="profile-username">{user?.username}</div>
+                <div className="profile-email">{user?.email}</div>
+              </div>
+              <button
+                className="profile-logout"
+                onClick={() => {
+                  logout();
+                  navigate("/login");
+                }}
+              >
+                Logout
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       <div className="container">
         <h1 className="title">TODO LIST</h1>
 
