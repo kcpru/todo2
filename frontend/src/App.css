@@ -1,11 +1,11 @@
 .app {
   width: 100%;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  justify-content: flex-start;
+  padding: 0;
+  min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative;
 }
@@ -97,6 +97,7 @@
   padding: 2rem;
   position: relative;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .title {
@@ -430,7 +431,7 @@
 }
 
 .add-btn {
-  position: fixed;
+  position: absolute;
   bottom: 2rem;
   right: 2rem;
   width: 60px;
@@ -449,6 +450,7 @@
   justify-content: center;
   padding: 0;
   line-height: 1;
+  z-index: 100;
 }
 
 .add-btn:hover {
