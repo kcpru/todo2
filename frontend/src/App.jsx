@@ -4,8 +4,49 @@ import { motion, AnimatePresence } from "motion/react";
 import confetti from "canvas-confetti";
 import { useTheme } from "./ThemeContext";
 import { useAuth } from "./AuthContext";
+import { useDopamine } from "./DopamineContext";
 import "./App.css";
 import demoVideo from "./assets/video.mp4";
+
+// Animation constants - modern minimalist style (fast entrance, slow exit)
+const ANIMATION_CONFIG = {
+  // Fast entrance (0.15s), smooth ease-out
+  fast: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { duration: 0.15, ease: "easeOut" },
+  },
+  // Dropdown menu - quick fade in/out
+  dropdown: {
+    initial: { opacity: 0, y: -8 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -8 },
+    transition: {
+      opacity: { duration: 0.15 },
+      y: { duration: 0.2, ease: "easeOut" },
+    },
+  },
+  // List items - slide in from left
+  listItem: {
+    initial: { opacity: 0, x: -20 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 20 },
+    transition: {
+      opacity: { duration: 0.15 },
+      x: { duration: 0.25, ease: "easeOut" },
+    },
+  },
+  // Smooth page transitions
+  pageTransition: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: {
+      opacity: { duration: 0.2, ease: "easeOut" },
+    },
+  },
+};
 
 function App() {
   const navigate = useNavigate();
@@ -35,6 +76,7 @@ function App() {
   const [loadingTodos, setLoadingTodos] = useState(false);
   const [newListName, setNewListName] = useState("");
   const { isDarkMode, toggleTheme } = useTheme();
+  const { isDopamineMode, toggleDopamineMode } = useDopamine();
 
   // Load lists on mount
   useEffect(() => {
@@ -120,8 +162,8 @@ function App() {
   const toggleTodo = async (id) => {
     const todo = todos.find((t) => t.id === id);
 
-    // Trigger confetti when marking as completed
-    if (todo && !todo.isCompleted) {
+    // Trigger confetti when marking as completed (only in dopamine mode)
+    if (todo && !todo.isCompleted && isDopamineMode) {
       const count = 200;
       const defaults = {
         origin: { y: 0.7 },
@@ -300,7 +342,7 @@ function App() {
           className="profile-button"
           onClick={() => setShowProfile(!showProfile)}
           whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.97 }}
           title={user?.username}
         >
           {user?.username?.charAt(0).toUpperCase() || "U"}
@@ -310,10 +352,7 @@ function App() {
           {showProfile && (
             <motion.div
               className="profile-menu"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              {...ANIMATION_CONFIG.dropdown}
             >
               <div className="profile-info">
                 <div className="profile-username">{user?.username}</div>
@@ -325,6 +364,19 @@ function App() {
                 title={isDarkMode ? "Light Mode" : "Dark Mode"}
               >
                 {isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+              </button>
+              <button
+                className="profile-dopamine-btn"
+                onClick={toggleDopamineMode}
+                title={
+                  isDopamineMode
+                    ? "Disable Dopamine Mode"
+                    : "Enable Dopamine Mode"
+                }
+              >
+                {isDopamineMode
+                  ? "🧠 Dopamine Mode ON"
+                  : "🧠 Dopamine Mode OFF"}
               </button>
               <button
                 className="profile-logout"
@@ -361,7 +413,7 @@ function App() {
                       }`}
                       onClick={() => setSelectedListId(list.id)}
                       whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.97 }}
                     >
                       <span className="list-name">{list.name}</span>
                       <span className="list-count">
@@ -371,8 +423,8 @@ function App() {
                     <motion.button
                       className="list-delete-btn"
                       onClick={() => handleDeleteList(list.id)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.93 }}
                       title="Delete list"
                     >
                       🗑️
@@ -393,7 +445,7 @@ function App() {
                   className="new-list-btn"
                   onClick={handleAddList}
                   whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.93 }}
                 >
                   +
                 </motion.button>
@@ -407,10 +459,7 @@ function App() {
           {selectedList && (
             <motion.div
               key={selectedList.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+              {...ANIMATION_CONFIG.pageTransition}
             >
               <div className="controls">
                 <div className="search-container">
@@ -450,10 +499,7 @@ function App() {
                           <motion.div
                             key={todo.id}
                             className="todo-item"
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.2 }}
+                            {...ANIMATION_CONFIG.listItem}
                           >
                             <input
                               type="checkbox"
@@ -558,14 +604,16 @@ function App() {
             </motion.div>
           )}
         </AnimatePresence>
-        <video
-          className="fixed-video"
-          src={demoVideo}
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
+        {isDopamineMode && (
+          <video
+            className="fixed-video"
+            src={demoVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        )}
       </div>
     </div>
   );
