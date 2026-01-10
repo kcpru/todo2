@@ -79,8 +79,6 @@ function App() {
       <Header />
 
       <div className="container">
-        <h1 className="title">TODO LIST</h1>
-
         <ListSelector
           lists={lists}
           selectedListId={selectedListId}
