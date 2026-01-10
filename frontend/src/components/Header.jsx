@@ -28,7 +28,7 @@ export function Header() {
   return (
     <header className="app-header">
       <div className="header-left">
-        <h1 className="app-title">Tasks</h1>
+        <h1 className="app-title">todo2</h1>
       </div>
 
       <motion.div
