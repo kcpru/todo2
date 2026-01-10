@@ -7,6 +7,8 @@
 
   /* Light mode variables (Material Design 3) */
   --md-primary: #4355b9;
+  --md-primary-rgb: 67, 85, 185;
+  --md-primary-variant: #5a6cc3;
   --md-primary-container: #dde1ff;
   --md-on-primary: #ffffff;
   --md-on-primary-container: #00105c;
@@ -16,6 +18,10 @@
   --md-on-surface-variant: #46464f;
   --md-outline: #777680;
   --md-outline-variant: #c7c5d0;
+  --md-error: #c62828;
+  --md-error-rgb: 198, 40, 40;
+  --md-warning: #e65100;
+  --md-warning-rgb: 230, 81, 0;
 
   /* App variables mapped to Material Design */
   --bg-primary: var(--md-surface);
@@ -25,7 +31,11 @@
   --border-color: var(--md-primary);
   --button-bg: var(--md-surface-variant);
   --link-color: var(--md-primary);
-  --link-hover: #5a6cc3;
+  --link-hover: var(--md-primary-variant);
+  --accent-primary: var(--md-primary);
+  --accent-variant: var(--md-primary-variant);
+  --accent-error: var(--md-error);
+  --accent-warning: var(--md-warning);
 
   color: var(--text-primary);
   background-color: var(--bg-primary);
@@ -39,6 +49,8 @@
 /* Dark mode variables (Material Design 3) */
 [data-theme="dark"] {
   --md-primary: #b8c3ff;
+  --md-primary-rgb: 184, 195, 255;
+  --md-primary-variant: #c7d0ff;
   --md-primary-container: #2a3f8f;
   --md-on-primary: #002881;
   --md-on-primary-container: #dde1ff;
@@ -48,6 +60,10 @@
   --md-on-surface-variant: #c7c5d0;
   --md-outline: #918f9a;
   --md-outline-variant: #46464f;
+  --md-error: #ef5350;
+  --md-error-rgb: 239, 83, 80;
+  --md-warning: #ff9800;
+  --md-warning-rgb: 255, 152, 0;
 
   /* App variables mapped to Material Design */
   --bg-primary: var(--md-surface);
@@ -57,7 +73,11 @@
   --border-color: var(--md-primary);
   --button-bg: var(--md-surface-variant);
   --link-color: var(--md-primary);
-  --link-hover: #c7d0ff;
+  --link-hover: var(--md-primary-variant);
+  --accent-primary: var(--md-primary);
+  --accent-variant: var(--md-primary-variant);
+  --accent-error: var(--md-error);
+  --accent-warning: var(--md-warning);
 }
 
 a {

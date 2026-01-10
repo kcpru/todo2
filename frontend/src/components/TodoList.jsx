@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { useDopamine } from "../DopamineContext";
 import { ANIMATION_CONFIG } from "../constants/animations";
 
 export function TodoList({
@@ -14,6 +15,8 @@ export function TodoList({
   onSearchChange,
   onAddTodo,
 }) {
+  const { isDopamineMode } = useDopamine();
+
   return (
     <>
       <div className="controls">
@@ -56,12 +59,19 @@ export function TodoList({
                     className="todo-item"
                     {...ANIMATION_CONFIG.listItem(index)}
                   >
-                    <input
-                      type="checkbox"
-                      className="todo-checkbox"
-                      checked={todo.isCompleted}
-                      onChange={() => onToggleTodo(todo.id)}
-                    />
+                    <div
+                      className={`checkbox-wrapper ${
+                        isDopamineMode ? "dopamine" : ""
+                      }`}
+                    >
+                      <input
+                        id={`cbx-${todo.id}`}
+                        type="checkbox"
+                        checked={todo.isCompleted}
+                        onChange={() => onToggleTodo(todo.id)}
+                      />
+                      <label className="cbx" htmlFor={`cbx-${todo.id}`}></label>
+                    </div>
                     <div className="todo-content">
                       <span
                         className={`todo-text ${
