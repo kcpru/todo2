@@ -436,7 +436,7 @@
 .add-btn {
   position: relative;
   width: 100%;
-  padding: 1rem;
+  padding: 1.25rem;
   border: none;
   border-top: 1px solid rgba(100, 108, 255, 0.2);
   background-color: var(--bg-primary);
@@ -449,7 +449,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 0;
+  border-radius: 0 0 12px 12px;
   box-sizing: border-box;
   overflow: visible;
 }
