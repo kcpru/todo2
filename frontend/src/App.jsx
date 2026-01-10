@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "./AuthContext";
-import { ProfileMenu } from "./components/ProfileMenu";
+import { Header } from "./components/Header";
 import { ListSelector } from "./components/ListSelector";
 import { TodoList } from "./components/TodoList";
 import { EditModal } from "./components/EditModal";
 import { DopamineVideo } from "./components/DopamineVideo";
 import { useTodoLogic } from "./hooks/useTodoLogic";
 import { ANIMATION_CONFIG } from "./constants/animations";
-import "./App.css";
+import "./App.scss";
 
 function App() {
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ function App() {
 
   return (
     <div className="app">
-      <ProfileMenu />
+      <Header />
 
       <div className="container">
         <h1 className="title">TODO LIST</h1>

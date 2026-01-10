@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { useDopamine } from "../DopamineContext";
+import { useCoinsSystem } from "./useCoinsSystem";
 import confetti from "canvas-confetti";
 
 export function useTodoLogic() {
@@ -14,6 +15,7 @@ export function useTodoLogic() {
     deleteTask,
   } = useAuth();
   const { isDopamineMode } = useDopamine();
+  const { onTaskComplete, updateCompletedCount } = useCoinsSystem();
 
   const [lists, setLists] = useState([]);
   const [selectedListId, setSelectedListId] = useState(null);
@@ -156,6 +158,13 @@ export function useTodoLogic() {
           list.id === selectedListId ? { ...list, items: updatedTodos } : list
         )
       );
+
+      // Earn coins when task is completed
+      if (todo && !todo.isCompleted && isDopamineMode) {
+        await onTaskComplete(10);
+        const completedCount = updatedTodos.filter((t) => t.isCompleted).length;
+        updateCompletedCount(completedCount);
+      }
     } catch (err) {
       console.error("Failed to toggle task:", err);
     }
