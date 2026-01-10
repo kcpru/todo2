@@ -396,10 +396,17 @@ function App() {
         </div>
 
         {/* Tasks Section */}
-        {selectedList && (
-          <>
-            <div className="controls">
-              <div className="search-container">
+        <AnimatePresence mode="wait">
+          {selectedList && (
+            <motion.div
+              key={selectedList.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="controls">
+                <div className="search-container">
                 <input
                   type="text"
                   className="search-input"
@@ -423,7 +430,7 @@ function App() {
               <button className="theme-button" onClick={toggleTheme}>
                 {isDarkMode ? "⚙️" : "🌙"}
               </button>
-            </div>
+              </div>
 
             {loadingTodos ? (
               <div className="loading-todos">Loading tasks...</div>
@@ -494,10 +501,10 @@ function App() {
                 >
                   +
                 </motion.button>
-              </>
-            )}
-          </>
-        )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <AnimatePresence>
           {editingId && (
