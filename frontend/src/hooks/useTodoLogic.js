@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../AuthContext";
 import { useDopamine } from "../DopamineContext";
 import { useCoinsSystem } from "./useCoinsSystem";
@@ -16,6 +16,7 @@ export function useTodoLogic() {
   } = useAuth();
   const { isDopamineMode } = useDopamine();
   const { onTaskComplete, updateCompletedCount } = useCoinsSystem();
+  const checkboxPositionsRef = useRef({});
 
   const [lists, setLists] = useState([]);
   const [selectedListId, setSelectedListId] = useState(null);
@@ -80,71 +81,97 @@ export function useTodoLogic() {
     }
   };
 
-  const triggerConfetti = () => {
-    if (!isDopamineMode) return;
-
-    const count = 200;
-    const defaults = {
-      origin: { y: 0.7 },
-    };
-
-    function fire(particleRatio, opts) {
-      confetti({
-        ...defaults,
-        ...opts,
-        particleCount: Math.floor(count * particleRatio),
-      });
+  // Register checkbox position
+  const registerCheckboxPosition = (todoId, element) => {
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      checkboxPositionsRef.current[todoId] = {
+        x: (rect.left + rect.width / 2) / window.innerWidth,
+        y: (rect.top + rect.height / 2) / window.innerHeight,
+      };
     }
-
-    fire(0.25, {
-      spread: 26,
-      startVelocity: 55,
-    });
-
-    setTimeout(
-      () =>
-        fire(0.2, {
-          spread: 60,
-        }),
-      50
-    );
-
-    setTimeout(
-      () =>
-        fire(0.35, {
-          spread: 100,
-          decay: 0.91,
-          scalar: 0.8,
-        }),
-      100
-    );
-
-    setTimeout(
-      () =>
-        fire(0.1, {
-          spread: 120,
-          startVelocity: 25,
-          decay: 0.92,
-          scalar: 1.2,
-        }),
-      150
-    );
-
-    setTimeout(
-      () =>
-        fire(0.1, {
-          spread: 120,
-          startVelocity: 45,
-        }),
-      200
-    );
   };
 
-  const toggleTodo = async (id) => {
+  const triggerConfetti = (todoId) => {
+    if (!isDopamineMode) return;
+
+    const origin = checkboxPositionsRef.current[todoId] || { x: 0.5, y: 0.5 };
+
+    // Random confetti types
+    const confettiTypes = [
+      { shape: "square", color: "#4355b9" },
+      { shape: "circle", color: "#5a6cc3" },
+      { shape: "star", color: "#b8c3ff" },
+    ];
+
+    const randomType =
+      confettiTypes[Math.floor(Math.random() * confettiTypes.length)];
+
+    confetti({
+      particleCount: 150,
+      spread: 360,
+      origin: origin,
+      startVelocity: 17.5,
+      gravity: 0.8,
+      colors: [randomType.color, "#dde1ff", "#ffffff"],
+      shapes: [randomType.shape, "circle"],
+      scalar: 0.8,
+      decay: 0.92,
+    });
+
+    // Secondary burst
+    setTimeout(() => {
+      confetti({
+        particleCount: 80,
+        spread: 360,
+        origin: origin,
+        startVelocity: 12.5,
+        gravity: 0.8,
+        colors: ["#4355b9", "#b8c3ff", "#dde1ff"],
+        scalar: 0.6,
+        decay: 0.95,
+      });
+    }, 150);
+  };
+
+  // School Pride confetti - full screen celebration when all tasks are completed
+  const triggerSchoolPrideConfetti = () => {
+    if (!isDopamineMode) return;
+
+    const end = Date.now() + 2 * 1000;
+    const colors = ["#bb0000", "#ffffff"];
+
+    (function frame() {
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors,
+      });
+
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors,
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  };
+
+  const toggleTodo = async (id, checkboxElement) => {
     const todo = todos.find((t) => t.id === id);
 
     if (todo && !todo.isCompleted) {
-      triggerConfetti();
+      if (checkboxElement) {
+        registerCheckboxPosition(id, checkboxElement);
+      }
+      triggerConfetti(id);
     }
 
     try {
@@ -164,6 +191,14 @@ export function useTodoLogic() {
         await onTaskComplete(10);
         const completedCount = updatedTodos.filter((t) => t.isCompleted).length;
         updateCompletedCount(completedCount);
+
+        // Check if all tasks are completed
+        if (completedCount === updatedTodos.length && updatedTodos.length > 0) {
+          // Delay confetti slightly to celebrate
+          setTimeout(() => {
+            triggerSchoolPrideConfetti();
+          }, 300);
+        }
       }
     } catch (err) {
       console.error("Failed to toggle task:", err);
@@ -286,5 +321,6 @@ export function useTodoLogic() {
     saveEdit,
     cancelEdit,
     filteredTodos,
+    registerCheckboxPosition,
   };
 }

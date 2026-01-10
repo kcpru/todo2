@@ -42,6 +42,7 @@ function App() {
     setSearchTerm,
     setEditingText,
     setEditingDescription,
+    registerCheckboxPosition,
   } = useTodoLogic();
 
   // Load lists on mount
@@ -106,6 +107,7 @@ function App() {
                 onFilterChange={setFilter}
                 onSearchChange={setSearchTerm}
                 onAddTodo={addTodo}
+                registerCheckboxPosition={registerCheckboxPosition}
               />
             </motion.div>
           )}
