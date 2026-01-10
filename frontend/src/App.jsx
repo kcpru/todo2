@@ -9,7 +9,19 @@ import demoVideo from "./assets/video.mp4";
 
 function App() {
   const navigate = useNavigate();
-  const { user, logout, isAuthenticated, loading, getLists, createList, deleteList, createTask, updateTask, patchTask, deleteTask } = useAuth();
+  const {
+    user,
+    logout,
+    isAuthenticated,
+    loading,
+    getLists,
+    createList,
+    deleteList,
+    createTask,
+    updateTask,
+    patchTask,
+    deleteTask,
+  } = useAuth();
   const [showProfile, setShowProfile] = useState(false);
   const [lists, setLists] = useState([]);
   const [selectedListId, setSelectedListId] = useState(null);
@@ -170,9 +182,17 @@ function App() {
 
     try {
       await patchTask(id, !todo.isCompleted);
-      setTodos(
-        todos.map((t) =>
-          t.id === id ? { ...t, isCompleted: !t.isCompleted } : t
+      const updatedTodos = todos.map((t) =>
+        t.id === id ? { ...t, isCompleted: !t.isCompleted } : t
+      );
+      setTodos(updatedTodos);
+      
+      // Update lists with updated items
+      setLists(
+        lists.map((list) =>
+          list.id === selectedListId
+            ? { ...list, items: updatedTodos }
+            : list
         )
       );
     } catch (err) {
@@ -183,7 +203,17 @@ function App() {
   const deleteTodo = async (id) => {
     try {
       await deleteTask(id);
-      setTodos(todos.filter((todo) => todo.id !== id));
+      const updatedTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(updatedTodos);
+      
+      // Update lists with new item count
+      setLists(
+        lists.map((list) =>
+          list.id === selectedListId
+            ? { ...list, items: updatedTodos }
+            : list
+        )
+      );
     } catch (err) {
       console.error("Failed to delete task:", err);
     }
@@ -207,13 +237,40 @@ function App() {
 
     try {
       if (editingId === "new") {
-        const newTask = await createTask(selectedListId, editingText, editingDescription);
-        setTodos([...todos, newTask]);
+        const newTask = await createTask(
+          selectedListId,
+          editingText,
+          editingDescription
+        );
+        const updatedTodos = [...todos, newTask];
+        setTodos(updatedTodos);
+        
+        // Update lists with new item count
+        setLists(
+          lists.map((list) =>
+            list.id === selectedListId
+              ? { ...list, items: updatedTodos }
+              : list
+          )
+        );
       } else {
-        const updatedTask = await updateTask(editingId, editingText, editingDescription, todos.find((t) => t.id === editingId)?.isCompleted || false);
-        setTodos(
-          todos.map((todo) =>
-            todo.id === editingId ? updatedTask : todo
+        const updatedTask = await updateTask(
+          editingId,
+          editingText,
+          editingDescription,
+          todos.find((t) => t.id === editingId)?.isCompleted || false
+        );
+        const updatedTodos = todos.map((todo) =>
+          todo.id === editingId ? updatedTask : todo
+        );
+        setTodos(updatedTodos);
+        
+        // Update lists with updated items
+        setLists(
+          lists.map((list) =>
+            list.id === selectedListId
+              ? { ...list, items: updatedTodos }
+              : list
           )
         );
       }
@@ -300,13 +357,17 @@ function App() {
                 {lists.map((list) => (
                   <div key={list.id} className="list-item-container">
                     <motion.button
-                      className={`list-item ${selectedListId === list.id ? "active" : ""}`}
+                      className={`list-item ${
+                        selectedListId === list.id ? "active" : ""
+                      }`}
                       onClick={() => setSelectedListId(list.id)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       <span className="list-name">{list.name}</span>
-                      <span className="list-count">{list.items?.length || 0}</span>
+                      <span className="list-count">
+                        {list.items?.length || 0}
+                      </span>
                     </motion.button>
                     <motion.button
                       className="list-delete-btn"
@@ -379,7 +440,9 @@ function App() {
                 <div className="todo-list">
                   <AnimatePresence mode="popLayout">
                     {filteredTodos.length === 0 ? (
-                      <div className="no-todos">No tasks yet. Add one to get started!</div>
+                      <div className="no-todos">
+                        No tasks yet. Add one to get started!
+                      </div>
                     ) : (
                       filteredTodos.map((todo) => (
                         <motion.div
@@ -398,12 +461,16 @@ function App() {
                           />
                           <div className="todo-content">
                             <span
-                              className={`todo-text ${todo.isCompleted ? "completed" : ""}`}
+                              className={`todo-text ${
+                                todo.isCompleted ? "completed" : ""
+                              }`}
                             >
                               {todo.title}
                             </span>
                             {todo.description && (
-                              <span className="todo-description">{todo.description}</span>
+                              <span className="todo-description">
+                                {todo.description}
+                              </span>
                             )}
                           </div>
                           <div className="todo-actions">
@@ -458,7 +525,9 @@ function App() {
                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
                 transition={{ duration: 0.2 }}
               >
-                <h2 className="modal-title">{editingId === "new" ? "NEW TASK" : "EDIT TASK"}</h2>
+                <h2 className="modal-title">
+                  {editingId === "new" ? "NEW TASK" : "EDIT TASK"}
+                </h2>
                 <input
                   type="text"
                   className="modal-input"
