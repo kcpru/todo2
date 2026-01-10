@@ -341,3 +341,17 @@
   border-color: #6b7ae6;
   transform: translateY(-2px);
 }
+
+/* Fixed video in bottom-right corner */
+.fixed-video {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  max-height: 300px;
+  height: 300px;
+  width: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  z-index: 1500;
+  pointer-events: none;
+}
