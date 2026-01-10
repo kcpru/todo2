@@ -27,16 +27,17 @@ const ANIMATION_CONFIG = {
       y: { duration: 0.2, ease: "easeOut" },
     },
   },
-  // List items - slide in from left
-  listItem: {
-    initial: { opacity: 0, x: -20 },
+  // List items - slide in from left with stagger
+  listItem: (index) => ({
+    initial: { opacity: 0, x: -40 },
     animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 20 },
+    exit: { opacity: 0, x: 40 },
     transition: {
       opacity: { duration: 0.15 },
-      x: { duration: 0.25, ease: "easeOut" },
+      x: { duration: 0.35, ease: "easeOut" },
+      delay: index * 0.05, // Stagger delay: 50ms between each item
     },
-  },
+  }),
   // Smooth page transitions
   pageTransition: {
     initial: { opacity: 0 },
@@ -495,11 +496,11 @@ function App() {
                           No tasks yet. Add one to get started!
                         </div>
                       ) : (
-                        filteredTodos.map((todo) => (
+                        filteredTodos.map((todo, index) => (
                           <motion.div
                             key={todo.id}
                             className="todo-item"
-                            {...ANIMATION_CONFIG.listItem}
+                            {...ANIMATION_CONFIG.listItem(index)}
                           >
                             <input
                               type="checkbox"
