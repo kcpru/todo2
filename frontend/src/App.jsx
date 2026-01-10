@@ -503,6 +503,7 @@ function App() {
                 </motion.button>
               </>
             )}
+            </motion.div>
           )}
         </AnimatePresence>
 
