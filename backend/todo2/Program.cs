@@ -75,12 +75,13 @@ public class Program
         });
 
         var spaOrigin = builder.Configuration["Cors:SpaOrigin"] ?? string.Empty;
+        var origins = spaOrigin.Split(",").Select(o => o.Trim()).ToArray();
 
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("spa", policy =>
             {
-                policy.WithOrigins(spaOrigin)
+                policy.WithOrigins(origins)
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();

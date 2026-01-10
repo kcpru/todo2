@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import confetti from "canvas-confetti";
@@ -9,8 +9,34 @@ import demoVideo from "./assets/video.mp4";
 
 function App() {
   const navigate = useNavigate();
-  const { user, logout, isAuthenticated, loading } = useAuth();
+  const { user, logout, isAuthenticated, loading, getLists, createList, deleteList, createTask, updateTask, patchTask, deleteTask } = useAuth();
   const [showProfile, setShowProfile] = useState(false);
+  const [lists, setLists] = useState([]);
+  const [selectedListId, setSelectedListId] = useState(null);
+  const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState("ALL");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState("");
+  const [editingDescription, setEditingDescription] = useState("");
+  const [loadingLists, setLoadingLists] = useState(true);
+  const [loadingTodos, setLoadingTodos] = useState(false);
+  const [newListName, setNewListName] = useState("");
+  const { isDarkMode, toggleTheme } = useTheme();
+
+  // Load lists on mount
+  useEffect(() => {
+    if (isAuthenticated && !loading) {
+      loadLists();
+    }
+  }, [isAuthenticated, loading]);
+
+  // Load tasks when list is selected
+  useEffect(() => {
+    if (selectedListId && isAuthenticated) {
+      loadTasks();
+    }
+  }, [selectedListId, isAuthenticated]);
 
   // Redirect to login if not authenticated
   if (loading) {
@@ -25,22 +51,65 @@ function App() {
     navigate("/login");
     return null;
   }
-  const [todos, setTodos] = useState([
-    { id: 1, text: "NOTE #1", completed: false },
-    { id: 2, text: "NOTE #2", completed: true },
-    { id: 3, text: "NOTE #3", completed: false },
-  ]);
-  const [filter, setFilter] = useState("ALL");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [editingId, setEditingId] = useState(null);
-  const [editingText, setEditingText] = useState("");
-  const { isDarkMode, toggleTheme } = useTheme();
 
-  const toggleTodo = (id) => {
+  const loadLists = async () => {
+    try {
+      setLoadingLists(true);
+      const data = await getLists();
+      setLists(data || []);
+      if (data && data.length > 0 && !selectedListId) {
+        setSelectedListId(data[0].id);
+      }
+    } catch (err) {
+      console.error("Failed to load lists:", err);
+    } finally {
+      setLoadingLists(false);
+    }
+  };
+
+  const loadTasks = async () => {
+    try {
+      setLoadingTodos(true);
+      const tasksResponse = await getLists();
+      const list = tasksResponse.find((l) => l.id === selectedListId);
+      setTodos(list?.items || []);
+    } catch (err) {
+      console.error("Failed to load tasks:", err);
+    } finally {
+      setLoadingTodos(false);
+    }
+  };
+
+  const handleAddList = async () => {
+    if (!newListName.trim()) return;
+    try {
+      const newList = await createList(newListName);
+      setLists([newList, ...lists]);
+      setNewListName("");
+      setSelectedListId(newList.id);
+    } catch (err) {
+      console.error("Failed to create list:", err);
+    }
+  };
+
+  const handleDeleteList = async (listId) => {
+    try {
+      await deleteList(listId);
+      setLists(lists.filter((l) => l.id !== listId));
+      if (selectedListId === listId) {
+        const nextList = lists.find((l) => l.id !== listId);
+        setSelectedListId(nextList?.id || null);
+      }
+    } catch (err) {
+      console.error("Failed to delete list:", err);
+    }
+  };
+
+  const toggleTodo = async (id) => {
     const todo = todos.find((t) => t.id === id);
 
     // Trigger confetti when marking as completed
-    if (todo && !todo.completed) {
+    if (todo && !todo.isCompleted) {
       const count = 200;
       const defaults = {
         origin: { y: 0.7 },
@@ -99,57 +168,80 @@ function App() {
       );
     }
 
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+    try {
+      await patchTask(id, !todo.isCompleted);
+      setTodos(
+        todos.map((t) =>
+          t.id === id ? { ...t, isCompleted: !t.isCompleted } : t
+        )
+      );
+    } catch (err) {
+      console.error("Failed to toggle task:", err);
+    }
   };
 
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const deleteTodo = async (id) => {
+    try {
+      await deleteTask(id);
+      setTodos(todos.filter((todo) => todo.id !== id));
+    } catch (err) {
+      console.error("Failed to delete task:", err);
+    }
   };
 
   const addTodo = () => {
-    const newTodo = {
-      id: Math.max(...todos.map((t) => t.id), 0) + 1,
-      text: "New note",
-      completed: false,
-    };
-    setTodos([...todos, newTodo]);
+    if (!selectedListId) return;
+    setEditingId("new");
+    setEditingText("New task");
+    setEditingDescription("");
   };
 
   const startEdit = (todo) => {
     setEditingId(todo.id);
-    setEditingText(todo.text);
+    setEditingText(todo.title);
+    setEditingDescription(todo.description || "");
   };
 
-  const saveEdit = () => {
-    if (editingText.trim()) {
-      setTodos(
-        todos.map((todo) =>
-          todo.id === editingId ? { ...todo, text: editingText } : todo
-        )
-      );
+  const saveEdit = async () => {
+    if (!editingText.trim()) return;
+
+    try {
+      if (editingId === "new") {
+        const newTask = await createTask(selectedListId, editingText, editingDescription);
+        setTodos([...todos, newTask]);
+      } else {
+        const updatedTask = await updateTask(editingId, editingText, editingDescription, todos.find((t) => t.id === editingId)?.isCompleted || false);
+        setTodos(
+          todos.map((todo) =>
+            todo.id === editingId ? updatedTask : todo
+          )
+        );
+      }
+      setEditingId(null);
+      setEditingText("");
+      setEditingDescription("");
+    } catch (err) {
+      console.error("Failed to save task:", err);
     }
-    setEditingId(null);
-    setEditingText("");
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setEditingText("");
+    setEditingDescription("");
   };
 
   const filteredTodos = todos.filter((todo) => {
-    const matchesSearch = todo.text
+    const matchesSearch = todo.title
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     if (filter === "ALL") return matchesSearch;
-    if (filter === "ACTIVE") return !todo.completed && matchesSearch;
-    if (filter === "COMPLETED") return todo.completed && matchesSearch;
+    if (filter === "ACTIVE") return !todo.isCompleted && matchesSearch;
+    if (filter === "COMPLETED") return todo.isCompleted && matchesSearch;
     return matchesSearch;
   });
+
+  const selectedList = lists.find((l) => l.id === selectedListId);
 
   return (
     <div className="app">
@@ -195,82 +287,158 @@ function App() {
       <div className="container">
         <h1 className="title">TODO LIST</h1>
 
-        <div className="controls">
-          <div className="search-container">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search note..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <span className="search-icon">🔍</span>
+        {/* Lists Selector */}
+        <div className="lists-section">
+          <div className="lists-header">
+            <h2 className="lists-title">My Lists</h2>
           </div>
-
-          <select
-            className="filter-select"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <option value="ALL">ALL</option>
-            <option value="ACTIVE">ACTIVE</option>
-            <option value="COMPLETED">COMPLETED</option>
-          </select>
-
-          <button className="theme-button" onClick={toggleTheme}>
-            {isDarkMode ? "⚙️" : "🌙"}
-          </button>
-        </div>
-
-        <div className="todo-list">
-          <AnimatePresence mode="popLayout">
-            {filteredTodos.map((todo) => (
-              <motion.div
-                key={todo.id}
-                className="todo-item"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.2 }}
-              >
+          {loadingLists ? (
+            <div className="loading-lists">Loading lists...</div>
+          ) : (
+            <>
+              <div className="lists-container">
+                {lists.map((list) => (
+                  <div key={list.id} className="list-item-container">
+                    <motion.button
+                      className={`list-item ${selectedListId === list.id ? "active" : ""}`}
+                      onClick={() => setSelectedListId(list.id)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="list-name">{list.name}</span>
+                      <span className="list-count">{list.items?.length || 0}</span>
+                    </motion.button>
+                    <motion.button
+                      className="list-delete-btn"
+                      onClick={() => handleDeleteList(list.id)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title="Delete list"
+                    >
+                      🗑️
+                    </motion.button>
+                  </div>
+                ))}
+              </div>
+              <div className="new-list-input-container">
                 <input
-                  type="checkbox"
-                  className="todo-checkbox"
-                  checked={todo.completed}
-                  onChange={() => toggleTodo(todo.id)}
+                  type="text"
+                  className="new-list-input"
+                  placeholder="Create new list..."
+                  value={newListName}
+                  onChange={(e) => setNewListName(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleAddList()}
                 />
-                <span
-                  className={`todo-text ${todo.completed ? "completed" : ""}`}
+                <motion.button
+                  className="new-list-btn"
+                  onClick={handleAddList}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {todo.text}
-                </span>
-                <div className="todo-actions">
-                  <button
-                    className="todo-action-btn edit-btn"
-                    onClick={() => startEdit(todo)}
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    className="todo-action-btn delete-btn"
-                    onClick={() => deleteTodo(todo.id)}
-                  >
-                    🗑️
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                  +
+                </motion.button>
+              </div>
+            </>
+          )}
         </div>
 
-        <motion.button
-          className="add-btn"
-          onClick={addTodo}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          +
-        </motion.button>
+        {/* Tasks Section */}
+        {selectedList && (
+          <>
+            <div className="controls">
+              <div className="search-container">
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Search task..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <span className="search-icon">🔍</span>
+              </div>
+
+              <select
+                className="filter-select"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+              >
+                <option value="ALL">ALL</option>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="COMPLETED">COMPLETED</option>
+              </select>
+
+              <button className="theme-button" onClick={toggleTheme}>
+                {isDarkMode ? "⚙️" : "🌙"}
+              </button>
+            </div>
+
+            {loadingTodos ? (
+              <div className="loading-todos">Loading tasks...</div>
+            ) : (
+              <>
+                <div className="todo-list">
+                  <AnimatePresence mode="popLayout">
+                    {filteredTodos.length === 0 ? (
+                      <div className="no-todos">No tasks yet. Add one to get started!</div>
+                    ) : (
+                      filteredTodos.map((todo) => (
+                        <motion.div
+                          key={todo.id}
+                          className="todo-item"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <input
+                            type="checkbox"
+                            className="todo-checkbox"
+                            checked={todo.isCompleted}
+                            onChange={() => toggleTodo(todo.id)}
+                          />
+                          <div className="todo-content">
+                            <span
+                              className={`todo-text ${todo.isCompleted ? "completed" : ""}`}
+                            >
+                              {todo.title}
+                            </span>
+                            {todo.description && (
+                              <span className="todo-description">{todo.description}</span>
+                            )}
+                          </div>
+                          <div className="todo-actions">
+                            <button
+                              className="todo-action-btn edit-btn"
+                              onClick={() => startEdit(todo)}
+                            >
+                              ✏️
+                            </button>
+                            <button
+                              className="todo-action-btn delete-btn"
+                              onClick={() => deleteTodo(todo.id)}
+                            >
+                              🗑️
+                            </button>
+                          </div>
+                        </motion.div>
+                      ))
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <motion.button
+                  className="add-btn"
+                  onClick={addTodo}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  title="Add new task"
+                >
+                  +
+                </motion.button>
+              </>
+            )}
+          </>
+        )}
 
         <AnimatePresence>
           {editingId && (
@@ -290,14 +458,21 @@ function App() {
                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
                 transition={{ duration: 0.2 }}
               >
-                <h2 className="modal-title">NEW NOTE</h2>
+                <h2 className="modal-title">{editingId === "new" ? "NEW TASK" : "EDIT TASK"}</h2>
                 <input
                   type="text"
                   className="modal-input"
                   value={editingText}
                   onChange={(e) => setEditingText(e.target.value)}
-                  placeholder="Input your note..."
+                  placeholder="Task title..."
                   autoFocus
+                />
+                <textarea
+                  className="modal-textarea"
+                  value={editingDescription}
+                  onChange={(e) => setEditingDescription(e.target.value)}
+                  placeholder="Task description (optional)..."
+                  rows="3"
                 />
                 <div className="modal-buttons">
                   <button className="modal-btn cancel-btn" onClick={cancelEdit}>

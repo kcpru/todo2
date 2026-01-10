@@ -112,6 +112,173 @@ export function AuthProvider({ children }) {
     setError(null);
   };
 
+  // Todo Lists API
+  const getLists = async () => {
+    try {
+      const response = await fetch(`${API_URL}/todo/lists`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch lists");
+      return await response.json();
+    } catch (err) {
+      console.error("Error fetching lists:", err);
+      throw err;
+    }
+  };
+
+  const getList = async (listId) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/lists/${listId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch list");
+      return await response.json();
+    } catch (err) {
+      console.error("Error fetching list:", err);
+      throw err;
+    }
+  };
+
+  const createList = async (name) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/lists`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name }),
+      });
+      if (!response.ok) throw new Error("Failed to create list");
+      return await response.json();
+    } catch (err) {
+      console.error("Error creating list:", err);
+      throw err;
+    }
+  };
+
+  const updateList = async (listId, name) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/lists/${listId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name }),
+      });
+      if (!response.ok) throw new Error("Failed to update list");
+      return await response.json();
+    } catch (err) {
+      console.error("Error updating list:", err);
+      throw err;
+    }
+  };
+
+  const deleteList = async (listId) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/lists/${listId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to delete list");
+    } catch (err) {
+      console.error("Error deleting list:", err);
+      throw err;
+    }
+  };
+
+  // Todo Tasks API
+  const getTasks = async (listId) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/lists/${listId}/tasks`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch tasks");
+      return await response.json();
+    } catch (err) {
+      console.error("Error fetching tasks:", err);
+      throw err;
+    }
+  };
+
+  const createTask = async (listId, title, description) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/lists/${listId}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title, description }),
+      });
+      if (!response.ok) throw new Error("Failed to create task");
+      return await response.json();
+    } catch (err) {
+      console.error("Error creating task:", err);
+      throw err;
+    }
+  };
+
+  const updateTask = async (taskId, title, description, isCompleted) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title, description, isCompleted }),
+      });
+      if (!response.ok) throw new Error("Failed to update task");
+      return await response.json();
+    } catch (err) {
+      console.error("Error updating task:", err);
+      throw err;
+    }
+  };
+
+  const patchTask = async (taskId, isCompleted) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/tasks/${taskId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ isCompleted }),
+      });
+      if (!response.ok) throw new Error("Failed to patch task");
+      return await response.json();
+    } catch (err) {
+      console.error("Error patching task:", err);
+      throw err;
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await fetch(`${API_URL}/todo/tasks/${taskId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error("Failed to delete task");
+    } catch (err) {
+      console.error("Error deleting task:", err);
+      throw err;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -123,6 +290,16 @@ export function AuthProvider({ children }) {
         login,
         logout,
         isAuthenticated: !!user && !!token,
+        getLists,
+        getList,
+        createList,
+        updateList,
+        deleteList,
+        getTasks,
+        createTask,
+        updateTask,
+        patchTask,
+        deleteTask,
       }}
     >
       {children}
