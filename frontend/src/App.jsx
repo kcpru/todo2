@@ -33,9 +33,9 @@ const ANIMATION_CONFIG = {
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: 40 },
     transition: {
-      opacity: { duration: 0.15 },
-      x: { duration: 0.35, ease: "easeOut" },
-      delay: index * 0.05, // Stagger delay: 50ms between each item
+      opacity: { duration: 0.1 },
+      x: { duration: 0.2, ease: "easeOut" },
+      delay: index * 0.03, // Stagger delay: 30ms between each item
     },
   }),
   // Smooth page transitions

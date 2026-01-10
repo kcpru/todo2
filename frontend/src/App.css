@@ -348,7 +348,7 @@
   flex-direction: column;
   gap: 0;
   margin-bottom: 1rem;
-  overflow: visible;
+  overflow: hidden;
   border: 2px solid var(--border-color);
   border-radius: 12px;
 }
