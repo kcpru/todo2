@@ -279,6 +279,52 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const earnCoins = async (amount) => {
+    try {
+      const response = await fetch(`${API_URL}/user/coins/earn`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ amount }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // Update user coins
+        setUser((prevUser) => ({
+          ...prevUser,
+          coins: data.coins,
+        }));
+        return data;
+      } else {
+        throw new Error("Failed to earn coins");
+      }
+    } catch (err) {
+      console.error("Error earning coins:", err);
+      throw err;
+    }
+  };
+
+  const getCoins = async () => {
+    try {
+      const response = await fetch(`${API_URL}/user/coins`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        throw new Error("Failed to get coins");
+      }
+    } catch (err) {
+      console.error("Error fetching coins:", err);
+      throw err;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -300,6 +346,8 @@ export function AuthProvider({ children }) {
         updateTask,
         patchTask,
         deleteTask,
+        earnCoins,
+        getCoins,
       }}
     >
       {children}

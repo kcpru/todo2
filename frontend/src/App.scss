@@ -134,7 +134,15 @@
   padding: 2rem;
   position: relative;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 0 1.5rem 1.5rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(100, 108, 255, 0.08) 0%,
+    rgba(100, 108, 255, 0.05) 100%
+  );
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  border-radius: 0 0 12px 12px;
+  border-top: none;
 }
 
 .title {

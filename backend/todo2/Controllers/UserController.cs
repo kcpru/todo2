@@ -93,6 +93,46 @@ public class UserController : ControllerBase
         if (user is null)
             return Unauthorized();
 
-        return Ok(new MeResponse(user.Id, user.Username, user.Email));
+        return Ok(new MeResponse(user.Id, user.Username, user.Email, user.Coins));
+    }
+
+    [Authorize]
+    [HttpPost("coins/earn")]
+    public async Task<ActionResult<CoinsResponse>> EarnCoins([FromBody] EarnCoinsRequest request, CancellationToken ct)
+    {
+        if (request.Amount <= 0)
+            return BadRequest(new { error = "Amount must be greater than 0." });
+
+        var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(sub, out var userId))
+            return Unauthorized();
+
+        var user = await _db.Users.SingleOrDefaultAsync(u => u.Id == userId, ct);
+        if (user is null)
+            return Unauthorized();
+
+        user.Coins += request.Amount;
+        _db.Users.Update(user);
+        await _db.SaveChangesAsync(ct);
+
+        return Ok(new CoinsResponse(user.Coins));
+    }
+
+    [Authorize]
+    [HttpGet("coins")]
+    public async Task<ActionResult<CoinsResponse>> GetCoins(CancellationToken ct)
+    {
+        var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (!Guid.TryParse(sub, out var userId))
+            return Unauthorized();
+
+        var user = await _db.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Id == userId, ct);
+
+        if (user is null)
+            return Unauthorized();
+
+        return Ok(new CoinsResponse(user.Coins));
     }
 }
