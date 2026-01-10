@@ -5,15 +5,27 @@
 
   color-scheme: light dark;
 
-  /* Light mode variables (default) */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9f9f9;
-  --text-primary: #213547;
-  --text-secondary: #888;
-  --border-color: #646cff;
-  --button-bg: #f9f9f9;
-  --link-color: #646cff;
-  --link-hover: #747bff;
+  /* Light mode variables (Material Design 3) */
+  --md-primary: #4355b9;
+  --md-primary-container: #dde1ff;
+  --md-on-primary: #ffffff;
+  --md-on-primary-container: #00105c;
+  --md-surface: #f5f6ff;
+  --md-surface-variant: #e3e1ec;
+  --md-on-surface: #1c1b1f;
+  --md-on-surface-variant: #46464f;
+  --md-outline: #777680;
+  --md-outline-variant: #c7c5d0;
+
+  /* App variables mapped to Material Design */
+  --bg-primary: var(--md-surface);
+  --bg-secondary: var(--md-surface-variant);
+  --text-primary: var(--md-on-surface);
+  --text-secondary: var(--md-on-surface-variant);
+  --border-color: var(--md-primary);
+  --button-bg: var(--md-surface-variant);
+  --link-color: var(--md-primary);
+  --link-hover: #5a6cc3;
 
   color: var(--text-primary);
   background-color: var(--bg-primary);
@@ -24,16 +36,28 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dark mode variables */
+/* Dark mode variables (Material Design 3) */
 [data-theme="dark"] {
-  --bg-primary: #242424;
-  --bg-secondary: #1a1a1a;
-  --text-primary: rgba(255, 255, 255, 0.87);
-  --text-secondary: #888;
-  --border-color: #646cff;
-  --button-bg: #1a1a1a;
-  --link-color: #646cff;
-  --link-hover: #535bf2;
+  --md-primary: #b8c3ff;
+  --md-primary-container: #2a3f8f;
+  --md-on-primary: #002881;
+  --md-on-primary-container: #dde1ff;
+  --md-surface: #13151f;
+  --md-surface-variant: #46464f;
+  --md-on-surface: #e5e1e6;
+  --md-on-surface-variant: #c7c5d0;
+  --md-outline: #918f9a;
+  --md-outline-variant: #46464f;
+
+  /* App variables mapped to Material Design */
+  --bg-primary: var(--md-surface);
+  --bg-secondary: var(--md-surface-variant);
+  --text-primary: var(--md-on-surface);
+  --text-secondary: var(--md-on-surface-variant);
+  --border-color: var(--md-primary);
+  --button-bg: var(--md-surface-variant);
+  --link-color: var(--md-primary);
+  --link-hover: #c7d0ff;
 }
 
 a {
