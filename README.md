@@ -36,7 +36,7 @@ Na początku miesiąca mamy pustą doniczkę z małym pędem i zależnie od regu
 
 Szkic:
 
-<img width="286" height="428" alt="kwiotki" src="https://github.com/user-attachments/assets/dea40634-2768-4e9d-abbb-e2b3084a1614" />
+<img width="450" height="628" alt="ChatGPT Image 10 sty 2026, 13_26_59 (1)" src="https://github.com/user-attachments/assets/39721dc3-79a5-41d9-9938-25b4ff98213f" />
 
 
 **Przykład:**
