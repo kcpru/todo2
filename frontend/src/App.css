@@ -329,6 +329,9 @@
   flex-direction: column;
   gap: 0;
   margin-bottom: 2rem;
+  overflow: visible;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
 }
 
 .todo-item {
@@ -340,12 +343,12 @@
   transition: background-color 0.2s ease;
 }
 
-.todo-item:hover {
-  background-color: rgba(100, 108, 255, 0.1);
+.todo-item:last-of-type {
+  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
 }
 
-.todo-item:last-child {
-  border-bottom: none;
+.todo-item:hover {
+  background-color: rgba(100, 108, 255, 0.1);
 }
 
 .todo-checkbox {
@@ -434,8 +437,8 @@
   position: relative;
   width: 100%;
   padding: 1rem;
-  border: 2px solid var(--border-color);
-  border-bottom: none;
+  border: none;
+  border-top: 1px solid rgba(100, 108, 255, 0.2);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-size: 1rem;
@@ -447,11 +450,12 @@
   justify-content: center;
   gap: 0.5rem;
   border-radius: 0;
+  box-sizing: border-box;
+  overflow: visible;
 }
 
 .add-btn:hover {
   background-color: rgba(85, 104, 211, 0.1);
-  border-color: #5568d3;
   transform: none;
 }
 
