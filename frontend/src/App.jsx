@@ -490,16 +490,17 @@ function App() {
                         ))
                       )}
                     </AnimatePresence>
-                    <motion.button
-                      className="add-btn"
-                      onClick={addTodo}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      title="Add new task"
-                    >
-                      + Add Task
-                    </motion.button>
                   </div>
+
+                  <motion.button
+                    className="add-btn"
+                    onClick={addTodo}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    title="Add new task"
+                  >
+                    + Add Task
+                  </motion.button>
                 </>
               )}
             </motion.div>
