@@ -14,6 +14,7 @@ export function TodoList({
   onFilterChange,
   onSearchChange,
   onAddTodo,
+  registerCheckboxPosition,
 }) {
   const { isDopamineMode } = useDopamine();
 
@@ -68,7 +69,16 @@ export function TodoList({
                         id={`cbx-${todo.id}`}
                         type="checkbox"
                         checked={todo.isCompleted}
-                        onChange={() => onToggleTodo(todo.id)}
+                        onChange={(e) => {
+                          const checkboxElement = e.currentTarget.parentElement;
+                          onToggleTodo(todo.id, checkboxElement);
+                          if (registerCheckboxPosition) {
+                            registerCheckboxPosition(
+                              todo.id,
+                              checkboxElement.querySelector(".cbx")
+                            );
+                          }
+                        }}
                       />
                       <label className="cbx" htmlFor={`cbx-${todo.id}`}></label>
                     </div>
