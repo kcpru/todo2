@@ -407,102 +407,102 @@ function App() {
             >
               <div className="controls">
                 <div className="search-container">
-                <input
-                  type="text"
-                  className="search-input"
-                  placeholder="Search task..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <span className="search-icon">🔍</span>
-              </div>
-
-              <select
-                className="filter-select"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-              >
-                <option value="ALL">ALL</option>
-                <option value="ACTIVE">ACTIVE</option>
-                <option value="COMPLETED">COMPLETED</option>
-              </select>
-
-              <button className="theme-button" onClick={toggleTheme}>
-                {isDarkMode ? "⚙️" : "🌙"}
-              </button>
-              </div>
-
-            {loadingTodos ? (
-              <div className="loading-todos">Loading tasks...</div>
-            ) : (
-              <>
-                <div className="todo-list">
-                  <AnimatePresence mode="popLayout">
-                    {filteredTodos.length === 0 ? (
-                      <div className="no-todos">
-                        No tasks yet. Add one to get started!
-                      </div>
-                    ) : (
-                      filteredTodos.map((todo) => (
-                        <motion.div
-                          key={todo.id}
-                          className="todo-item"
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <input
-                            type="checkbox"
-                            className="todo-checkbox"
-                            checked={todo.isCompleted}
-                            onChange={() => toggleTodo(todo.id)}
-                          />
-                          <div className="todo-content">
-                            <span
-                              className={`todo-text ${
-                                todo.isCompleted ? "completed" : ""
-                              }`}
-                            >
-                              {todo.title}
-                            </span>
-                            {todo.description && (
-                              <span className="todo-description">
-                                {todo.description}
-                              </span>
-                            )}
-                          </div>
-                          <div className="todo-actions">
-                            <button
-                              className="todo-action-btn edit-btn"
-                              onClick={() => startEdit(todo)}
-                            >
-                              ✏️
-                            </button>
-                            <button
-                              className="todo-action-btn delete-btn"
-                              onClick={() => deleteTodo(todo.id)}
-                            >
-                              🗑️
-                            </button>
-                          </div>
-                        </motion.div>
-                      ))
-                    )}
-                  </AnimatePresence>
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Search task..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <span className="search-icon">🔍</span>
                 </div>
 
-                <motion.button
-                  className="add-btn"
-                  onClick={addTodo}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  title="Add new task"
+                <select
+                  className="filter-select"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
                 >
-                  +
-                </motion.button>
-              </>
-            )}
+                  <option value="ALL">ALL</option>
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="COMPLETED">COMPLETED</option>
+                </select>
+
+                <button className="theme-button" onClick={toggleTheme}>
+                  {isDarkMode ? "⚙️" : "🌙"}
+                </button>
+              </div>
+
+              {loadingTodos ? (
+                <div className="loading-todos">Loading tasks...</div>
+              ) : (
+                <>
+                  <div className="todo-list">
+                    <AnimatePresence mode="popLayout">
+                      {filteredTodos.length === 0 ? (
+                        <div className="no-todos">
+                          No tasks yet. Add one to get started!
+                        </div>
+                      ) : (
+                        filteredTodos.map((todo) => (
+                          <motion.div
+                            key={todo.id}
+                            className="todo-item"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <input
+                              type="checkbox"
+                              className="todo-checkbox"
+                              checked={todo.isCompleted}
+                              onChange={() => toggleTodo(todo.id)}
+                            />
+                            <div className="todo-content">
+                              <span
+                                className={`todo-text ${
+                                  todo.isCompleted ? "completed" : ""
+                                }`}
+                              >
+                                {todo.title}
+                              </span>
+                              {todo.description && (
+                                <span className="todo-description">
+                                  {todo.description}
+                                </span>
+                              )}
+                            </div>
+                            <div className="todo-actions">
+                              <button
+                                className="todo-action-btn edit-btn"
+                                onClick={() => startEdit(todo)}
+                              >
+                                ✏️
+                              </button>
+                              <button
+                                className="todo-action-btn delete-btn"
+                                onClick={() => deleteTodo(todo.id)}
+                              >
+                                🗑️
+                              </button>
+                            </div>
+                          </motion.div>
+                        ))
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  <motion.button
+                    className="add-btn"
+                    onClick={addTodo}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    title="Add new task"
+                  >
+                    +
+                  </motion.button>
+                </>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
