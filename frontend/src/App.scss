@@ -29,7 +29,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #5568d3 0%, #6b7ae6 100%);
+  background: linear-gradient(135deg, #4355b9 0%, #5a6cc3 100%);
   color: white;
   border: 2px solid var(--border-color);
   font-weight: 700;
@@ -42,7 +42,7 @@
 }
 
 .profile-button:hover {
-  box-shadow: 0 4px 12px rgba(85, 104, 211, 0.4);
+  box-shadow: 0 4px 12px rgba(67, 85, 185, 0.4);
 }
 
 .profile-menu {
@@ -59,7 +59,7 @@
 
 .profile-info {
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
+  border-bottom: 1px solid rgba(67, 85, 185, 0.2);
   margin-bottom: 0.75rem;
 }
 
@@ -106,8 +106,8 @@
 }
 
 .profile-theme-btn:hover {
-  background-color: rgba(100, 108, 255, 0.1);
-  border-color: #5568d3;
+  background-color: rgba(67, 85, 185, 0.1);
+  border-color: #4355b9;
 }
 
 .profile-dopamine-btn {
@@ -124,8 +124,8 @@
 }
 
 .profile-dopamine-btn:hover {
-  background-color: rgba(100, 108, 255, 0.1);
-  border-color: #5568d3;
+  background-color: rgba(67, 85, 185, 0.1);
+  border-color: #4355b9;
 }
 
 .container {
@@ -134,15 +134,14 @@
   padding: 2rem;
   position: relative;
   box-sizing: border-box;
-  margin: 0 1.5rem 1.5rem 1.5rem;
+  margin: 7rem 1.5rem 1.5rem 1.5rem;
   background: linear-gradient(
     135deg,
-    rgba(100, 108, 255, 0.08) 0%,
-    rgba(100, 108, 255, 0.05) 100%
+    rgba(67, 85, 185, 0.05) 0%,
+    rgba(67, 85, 185, 0.03) 100%
   );
-  border: 2px solid rgba(100, 108, 255, 0.3);
-  border-radius: 0 0 12px 12px;
-  border-top: none;
+  border: 2px solid rgba(67, 85, 185, 0.2);
+  border-radius: 12px;
 }
 
 .title {
@@ -209,14 +208,14 @@
 }
 
 .list-item:hover {
-  background-color: rgba(85, 104, 211, 0.1);
-  border-color: #5568d3;
+  background-color: rgba(67, 85, 185, 0.1);
+  border-color: #4355b9;
 }
 
 .list-item.active {
-  background-color: #5568d3;
+  background-color: #4355b9;
   color: white;
-  border-color: #5568d3;
+  border-color: #4355b9;
 }
 
 .list-name {
@@ -269,14 +268,14 @@
 
 .new-list-input:focus {
   outline: none;
-  border-color: #5568d3;
+  border-color: #4355b9;
 }
 
 .new-list-btn {
   padding: 0.75rem 1rem;
-  border: 2px solid #5568d3;
+  border: 2px solid #4355b9;
   border-radius: 8px;
-  background-color: #5568d3;
+  background-color: #4355b9;
   color: white;
   font-weight: 700;
   font-size: 1.2rem;
@@ -286,8 +285,8 @@
 }
 
 .new-list-btn:hover {
-  background-color: #6b7ae6;
-  border-color: #6b7ae6;
+  background-color: #5a6cc3;
+  border-color: #5a6cc3;
 }
 
 .controls {
@@ -336,7 +335,7 @@
   padding: 0.75rem 1rem;
   border: 2px solid var(--border-color);
   border-radius: 8px;
-  background-color: #5568d3;
+  background-color: #4355b9;
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -368,16 +367,16 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
-  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
+  border-bottom: 1px solid rgba(67, 85, 185, 0.2);
   transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .todo-item:last-of-type {
-  border-bottom: 1px solid rgba(100, 108, 255, 0.2);
+  border-bottom: 1px solid rgba(67, 85, 185, 0.2);
 }
 
 .todo-item:hover {
-  background-color: rgba(100, 108, 255, 0.1);
+  background-color: rgba(67, 85, 185, 0.1);
 }
 
 .todo-checkbox {
@@ -385,7 +384,7 @@
   height: 24px;
   min-width: 24px;
   cursor: pointer;
-  accent-color: #5568d3;
+  accent-color: #4355b9;
   border-radius: 4px;
 }
 
@@ -466,9 +465,9 @@
   position: relative;
   margin: 1.5rem auto;
   padding: 0.75rem 1.5rem;
-  border: 2px solid #5568d3;
+  border: 2px solid #4355b9;
   border-radius: 8px;
-  background-color: #5568d3;
+  background-color: #4355b9;
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -484,8 +483,8 @@
 }
 
 .add-btn:hover {
-  background-color: #6b7ae6;
-  border-color: #6b7ae6;
+  background-color: #5a6cc3;
+  border-color: #5a6cc3;
   transform: none;
 }
 
@@ -626,19 +625,19 @@
 }
 
 .cancel-btn:hover {
-  background-color: rgba(100, 108, 255, 0.1);
+  background-color: rgba(67, 85, 185, 0.1);
   transform: translateY(-2px);
 }
 
 .apply-btn {
-  background-color: #5568d3;
+  background-color: #4355b9;
   color: white;
-  border-color: #5568d3;
+  border-color: #4355b9;
 }
 
 .apply-btn:hover {
-  background-color: #6b7ae6;
-  border-color: #6b7ae6;
+  background-color: #5a6cc3;
+  border-color: #5a6cc3;
   transform: translateY(-2px);
 }
 
