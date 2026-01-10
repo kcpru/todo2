@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import confetti from "canvas-confetti";
 import { useTheme } from "./ThemeContext";
 import "./App.css";
+import demoVideo from "./assets/video.mp4";
 
 function App() {
   const [todos, setTodos] = useState([
@@ -252,6 +253,14 @@ function App() {
             </motion.div>
           )}
         </AnimatePresence>
+        <video
+          className="fixed-video"
+          src={demoVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
       </div>
     </div>
   );
