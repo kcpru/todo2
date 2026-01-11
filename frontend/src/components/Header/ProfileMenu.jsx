@@ -60,12 +60,12 @@ export function ProfileMenu() {
               onClick={toggleDopamineMode}
               title={
                 isDopamineMode
-                  ? "Disable Dopamine Mode"
-                  : "Enable Dopamine Mode"
+                  ? "Switch to Dopamine Mode"
+                  : "Switch to Focus Mode"
               }
               icon={<MdPsychology />}
             >
-              {isDopamineMode ? "Dopamine ON" : "Dopamine OFF"}
+              {isDopamineMode ? "Focus Mode" : "Dopamine Mode"}
             </GradientButton>
             <GradientButton
               variant="danger"
