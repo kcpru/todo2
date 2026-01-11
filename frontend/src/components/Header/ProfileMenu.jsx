@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "../../ThemeContext";
@@ -35,7 +36,7 @@ export function ProfileMenu() {
       </GradientButton>
 
       <AnimatePresence>
-        {showProfile && (
+        {showProfile && createPortal(
           <>
             <motion.div
               className="profile-overlay-bg"
@@ -108,7 +109,8 @@ export function ProfileMenu() {
                 <span>Manage your vibe & settings</span>
               </div>
             </motion.div>
-          </>
+          </>,
+          document.body
         )}
       </AnimatePresence>
     </div>
