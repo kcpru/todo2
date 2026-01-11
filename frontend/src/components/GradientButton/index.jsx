@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
-import { useRipple } from "../hooks/useRipple.jsx";
-import "../styles/GradientButton.scss";
+import { useRipple } from "../../hooks/useRipple.jsx";
+import "./GradientButton.scss";
 
 export function GradientButton({
   children,
