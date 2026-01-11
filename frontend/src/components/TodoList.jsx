@@ -9,6 +9,10 @@ import {
   MdCheckCircle,
   MdSearch,
   MdAdd,
+  MdAssignmentLate,
+  MdSearchOff,
+  MdEventBusy,
+  MdChecklistRtl,
 } from "react-icons/md";
 import { GradientButton } from "./GradientButton";
 import { useRipple } from "../hooks/useRipple.jsx";
@@ -33,6 +37,38 @@ export function TodoList({
     RippleContainer: SearchRippleContainer,
   } = useRipple();
 
+  const getEmptyMessage = () => {
+    if (searchTerm.trim()) {
+      return {
+        icon: <MdSearchOff className="no-todos-icon" />,
+        title: "No results",
+        subtitle: `No tasks matching "${searchTerm}"`,
+      };
+    }
+
+    if (filter === "COMPLETED") {
+      return {
+        icon: <MdEventBusy className="no-todos-icon" />,
+        title: "No completed tasks",
+        subtitle: "Complete some tasks to see them here",
+      };
+    }
+
+    if (filter === "ACTIVE") {
+      return {
+        icon: <MdChecklistRtl className="no-todos-icon" />,
+        title: "All tasks done!",
+        subtitle: "Great job! You have completed all tasks",
+      };
+    }
+
+    return {
+      icon: <MdAssignmentLate className="no-todos-icon" />,
+      title: "No tasks yet",
+      subtitle: "Add one to get started!",
+    };
+  };
+
   const filters = [
     { value: "ALL", label: "All", icon: <MdList /> },
     { value: "ACTIVE", label: "Active", icon: <MdRadioButtonUnchecked /> },
@@ -42,7 +78,7 @@ export function TodoList({
   return (
     <>
       <div className="controls">
-        <div className="search-container">
+        <div className="search-container input-with-ripple">
           <input
             type="text"
             className="search-input"
@@ -86,7 +122,13 @@ export function TodoList({
             <AnimatePresence mode="popLayout">
               {filteredTodos.length === 0 ? (
                 <div className="no-todos">
-                  No tasks yet. Add one to get started!
+                  {getEmptyMessage().icon}
+                  <div className="no-todos-text">
+                    <p className="no-todos-title">{getEmptyMessage().title}</p>
+                    <p className="no-todos-subtitle">
+                      {getEmptyMessage().subtitle}
+                    </p>
+                  </div>
                 </div>
               ) : (
                 filteredTodos.map((todo, index) => (
