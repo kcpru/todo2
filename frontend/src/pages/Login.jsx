@@ -188,7 +188,7 @@ export function Login() {
           {...ANIMATION_CONFIG.authButton(0.6)}
         >
           <p>✨ Track your chaos</p>
-          <p>🎯 Get dopamine rewards</p>
+          <p>🎯 Stay focused and productive</p>
           <p>⚡ Build habits</p>
         </motion.div>
       </motion.div>
