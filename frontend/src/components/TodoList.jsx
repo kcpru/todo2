@@ -1,8 +1,17 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useDopamine } from "../DopamineContext";
 import { ANIMATION_CONFIG } from "../constants/animations";
-import { MdEdit, MdDelete } from "react-icons/md";
+import {
+  MdEdit,
+  MdDelete,
+  MdList,
+  MdRadioButtonUnchecked,
+  MdCheckCircle,
+  MdSearch,
+  MdAdd,
+} from "react-icons/md";
 import { GradientButton } from "./GradientButton";
+import { useRipple } from "../hooks/useRipple.jsx";
 
 export function TodoList({
   todos,
@@ -19,6 +28,16 @@ export function TodoList({
   registerCheckboxPosition,
 }) {
   const { isDopamineMode } = useDopamine();
+  const {
+    createRipple: createSearchRipple,
+    RippleContainer: SearchRippleContainer,
+  } = useRipple();
+
+  const filters = [
+    { value: "ALL", label: "All", icon: <MdList /> },
+    { value: "ACTIVE", label: "Active", icon: <MdRadioButtonUnchecked /> },
+    { value: "COMPLETED", label: "Done", icon: <MdCheckCircle /> },
+  ];
 
   return (
     <>
@@ -30,19 +49,33 @@ export function TodoList({
             placeholder="Search task..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
+            onMouseDown={createSearchRipple}
           />
-          <span className="search-icon">🔍</span>
+          <span className="search-icon">
+            <MdSearch />
+          </span>
+          <SearchRippleContainer />
         </div>
 
-        <select
-          className="filter-select"
-          value={filter}
-          onChange={(e) => onFilterChange(e.target.value)}
-        >
-          <option value="ALL">ALL</option>
-          <option value="ACTIVE">ACTIVE</option>
-          <option value="COMPLETED">COMPLETED</option>
-        </select>
+        <div className="filter-toggle-group">
+          {filters.map((f) => {
+            const isActive = filter === f.value;
+            return (
+              <GradientButton
+                key={f.value}
+                variant={isActive ? "primary" : "secondary"}
+                size="sm"
+                iconOnly={false}
+                className={`filter-toggle ${isActive ? "active" : ""}`}
+                onClick={() => onFilterChange(f.value)}
+                title={f.label}
+              >
+                {f.icon}
+                <span>{f.label}</span>
+              </GradientButton>
+            );
+          })}
+        </div>
       </div>
 
       {loadingTodos ? (
@@ -130,7 +163,8 @@ export function TodoList({
             onClick={onAddTodo}
             title="Add new task"
           >
-            + Add Task
+            <MdAdd />
+            <span>Add Task</span>
           </GradientButton>
         </>
       )}

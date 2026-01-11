@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdAdd } from "react-icons/md";
 import { GradientButton } from "./GradientButton";
 import { useRipple } from "../hooks/useRipple.jsx";
 
-function ListItem({ list, isActive, onSelect }) {
+function ListItem({ list, isActive, onSelect, onDelete }) {
   const { createRipple, RippleContainer } = useRipple();
 
   const handleClick = (e) => {
@@ -16,11 +16,24 @@ function ListItem({ list, isActive, onSelect }) {
     <motion.button
       className={`list-item ${isActive ? "active" : ""}`}
       onClick={handleClick}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
     >
+      <span className="list-count-badge">{list.items?.length || 0}</span>
       <span className="list-name">{list.name}</span>
-      <span className="list-count">{list.items?.length || 0}</span>
+      <div className="list-actions">
+        <GradientButton
+          variant="danger"
+          size="sm"
+          iconOnly={true}
+          className="list-delete-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(list.id);
+          }}
+          title="Delete list"
+        >
+          <MdDelete />
+        </GradientButton>
+      </div>
       <RippleContainer />
     </motion.button>
   );
@@ -35,10 +48,14 @@ export function ListSelector({
   onAddList,
 }) {
   const [newListName, setNewListName] = useState("");
+  const {
+    createRipple: createInputRipple,
+    RippleContainer: InputRippleContainer,
+  } = useRipple();
 
   const handleAddList = async () => {
     if (!newListName.trim()) return;
-    await onAddList(newListName);
+    await onAddList(newListName.trim());
     setNewListName("");
   };
 
@@ -58,36 +75,34 @@ export function ListSelector({
                   list={list}
                   isActive={selectedListId === list.id}
                   onSelect={onSelectList}
+                  onDelete={onDeleteList}
                 />
-                <GradientButton
-                  variant="danger"
-                  size="sm"
-                  iconOnly={true}
-                  className="list-delete-btn"
-                  onClick={() => onDeleteList(list.id)}
-                  title="Delete list"
-                >
-                  <MdDelete />
-                </GradientButton>
               </div>
             ))}
           </div>
-          <div className="new-list-input-container">
-            <input
-              type="text"
-              className="new-list-input"
-              placeholder="Create new list..."
-              value={newListName}
-              onChange={(e) => setNewListName(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleAddList()}
-            />
+          <div className="new-list-input-row">
+            <div className="new-list-input-container input-with-ripple">
+              <input
+                type="text"
+                className="new-list-input"
+                placeholder="New list title"
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleAddList()}
+                onMouseDown={createInputRipple}
+              />
+              <InputRippleContainer />
+            </div>
             <GradientButton
-              size="md"
-              iconOnly={true}
+              size="sm"
+              iconOnly={false}
               className="new-list-btn"
               onClick={handleAddList}
+              disabled={!newListName.trim()}
+              title={newListName.trim() ? "Create list" : "Type a name first"}
             >
-              +
+              <MdAdd className="new-list-btn-icon" />
+              <span>Create</span>
             </GradientButton>
           </div>
         </>
