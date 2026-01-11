@@ -17,15 +17,16 @@ export function ProfileMenu() {
 
   return (
     <div className="profile-container">
-      <motion.button
+      <GradientButton
+        variant="primary"
+        size="md"
+        iconOnly
         className="profile-button"
         onClick={() => setShowProfile(!showProfile)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.97 }}
         title={user?.username}
       >
         {user?.username?.charAt(0).toUpperCase() || "U"}
-      </motion.button>
+      </GradientButton>
 
       <AnimatePresence>
         {showProfile && (
