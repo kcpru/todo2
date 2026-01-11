@@ -8,6 +8,7 @@ import { useCoinsSystem } from "../../hooks/useCoinsSystem";
 import { ANIMATION_CONFIG } from "../../constants/animations";
 import { MdLightMode, MdDarkMode, MdPsychology } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
+import ProfileMenu from "./ProfileMenu";
 import "./Header.scss";
 
 export function Header() {

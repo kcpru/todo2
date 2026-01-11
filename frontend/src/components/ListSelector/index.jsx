@@ -14,16 +14,9 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
   };
 
   return (
-    <motion.div
+    <motion.button
       className={`list-item ${isActive ? "active" : ""}`}
       onClick={handleClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          handleClick(e);
-        }
-      }}
     >
       <span className="list-count-badge">{list.items?.length || 0}</span>
       <span className="list-name">{list.name}</span>
@@ -43,7 +36,7 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
         </GradientButton>
       </div>
       <RippleContainer />
-    </motion.div>
+    </motion.button>
   );
 }
 
