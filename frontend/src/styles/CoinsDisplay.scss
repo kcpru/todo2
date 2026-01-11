@@ -35,6 +35,13 @@
   color: rgba(var(--md-primary-rgb), 0.5);
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  svg {
+    font-size: 1rem;
+  }
 }
 
 .coins-amount {

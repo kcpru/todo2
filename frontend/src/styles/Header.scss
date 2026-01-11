@@ -178,7 +178,10 @@
 
 .profile-theme-btn,
 .profile-dopamine-btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
   width: 100%;
   padding: 0.7rem 1rem;
   margin-bottom: 0.5rem;
@@ -191,6 +194,11 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.9rem;
   text-align: left;
+
+  svg {
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
 }
 
 .profile-theme-btn:hover,
