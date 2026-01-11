@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { z } from "zod";
 import { useAuth } from "../AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "motion/react";
@@ -6,16 +7,67 @@ import { MdLogin, MdMailOutline, MdLockOutline } from "react-icons/md";
 import "../styles/Auth.scss";
 import { Input } from "../components/Input";
 import { GradientButton } from "../components/GradientButton";
+import { ANIMATION_CONFIG } from "../constants/animations";
 
 export function Login() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+  const [shakeField, setShakeField] = useState(null);
   const { login, error } = useAuth();
   const navigate = useNavigate();
 
+  const loginSchema = z.object({
+    login: z.string().trim().min(1, "Required"),
+    password: z
+      .string()
+      .trim()
+      .min(8, "Password must be at least 8 characters"),
+  });
+
+  const getFieldMotion = (field, delay) => {
+    const base = ANIMATION_CONFIG.authFormGroup(delay);
+    const isShaking = shakeField === field;
+
+    if (isShaking) {
+      return {
+        initial: { opacity: 1, x: 0 },
+        animate: { ...base.animate, ...ANIMATION_CONFIG.shake.animate },
+        transition: { ...ANIMATION_CONFIG.shake.transition },
+      };
+    }
+
+    return base;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const result = loginSchema.safeParse({
+      login: usernameOrEmail,
+      password,
+    });
+
+    if (!result.success) {
+      const flat = result.error.flatten();
+      const fieldErrors = Object.entries(flat.fieldErrors).reduce(
+        (acc, [key, value]) => {
+          if (value?.[0]) acc[key] = value[0];
+          return acc;
+        },
+        {}
+      );
+      setValidationErrors(fieldErrors);
+      const firstError = Object.keys(fieldErrors)[0];
+      if (firstError) {
+        setShakeField(firstError);
+        setTimeout(() => setShakeField(null), 400);
+      }
+      return;
+    }
+
+    setValidationErrors({});
+
     setIsLoading(true);
     const success = await login(usernameOrEmail, password);
     setIsLoading(false);
@@ -27,31 +79,25 @@ export function Login() {
 
   return (
     <div className="auth-container">
-      <motion.div
-        className="auth-card"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <motion.div className="auth-card" {...ANIMATION_CONFIG.authCard}>
         <div className="auth-header">
-          <motion.div
-            className="auth-icon"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          <motion.div className="auth-icon" {...ANIMATION_CONFIG.authIcon}>
             <MdLogin />
           </motion.div>
           <h1 className="auth-title">Welcome Back!</h1>
           <p className="auth-subtitle">Sign in to your todo chaos</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <motion.div
-            className="form-group"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            className={`form-group ${
+              validationErrors.login
+                ? "invalid"
+                : usernameOrEmail.trim()
+                ? "valid"
+                : ""
+            }`}
+            {...getFieldMotion("login", 0.2)}
           >
             <label htmlFor="login">
               <MdMailOutline className="form-icon" /> Username or Email
@@ -60,7 +106,16 @@ export function Login() {
               id="login"
               type="text"
               value={usernameOrEmail}
-              onChange={(e) => setUsernameOrEmail(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setUsernameOrEmail(value);
+                if (validationErrors.login && value.trim()) {
+                  setValidationErrors((prev) => {
+                    const { login, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
               placeholder="your@email.com"
               withRipple
               disabled={isLoading}
@@ -69,10 +124,14 @@ export function Login() {
           </motion.div>
 
           <motion.div
-            className="form-group"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            className={`form-group ${
+              validationErrors.password
+                ? "invalid"
+                : password.trim().length >= 8
+                ? "valid"
+                : ""
+            }`}
+            {...getFieldMotion("password", 0.3)}
           >
             <label htmlFor="password">
               <MdLockOutline className="form-icon" /> Password
@@ -81,7 +140,16 @@ export function Login() {
               id="password"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setPassword(value);
+                if (validationErrors.password && value.trim().length >= 8) {
+                  setValidationErrors((prev) => {
+                    const { password: pw, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
               placeholder="••••••••"
               withRipple
               disabled={isLoading}
@@ -90,20 +158,12 @@ export function Login() {
           </motion.div>
 
           {error && (
-            <motion.div
-              className="auth-error"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
+            <motion.div className="auth-error" {...ANIMATION_CONFIG.authError}>
               {error}
             </motion.div>
           )}
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
+          <motion.div {...ANIMATION_CONFIG.authButton(0.4)}>
             <GradientButton
               type="submit"
               className="auth-button"
@@ -116,20 +176,13 @@ export function Login() {
           </motion.div>
         </form>
 
-        <motion.p
-          className="auth-link"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
+        <motion.p className="auth-link" {...ANIMATION_CONFIG.authButton(0.5)}>
           New to chaos? <Link to="/register">Create an account</Link>
         </motion.p>
 
         <motion.div
           className="auth-benefits"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          {...ANIMATION_CONFIG.authButton(0.6)}
         >
           <p>✨ Track your chaos</p>
           <p>🎯 Get dopamine rewards</p>
