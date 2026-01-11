@@ -13,6 +13,7 @@ import "../styles/Auth.scss";
 import { Input } from "../components/Input";
 import { GradientButton } from "../components/GradientButton";
 import { ANIMATION_CONFIG } from "../constants/animations";
+import { useNotifications } from "../NotificationsContext";
 
 export function Register() {
   const [username, setUsername] = useState("");
@@ -25,6 +26,7 @@ export function Register() {
   const [shakeField, setShakeField] = useState(null);
   const { register, error } = useAuth();
   const navigate = useNavigate();
+  const { notify } = useNotifications();
 
   const registerSchema = z
     .object({
@@ -79,6 +81,10 @@ export function Register() {
       const firstError = Object.keys(fieldErrors)[0];
       if (firstError) {
         setValidationError(fieldErrors[firstError] || "");
+        notify({
+          type: "error",
+          message: fieldErrors[firstError] || "Please check the fields",
+        });
         setShakeField(firstError);
         setTimeout(() => setShakeField(null), 400);
       }
@@ -94,6 +100,10 @@ export function Register() {
 
     if (success) {
       navigate("/");
+    } else if (error) {
+      notify({ type: "error", message: error });
+    } else {
+      notify({ type: "error", message: "Registration failed" });
     }
   };
 
@@ -251,11 +261,7 @@ export function Register() {
             />
           </motion.div>
 
-          {(validationError || error) && (
-            <motion.div className="auth-error" {...ANIMATION_CONFIG.authError}>
-              {validationError || error}
-            </motion.div>
-          )}
+          {/* Removed inline auth-error; errors are now shown via NotificationCenter */}
 
           <motion.div {...ANIMATION_CONFIG.authButton(0.6)}>
             <GradientButton

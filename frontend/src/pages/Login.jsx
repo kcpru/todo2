@@ -8,6 +8,7 @@ import "../styles/Auth.scss";
 import { Input } from "../components/Input";
 import { GradientButton } from "../components/GradientButton";
 import { ANIMATION_CONFIG } from "../constants/animations";
+import { useNotifications } from "../NotificationsContext";
 
 export function Login() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -17,6 +18,7 @@ export function Login() {
   const [shakeField, setShakeField] = useState(null);
   const { login, error } = useAuth();
   const navigate = useNavigate();
+  const { notify } = useNotifications();
 
   const loginSchema = z.object({
     login: z.string().trim().min(1, "Required"),
@@ -60,6 +62,7 @@ export function Login() {
       setValidationErrors(fieldErrors);
       const firstError = Object.keys(fieldErrors)[0];
       if (firstError) {
+        notify({ type: "error", message: fieldErrors[firstError] });
         setShakeField(firstError);
         setTimeout(() => setShakeField(null), 400);
       }
@@ -74,6 +77,10 @@ export function Login() {
 
     if (success) {
       navigate("/");
+    } else if (error) {
+      notify({ type: "error", message: error });
+    } else {
+      notify({ type: "error", message: "Invalid credentials" });
     }
   };
 
@@ -157,11 +164,7 @@ export function Login() {
             />
           </motion.div>
 
-          {error && (
-            <motion.div className="auth-error" {...ANIMATION_CONFIG.authError}>
-              {error}
-            </motion.div>
-          )}
+          {/* Removed inline auth-error; errors are now shown via NotificationCenter */}
 
           <motion.div {...ANIMATION_CONFIG.authButton(0.4)}>
             <GradientButton
