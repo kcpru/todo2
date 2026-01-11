@@ -223,7 +223,6 @@ export function useTodoLogic() {
   const addTodo = () => {
     if (!selectedListId) return;
     setEditingId("new");
-    setEditingText("New task");
     setEditingDescription("");
   };
 

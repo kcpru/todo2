@@ -91,6 +91,7 @@ export function TodoList({
           </span>
         </div>
 
+<div className="filter-container">
         <div className="filter-toggle-group">
           {filters.map((f) => {
             const isActive = filter === f.value;
