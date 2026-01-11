@@ -124,7 +124,7 @@
   overflow: visible;
 }
 
-.profile-menu {
+.profile-dropdown {
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
@@ -167,7 +167,7 @@
   }
 }
 
-.profile-menu .gradient-button svg {
+.profile-dropdown .gradient-button svg {
   font-size: 1rem;
 }
 

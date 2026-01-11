@@ -5,7 +5,12 @@ import { useTheme } from "../../ThemeContext";
 import { useDopamine } from "../../DopamineContext";
 import { useAuth } from "../../AuthContext";
 import { ANIMATION_CONFIG } from "../../constants/animations";
-import { MdLightMode, MdDarkMode, MdPsychology, MdLogout } from "react-icons/md";
+import {
+  MdLightMode,
+  MdDarkMode,
+  MdPsychology,
+  MdLogout,
+} from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 
 export function ProfileMenu() {
@@ -30,7 +35,10 @@ export function ProfileMenu() {
 
       <AnimatePresence>
         {showProfile && (
-          <motion.div className="profile-menu" {...ANIMATION_CONFIG.dropdown}>
+          <motion.div
+            className="profile-dropdown"
+            {...ANIMATION_CONFIG.dropdown}
+          >
             <div className="profile-info">
               <div className="profile-username">{user?.username}</div>
               <div className="profile-email">{user?.email}</div>
