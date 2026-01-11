@@ -17,7 +17,7 @@
 .search-input {
   width: 100%;
   padding: 0.5rem 1rem;
-  min-height: 34px;
+  min-height: 24px;
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
   border-radius: 12px;
   background: linear-gradient(
@@ -267,13 +267,13 @@
 }
 
 .add-btn {
-  margin: 1.5rem auto;
-  width: auto;
+  margin: 1rem auto;
 }
 
 .input-with-ripple {
   position: relative;
   overflow: hidden;
+  flex: 1; /* Ensure wrapper expands so .search-input can be 100% width */
 }
 
 .input-with-ripple .ripple {
