@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { MdDelete, MdAdd } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
+import { ConfirmDialog } from "../ConfirmDialog";
 import { useRipple } from "../../hooks/useRipple.jsx";
 import "./ListSelector.scss";
 
@@ -49,6 +50,7 @@ export function ListSelector({
   onAddList,
 }) {
   const [newListName, setNewListName] = useState("");
+  const [confirmDeleteListId, setConfirmDeleteListId] = useState(null);
 
   const handleAddList = async () => {
     if (!newListName.trim()) return;
@@ -72,11 +74,26 @@ export function ListSelector({
                   list={list}
                   isActive={selectedListId === list.id}
                   onSelect={onSelectList}
-                  onDelete={onDeleteList}
+                  onDelete={() => setConfirmDeleteListId(list.id)}
                 />
               </div>
             ))}
           </div>
+          <ConfirmDialog
+            isOpen={confirmDeleteListId !== null}
+            title="Delete List"
+            message="Are you sure you want to delete this list and all of its tasks? This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
+            onConfirm={() => {
+              if (confirmDeleteListId !== null) {
+                onDeleteList(confirmDeleteListId);
+              }
+              setConfirmDeleteListId(null);
+            }}
+            onCancel={() => setConfirmDeleteListId(null)}
+            confirmVariant="danger"
+          />
           <div className="new-list-input-row">
             <Input
               withRipple
