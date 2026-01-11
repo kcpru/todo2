@@ -18,7 +18,7 @@
   justify-content: space-between;
   padding: 0 2rem;
   z-index: 1000;
-  border-radius: 12px;
+  border-radius: 16px;
   box-sizing: border-box;
 }
 
@@ -145,7 +145,7 @@
   right: 1.5rem;
   background: var(--md-surface);
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 1rem;
   min-width: 240px;
   z-index: 1001;
