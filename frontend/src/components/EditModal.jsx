@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { GradientButton } from "./GradientButton";
 
 export function EditModal({
   editingId,
@@ -47,12 +48,22 @@ export function EditModal({
               rows="3"
             />
             <div className="modal-buttons">
-              <button className="modal-btn cancel-btn" onClick={onCancel}>
+              <GradientButton
+                variant="secondary"
+                size="md"
+                className="modal-btn cancel-btn"
+                onClick={onCancel}
+              >
                 CANCEL
-              </button>
-              <button className="modal-btn apply-btn" onClick={onSave}>
+              </GradientButton>
+              <GradientButton
+                variant="primary"
+                size="md"
+                className="modal-btn apply-btn"
+                onClick={onSave}
+              >
                 APPLY
-              </button>
+              </GradientButton>
             </div>
           </motion.div>
         </motion.div>

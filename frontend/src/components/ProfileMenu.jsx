@@ -6,6 +6,7 @@ import { useDopamine } from "../DopamineContext";
 import { useAuth } from "../AuthContext";
 import { ANIMATION_CONFIG } from "../constants/animations";
 import { MdLightMode, MdDarkMode, MdPsychology } from "react-icons/md";
+import { GradientButton } from "./GradientButton";
 
 export function ProfileMenu() {
   const navigate = useNavigate();
@@ -33,7 +34,9 @@ export function ProfileMenu() {
               <div className="profile-username">{user?.username}</div>
               <div className="profile-email">{user?.email}</div>
             </div>
-            <button
+            <GradientButton
+              variant="secondary"
+              size="md"
               className="profile-theme-btn"
               onClick={toggleTheme}
               title={isDarkMode ? "Light Mode" : "Dark Mode"}
@@ -47,8 +50,10 @@ export function ProfileMenu() {
                   <MdDarkMode /> Dark Mode
                 </>
               )}
-            </button>
-            <button
+            </GradientButton>
+            <GradientButton
+              variant="info"
+              size="md"
               className="profile-dopamine-btn"
               onClick={toggleDopamineMode}
               title={
@@ -59,8 +64,10 @@ export function ProfileMenu() {
             >
               <MdPsychology />
               {isDopamineMode ? " Dopamine Mode ON" : " Dopamine Mode OFF"}
-            </button>
-            <button
+            </GradientButton>
+            <GradientButton
+              variant="danger"
+              size="md"
               className="profile-logout"
               onClick={() => {
                 logout();
@@ -68,7 +75,7 @@ export function ProfileMenu() {
               }}
             >
               Logout
-            </button>
+            </GradientButton>
           </motion.div>
         )}
       </AnimatePresence>

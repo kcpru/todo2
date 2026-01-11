@@ -7,6 +7,7 @@ import { useAuth } from "../AuthContext";
 import { useCoinsSystem } from "../hooks/useCoinsSystem";
 import { ANIMATION_CONFIG } from "../constants/animations";
 import { MdLightMode, MdDarkMode, MdPsychology } from "react-icons/md";
+import { GradientButton } from "./GradientButton";
 import "../styles/Header.scss";
 
 export function Header() {
@@ -75,7 +76,9 @@ export function Header() {
                 <div className="profile-username">{user?.username}</div>
                 <div className="profile-email">{user?.email}</div>
               </div>
-              <button
+              <GradientButton
+                variant="secondary"
+                size="md"
                 className="profile-theme-btn"
                 onClick={toggleTheme}
                 title={isDarkMode ? "Light Mode" : "Dark Mode"}
@@ -89,8 +92,10 @@ export function Header() {
                     <MdDarkMode /> Dark Mode
                   </>
                 )}
-              </button>
-              <button
+              </GradientButton>
+              <GradientButton
+                variant="info"
+                size="md"
                 className="profile-dopamine-btn"
                 onClick={toggleDopamineMode}
                 title={
@@ -101,8 +106,10 @@ export function Header() {
               >
                 <MdPsychology />
                 {isDopamineMode ? " Dopamine Mode ON" : " Dopamine Mode OFF"}
-              </button>
-              <button
+              </GradientButton>
+              <GradientButton
+                variant="danger"
+                size="md"
                 className="profile-logout"
                 onClick={() => {
                   logout();
@@ -110,7 +117,7 @@ export function Header() {
                 }}
               >
                 Logout
-              </button>
+              </GradientButton>
             </motion.div>
           )}
         </AnimatePresence>
