@@ -13,26 +13,33 @@
 }
 
 .modal {
-  background-color: var(--bg-primary);
+  background-color: var(--surface, var(--bg-primary));
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
-  border-radius: 16px;
-  padding: 2rem;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 1.25rem;
+  max-width: 460px;
+  width: 92vw;
 }
 
 .modal-title {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 1.5rem 0;
+  text-align: left;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0 0 0.75rem 0;
   color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.modal-title svg {
+  font-size: 1.2em;
+  flex-shrink: 0;
 }
 
 .modal-input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 0.85rem;
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
   border-radius: 8px;
   background: linear-gradient(
@@ -41,8 +48,8 @@
     rgba(var(--md-primary-rgb), 0.03) 100%
   );
   color: var(--text-primary);
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
+  font-size: 0.98rem;
+  margin-bottom: 0.9rem;
   box-sizing: border-box;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -58,7 +65,7 @@
 
 .modal-textarea {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 0.85rem;
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
   border-radius: 8px;
   background: linear-gradient(
@@ -67,9 +74,9 @@
     rgba(var(--md-primary-rgb), 0.03) 100%
   );
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-family: inherit;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   box-sizing: border-box;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   resize: vertical;
@@ -86,10 +93,10 @@
 
 .modal-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   justify-content: flex-end;
 }
 
 .modal-btn {
-  min-width: 120px;
+  min-width: 110px;
 }

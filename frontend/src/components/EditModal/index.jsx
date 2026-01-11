@@ -1,4 +1,5 @@
 import { GradientButton } from "../GradientButton";
+import { MdAddTask, MdEditNote } from "react-icons/md";
 import { Input } from "../Input";
 import { ModalBase } from "../ModalBase";
 import "./EditModal.scss";
@@ -22,7 +23,15 @@ export function EditModal({
       panelTransition={{ duration: 0.2 }}
     >
       <h2 className="modal-title">
-        {editingId === "new" ? "NEW TASK" : "EDIT TASK"}
+        {editingId === "new" ? (
+          <>
+            <MdAddTask /> New task
+          </>
+        ) : (
+          <>
+            <MdEditNote /> Edit task
+          </>
+        )}
       </h2>
       <Input
         type="text"

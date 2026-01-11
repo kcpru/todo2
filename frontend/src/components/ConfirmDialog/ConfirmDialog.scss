@@ -9,11 +9,10 @@
 }
 
 .confirm-modal {
-  background: var(--surface);
+  background: var(--surface, var(--md-surface));
   color: var(--text-primary);
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   padding: 1rem 1.25rem;
   max-width: 420px;
   width: 92vw;

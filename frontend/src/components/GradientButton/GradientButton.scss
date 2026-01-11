@@ -175,13 +175,11 @@
   &-danger {
     background: rgba(var(--md-error-rgb), 0.8);
     border-color: rgba(var(--md-error-rgb), 0.45);
-    box-shadow: 0 4px 12px rgba(var(--md-error-rgb), 0.14);
     color: white;
 
     &:hover:not(:disabled) {
       border-color: rgba(var(--md-error-rgb), 0.55);
       filter: brightness(1.05);
-      box-shadow: 0 6px 16px rgba(var(--md-error-rgb), 0.18);
     }
 
     .ripple {
@@ -399,13 +397,11 @@
 .gradient-button-danger {
   background: rgba(var(--md-error-rgb), 0.8);
   border-color: rgba(var(--md-error-rgb), 0.45);
-  box-shadow: 0 4px 12px rgba(var(--md-error-rgb), 0.14);
   color: white;
 
   &:hover:not(:disabled) {
     border-color: rgba(var(--md-error-rgb), 0.55);
     filter: brightness(1.05);
-    box-shadow: 0 6px 16px rgba(var(--md-error-rgb), 0.18);
   }
 
   .ripple {
