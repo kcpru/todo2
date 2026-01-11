@@ -82,7 +82,6 @@ export function TodoList({
           <Input
             withRipple
             type="text"
-            className="search-input"
             placeholder="Search task..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
@@ -130,7 +129,7 @@ export function TodoList({
                         isDopamineMode ? "dopamine" : ""
                       }`}
                     >
-                      <input
+                      <Input
                         id={`cbx-${todo.id}`}
                         type="checkbox"
                         checked={todo.isCompleted}
