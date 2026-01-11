@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { MdDelete, MdAdd } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
+import { Input } from "../Input";
 import { useRipple } from "../../hooks/useRipple.jsx";
 import "./ListSelector.scss";
 
@@ -31,9 +32,8 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
             onDelete(list.id);
           }}
           title="Delete list"
-        >
-          <MdDelete />
-        </GradientButton>
+          icon={<MdDelete />}
+        />
       </div>
       <RippleContainer />
     </motion.button>
@@ -49,10 +49,6 @@ export function ListSelector({
   onAddList,
 }) {
   const [newListName, setNewListName] = useState("");
-  const {
-    createRipple: createInputRipple,
-    RippleContainer: InputRippleContainer,
-  } = useRipple();
 
   const handleAddList = async () => {
     if (!newListName.trim()) return;
@@ -82,28 +78,24 @@ export function ListSelector({
             ))}
           </div>
           <div className="new-list-input-row">
-            <div className="input-with-ripple">
-              <input
-                type="text"
-                className="new-list-input"
-                placeholder="New list title"
-                value={newListName}
-                onChange={(e) => setNewListName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleAddList()}
-                onMouseDown={createInputRipple}
-              />
-              <InputRippleContainer />
-            </div>
+            <Input
+              withRipple
+              type="text"
+              className="new-list-input"
+              placeholder="New list title"
+              value={newListName}
+              onChange={(e) => setNewListName(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAddList()}
+            />
             <GradientButton
-              size="sm"
+              size="md"
               iconOnly={false}
-              className="new-list-btn"
               onClick={handleAddList}
               disabled={!newListName.trim()}
               title={newListName.trim() ? "Create list" : "Type a name first"}
+              icon={<MdAdd />}
             >
-              <MdAdd className="new-list-btn-icon" />
-              <span>Create</span>
+              Create
             </GradientButton>
           </div>
         </>
