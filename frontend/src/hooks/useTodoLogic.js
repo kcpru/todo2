@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../AuthContext";
 import { useDopamine } from "../DopamineContext";
-import { useCoinsSystem } from "./useCoinsSystem";
 import confetti from "canvas-confetti";
 
 export function useTodoLogic() {
@@ -15,7 +14,6 @@ export function useTodoLogic() {
     deleteTask,
   } = useAuth();
   const { isDopamineMode } = useDopamine();
-  const { onTaskComplete, updateCompletedCount } = useCoinsSystem();
   const checkboxPositionsRef = useRef({});
 
   const [lists, setLists] = useState([]);
@@ -188,9 +186,7 @@ export function useTodoLogic() {
 
       // Earn coins when task is completed
       if (todo && !todo.isCompleted && isDopamineMode) {
-        await onTaskComplete(10);
         const completedCount = updatedTodos.filter((t) => t.isCompleted).length;
-        updateCompletedCount(completedCount);
 
         // Check if all tasks are completed
         if (completedCount === updatedTodos.length && updatedTodos.length > 0) {
