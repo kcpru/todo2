@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Auth.scss";
+import { Input } from "../components/Input";
 
 export function Login() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -29,7 +30,7 @@ export function Login() {
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="login">Username or Email</label>
-            <input
+            <Input
               id="login"
               type="text"
               value={usernameOrEmail}
@@ -42,7 +43,7 @@ export function Login() {
 
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
+            <Input
               id="password"
               type="password"
               value={password}

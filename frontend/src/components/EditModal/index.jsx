@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { GradientButton } from "../GradientButton";
+import { Input } from "../Input";
 import "./EditModal.scss";
 
 export function EditModal({
@@ -33,7 +34,7 @@ export function EditModal({
             <h2 className="modal-title">
               {editingId === "new" ? "NEW TASK" : "EDIT TASK"}
             </h2>
-            <input
+            <Input
               type="text"
               className="modal-input"
               value={editingText}

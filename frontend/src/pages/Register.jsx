@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Auth.scss";
+import { Input } from "../components/Input";
 
 export function Register() {
   const [username, setUsername] = useState("");
@@ -44,7 +45,7 @@ export function Register() {
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="username">Username</label>
-            <input
+            <Input
               id="username"
               type="text"
               value={username}
@@ -57,7 +58,7 @@ export function Register() {
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input
+            <Input
               id="email"
               type="email"
               value={email}
@@ -70,7 +71,7 @@ export function Register() {
 
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
+            <Input
               id="password"
               type="password"
               value={password}
@@ -83,7 +84,7 @@ export function Register() {
 
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
+            <Input
               id="confirmPassword"
               type="password"
               value={confirmPassword}
