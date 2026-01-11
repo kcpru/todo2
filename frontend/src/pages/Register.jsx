@@ -115,7 +115,7 @@ export function Register() {
             <MdPersonAdd />
           </motion.div>
           <h1 className="auth-title">Join the Revolution!</h1>
-          <p className="auth-subtitle">Your dopamine dispenser awaits</p>
+          <p className="auth-subtitle">Join and start organizing tasks</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form" noValidate>
@@ -286,7 +286,7 @@ export function Register() {
           {...ANIMATION_CONFIG.authButton(0.8)}
         >
           <p>🚀 Start crushing tasks</p>
-          <p>💰 Earn coins for wins</p>
+          <p>🧭 Build momentum with habits</p>
           <p>🎮 Level up your productivity</p>
         </motion.div>
       </motion.div>
