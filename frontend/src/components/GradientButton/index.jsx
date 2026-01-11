@@ -4,6 +4,7 @@ import "./GradientButton.scss";
 
 export function GradientButton({
   children,
+  icon,
   onClick,
   className = "",
   variant = "primary",
@@ -36,6 +37,7 @@ export function GradientButton({
       whileTap={{ scale: 0.95 }}
       {...props}
     >
+      {icon}
       {children}
       <RippleContainer />
     </motion.button>

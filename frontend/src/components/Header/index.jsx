@@ -83,16 +83,9 @@ export function Header() {
                 className="profile-theme-btn"
                 onClick={toggleTheme}
                 title={isDarkMode ? "Light Mode" : "Dark Mode"}
+                icon={isDarkMode ? <MdLightMode /> : <MdDarkMode />}
               >
-                {isDarkMode ? (
-                  <>
-                    <MdLightMode /> Light Mode
-                  </>
-                ) : (
-                  <>
-                    <MdDarkMode /> Dark Mode
-                  </>
-                )}
+                {isDarkMode ? "Light Mode" : "Dark Mode"}
               </GradientButton>
               <GradientButton
                 variant="info"
@@ -104,8 +97,8 @@ export function Header() {
                     ? "Disable Dopamine Mode"
                     : "Enable Dopamine Mode"
                 }
+                icon={<MdPsychology />}
               >
-                <MdPsychology />
                 {isDopamineMode ? " Dopamine Mode ON" : " Dopamine Mode OFF"}
               </GradientButton>
               <GradientButton
