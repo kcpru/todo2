@@ -5,7 +5,13 @@ import { useTheme } from "../../ThemeContext";
 import { useDopamine } from "../../DopamineContext";
 import { useAuth } from "../../AuthContext";
 import { ANIMATION_CONFIG } from "../../constants/animations";
-import { MdLightMode, MdDarkMode, MdPsychology } from "react-icons/md";
+import {
+  MdLightMode,
+  MdDarkMode,
+  MdPsychology,
+  MdLogout,
+  MdPerson,
+} from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 
 export function ProfileMenu() {
@@ -30,47 +36,79 @@ export function ProfileMenu() {
 
       <AnimatePresence>
         {showProfile && (
-          <motion.div className="profile-menu" {...ANIMATION_CONFIG.dropdown}>
-            <div className="profile-info">
-              <div className="profile-username">{user?.username}</div>
-              <div className="profile-email">{user?.email}</div>
-            </div>
-            <GradientButton
-              variant="secondary"
-              size="md"
-              className="profile-theme-btn"
-              onClick={toggleTheme}
-              title={isDarkMode ? "Light Mode" : "Dark Mode"}
-              icon={isDarkMode ? <MdLightMode /> : <MdDarkMode />}
+          <>
+            <motion.div
+              className="profile-overlay-bg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.12 }}
+              onClick={() => setShowProfile(false)}
+            />
+            <motion.div
+              className="profile-modal"
+              initial={{ opacity: 0, scale: 0.96, y: -8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: -8 }}
+              transition={{ duration: 0.16 }}
             >
-              {isDarkMode ? "Light Mode" : "Dark Mode"}
-            </GradientButton>
-            <GradientButton
-              variant="info"
-              size="md"
-              className="profile-dopamine-btn"
-              onClick={toggleDopamineMode}
-              title={
-                isDopamineMode
-                  ? "Disable Dopamine Mode"
-                  : "Enable Dopamine Mode"
-              }
-              icon={<MdPsychology />}
-            >
-              {isDopamineMode ? " Dopamine Mode ON" : " Dopamine Mode OFF"}
-            </GradientButton>
-            <GradientButton
-              variant="danger"
-              size="md"
-              className="profile-logout"
-              onClick={() => {
-                logout();
-                navigate("/login");
-              }}
-            >
-              Logout
-            </GradientButton>
-          </motion.div>
+              <div className="profile-modal__header">
+                <div className="profile-avatar">
+                  {user?.username?.charAt(0).toUpperCase() || "U"}
+                </div>
+                <div className="profile-modal__info">
+                  <div className="profile-username">{user?.username}</div>
+                  <div className="profile-email">{user?.email}</div>
+                </div>
+              </div>
+
+              <div className="profile-actions">
+                <GradientButton
+                  variant="secondary"
+                  size="md"
+                  className="profile-action-btn"
+                  onClick={toggleTheme}
+                  title={isDarkMode ? "Light Mode" : "Dark Mode"}
+                  icon={isDarkMode ? <MdLightMode /> : <MdDarkMode />}
+                >
+                  {isDarkMode ? "Switch to Light" : "Switch to Dark"}
+                </GradientButton>
+
+                <GradientButton
+                  variant="info"
+                  size="md"
+                  className="profile-action-btn"
+                  onClick={toggleDopamineMode}
+                  title={
+                    isDopamineMode
+                      ? "Disable Dopamine Mode"
+                      : "Enable Dopamine Mode"
+                  }
+                  icon={<MdPsychology />}
+                >
+                  {isDopamineMode ? "Dopamine Mode ON" : "Dopamine Mode OFF"}
+                </GradientButton>
+
+                <GradientButton
+                  variant="danger"
+                  size="md"
+                  className="profile-action-btn"
+                  onClick={() => {
+                    logout();
+                    navigate("/login");
+                  }}
+                  icon={<MdLogout />}
+                >
+                  Logout
+                </GradientButton>
+              </div>
+
+              <div className="profile-footer">
+                <MdPerson className="footer-icon" />
+                <span>Manage your vibe & settings</span>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
