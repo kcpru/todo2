@@ -81,7 +81,7 @@ export function ListSelector({
             ))}
           </div>
           <div className="new-list-input-row">
-            <div className="new-list-input-container input-with-ripple">
+            <div className="input-with-ripple">
               <input
                 type="text"
                 className="new-list-input"
