@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useDopamine } from "../DopamineContext";
 import { ANIMATION_CONFIG } from "../constants/animations";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 export function TodoList({
   todos,
@@ -101,13 +102,13 @@ export function TodoList({
                         className="todo-action-btn edit-btn"
                         onClick={() => onStartEdit(todo)}
                       >
-                        ✏️
+                        <MdEdit />
                       </button>
                       <button
                         className="todo-action-btn delete-btn"
                         onClick={() => onDeleteTodo(todo.id)}
                       >
-                        🗑️
+                        <MdDelete />
                       </button>
                     </div>
                   </motion.div>

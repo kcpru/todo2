@@ -5,6 +5,7 @@ import { useTheme } from "../ThemeContext";
 import { useDopamine } from "../DopamineContext";
 import { useAuth } from "../AuthContext";
 import { ANIMATION_CONFIG } from "../constants/animations";
+import { MdLightMode, MdDarkMode, MdPsychology } from "react-icons/md";
 
 export function ProfileMenu() {
   const navigate = useNavigate();
@@ -37,7 +38,15 @@ export function ProfileMenu() {
               onClick={toggleTheme}
               title={isDarkMode ? "Light Mode" : "Dark Mode"}
             >
-              {isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+              {isDarkMode ? (
+                <>
+                  <MdLightMode /> Light Mode
+                </>
+              ) : (
+                <>
+                  <MdDarkMode /> Dark Mode
+                </>
+              )}
             </button>
             <button
               className="profile-dopamine-btn"
@@ -48,7 +57,8 @@ export function ProfileMenu() {
                   : "Enable Dopamine Mode"
               }
             >
-              {isDopamineMode ? "🧠 Dopamine Mode ON" : "🧠 Dopamine Mode OFF"}
+              <MdPsychology />
+              {isDopamineMode ? " Dopamine Mode ON" : " Dopamine Mode OFF"}
             </button>
             <button
               className="profile-logout"

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
+import { MdDelete } from "react-icons/md";
 
 export function ListSelector({
   lists,
@@ -47,7 +48,7 @@ export function ListSelector({
                   whileTap={{ scale: 0.93 }}
                   title="Delete list"
                 >
-                  🗑️
+                  <MdDelete />
                 </motion.button>
               </div>
             ))}

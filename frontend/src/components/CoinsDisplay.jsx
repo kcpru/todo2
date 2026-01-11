@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useCoinsSystem } from "../hooks/useCoinsSystem";
 import { useDopamine } from "../DopamineContext";
 import { motion } from "motion/react";
+import { MdMonetizationOn, MdFlashOn, MdCheckCircle } from "react-icons/md";
 import "../styles/CoinsDisplay.scss";
 
 export function CoinsDisplay({ completedCount }) {
@@ -23,7 +24,9 @@ export function CoinsDisplay({ completedCount }) {
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div className="coins-section">
-        <div className="coins-label">💰 Coins</div>
+        <div className="coins-label">
+          <MdMonetizationOn /> Coins
+        </div>
         <motion.div
           className="coins-amount"
           key={coins}
@@ -35,7 +38,9 @@ export function CoinsDisplay({ completedCount }) {
       </div>
 
       <div className="multiplier-section">
-        <div className="multiplier-label">⚡ Multiplier</div>
+        <div className="multiplier-label">
+          <MdFlashOn /> Multiplier
+        </div>
         <motion.div
           className={`multiplier-value multiplier-${Math.floor(
             multiplier * 10
@@ -55,7 +60,9 @@ export function CoinsDisplay({ completedCount }) {
       </div>
 
       <div className="completed-counter">
-        <div className="counter-label">✅ Completed</div>
+        <div className="counter-label">
+          <MdCheckCircle /> Completed
+        </div>
         <div className="counter-value">{completedCount}</div>
       </div>
     </motion.div>
