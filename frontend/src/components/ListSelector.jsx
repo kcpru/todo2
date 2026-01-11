@@ -1,6 +1,30 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { MdDelete } from "react-icons/md";
+import { GradientButton } from "./GradientButton";
+import { useRipple } from "../hooks/useRipple.jsx";
+
+function ListItem({ list, isActive, onSelect }) {
+  const { createRipple, RippleContainer } = useRipple();
+
+  const handleClick = (e) => {
+    createRipple(e);
+    onSelect(list.id);
+  };
+
+  return (
+    <motion.button
+      className={`list-item ${isActive ? "active" : ""}`}
+      onClick={handleClick}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
+    >
+      <span className="list-name">{list.name}</span>
+      <span className="list-count">{list.items?.length || 0}</span>
+      <RippleContainer />
+    </motion.button>
+  );
+}
 
 export function ListSelector({
   lists,
@@ -30,26 +54,21 @@ export function ListSelector({
           <div className="lists-container">
             {lists.map((list) => (
               <div key={list.id} className="list-item-container">
-                <motion.button
-                  className={`list-item ${
-                    selectedListId === list.id ? "active" : ""
-                  }`}
-                  onClick={() => onSelectList(list.id)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  <span className="list-name">{list.name}</span>
-                  <span className="list-count">{list.items?.length || 0}</span>
-                </motion.button>
-                <motion.button
+                <ListItem
+                  list={list}
+                  isActive={selectedListId === list.id}
+                  onSelect={onSelectList}
+                />
+                <GradientButton
+                  variant="danger"
+                  size="sm"
+                  iconOnly={true}
                   className="list-delete-btn"
                   onClick={() => onDeleteList(list.id)}
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.93 }}
                   title="Delete list"
                 >
                   <MdDelete />
-                </motion.button>
+                </GradientButton>
               </div>
             ))}
           </div>
@@ -62,14 +81,14 @@ export function ListSelector({
               onChange={(e) => setNewListName(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleAddList()}
             />
-            <motion.button
+            <GradientButton
+              size="md"
+              iconOnly={true}
               className="new-list-btn"
               onClick={handleAddList}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.93 }}
             >
               +
-            </motion.button>
+            </GradientButton>
           </div>
         </>
       )}

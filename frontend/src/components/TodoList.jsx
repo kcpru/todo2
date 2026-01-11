@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useDopamine } from "../DopamineContext";
 import { ANIMATION_CONFIG } from "../constants/animations";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { GradientButton } from "./GradientButton";
 
 export function TodoList({
   todos,
@@ -98,18 +99,24 @@ export function TodoList({
                       )}
                     </div>
                     <div className="todo-actions">
-                      <button
+                      <GradientButton
+                        variant="secondary"
+                        size="sm"
+                        iconOnly={true}
                         className="todo-action-btn edit-btn"
                         onClick={() => onStartEdit(todo)}
                       >
                         <MdEdit />
-                      </button>
-                      <button
+                      </GradientButton>
+                      <GradientButton
+                        variant="danger"
+                        size="sm"
+                        iconOnly={true}
                         className="todo-action-btn delete-btn"
                         onClick={() => onDeleteTodo(todo.id)}
                       >
                         <MdDelete />
-                      </button>
+                      </GradientButton>
                     </div>
                   </motion.div>
                 ))
@@ -117,15 +124,14 @@ export function TodoList({
             </AnimatePresence>
           </div>
 
-          <motion.button
+          <GradientButton
+            size="md"
             className="add-btn"
             onClick={onAddTodo}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             title="Add new task"
           >
             + Add Task
-          </motion.button>
+          </GradientButton>
         </>
       )}
     </>
