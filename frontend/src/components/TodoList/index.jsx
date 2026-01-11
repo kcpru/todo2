@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useDopamine } from "../DopamineContext";
-import { ANIMATION_CONFIG } from "../constants/animations";
+import { useDopamine } from "../../DopamineContext";
+import { ANIMATION_CONFIG } from "../../constants/animations";
 import {
   MdEdit,
   MdDelete,
@@ -14,8 +14,9 @@ import {
   MdEventBusy,
   MdChecklistRtl,
 } from "react-icons/md";
-import { GradientButton } from "./GradientButton";
-import { useRipple } from "../hooks/useRipple.jsx";
+import { GradientButton } from "../GradientButton";
+import { useRipple } from "../../hooks/useRipple.jsx";
+import "./TodoList.scss";
 
 export function TodoList({
   todos,

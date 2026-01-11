@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
-import { GradientButton } from "./GradientButton";
+import { GradientButton } from "../GradientButton";
+import "./EditModal.scss";
 
 export function EditModal({
   editingId,

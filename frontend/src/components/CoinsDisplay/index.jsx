@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { useCoinsSystem } from "../hooks/useCoinsSystem";
-import { useDopamine } from "../DopamineContext";
+import { useCoinsSystem } from "../../hooks/useCoinsSystem";
+import { useDopamine } from "../../DopamineContext";
 import { motion } from "motion/react";
 import { MdMonetizationOn, MdFlashOn, MdCheckCircle } from "react-icons/md";
-import "../styles/CoinsDisplay.scss";
+import "./CoinsDisplay.scss";
 
 export function CoinsDisplay({ completedCount }) {
   const { isDopamineMode } = useDopamine();

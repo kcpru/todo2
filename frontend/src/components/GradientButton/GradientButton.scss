@@ -1,0 +1,224 @@
+/* Gradient Button Component */
+.gradient-button {
+  position: relative;
+  padding: 0.65rem 1.25rem;
+  border: 2px solid rgba(var(--md-primary-rgb), 0.4);
+  border-radius: 8px;
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  min-height: 40px;
+  line-height: 1;
+  overflow: hidden;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(var(--md-primary-rgb), 0.5);
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  svg {
+    font-size: 1.05rem;
+    flex-shrink: 0;
+    color: inherit;
+  }
+
+  /* Ripple effect */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    animation: ripple-animation 0.8s ease-out;
+    pointer-events: none;
+    filter: blur(10px);
+  }
+
+  @keyframes ripple-animation {
+    to {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
+  }
+}
+
+/* Size variants */
+.gradient-button-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  min-height: 34px;
+
+  svg {
+    font-size: 1rem;
+  }
+}
+
+.gradient-button-md {
+  padding: 0.65rem 1.25rem;
+  font-size: 0.95rem;
+  min-height: 40px;
+
+  svg {
+    font-size: 1.15rem;
+  }
+}
+
+.gradient-button-lg {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.05rem;
+  min-height: 46px;
+
+  svg {
+    font-size: 1.3rem;
+  }
+}
+
+/* Icon-only variants (square) */
+.gradient-button-icon-sm {
+  padding: 0.5rem;
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+
+  svg {
+    font-size: 1rem;
+  }
+}
+
+.gradient-button-icon-md {
+  padding: 0.65rem;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+
+  svg {
+    font-size: 1.15rem;
+  }
+}
+
+.gradient-button-icon-lg {
+  padding: 0.8rem;
+  width: 46px;
+  height: 46px;
+  min-height: 46px;
+
+  svg {
+    font-size: 1.3rem;
+  }
+}
+
+/* Small button variant (for icon-only buttons) - deprecated, use gradient-button-icon-* instead */
+.gradient-button-small {
+  padding: 0.5rem;
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+
+  svg {
+    font-size: 1rem;
+  }
+}
+
+/* Secondary variant (less prominent) */
+.gradient-button-secondary {
+  background: rgba(var(--md-primary-rgb), 0.12);
+  color: var(--text-primary);
+  border: 2px solid rgba(var(--md-primary-rgb), 0.2);
+
+  svg {
+    color: var(--text-primary);
+  }
+
+  &:hover:not(:disabled) {
+    background: rgba(var(--md-primary-rgb), 0.18);
+    border-color: rgba(var(--md-primary-rgb), 0.3);
+  }
+
+  .ripple {
+    background: rgba(var(--md-primary-rgb), 0.3);
+  }
+}
+
+/* Warning variant */
+.gradient-button-warning {
+  background: var(--md-warning);
+  border-color: rgba(var(--md-warning-rgb), 0.4);
+  color: white;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(var(--md-warning-rgb), 0.5);
+    filter: brightness(1.1);
+  }
+
+  .ripple {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Danger variant (for delete actions) */
+.gradient-button-danger {
+  background: rgba(var(--md-error-rgb), 0.8);
+  border-color: rgba(var(--md-error-rgb), 0.45);
+  box-shadow: 0 4px 12px rgba(var(--md-error-rgb), 0.14);
+  color: white;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(var(--md-error-rgb), 0.55);
+    filter: brightness(1.05);
+    box-shadow: 0 6px 16px rgba(var(--md-error-rgb), 0.18);
+  }
+
+  .ripple {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Success variant */
+.gradient-button-success {
+  background: var(--md-success);
+  border-color: rgba(var(--md-success-rgb), 0.4);
+  color: white;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(var(--md-success-rgb), 0.5);
+    filter: brightness(1.1);
+  }
+
+  .ripple {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Info variant */
+.gradient-button-info {
+  background: var(--md-info);
+  border-color: rgba(var(--md-info-rgb), 0.4);
+  color: white;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(var(--md-info-rgb), 0.5);
+    filter: brightness(1.1);
+  }
+
+  .ripple {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}

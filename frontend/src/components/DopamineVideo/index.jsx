@@ -1,5 +1,6 @@
-import { useDopamine } from "../DopamineContext";
-import demoVideo from "../assets/video.mp4";
+import { useDopamine } from "../../DopamineContext";
+import demoVideo from "../../assets/video.mp4";
+import "./DopamineVideo.scss";
 
 export function DopamineVideo() {
   const { isDopamineMode } = useDopamine();

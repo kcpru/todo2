@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { MdDelete, MdAdd } from "react-icons/md";
-import { GradientButton } from "./GradientButton";
-import { useRipple } from "../hooks/useRipple.jsx";
+import { GradientButton } from "../GradientButton";
+import { useRipple } from "../../hooks/useRipple.jsx";
+import "./ListSelector.scss";
 
 function ListItem({ list, isActive, onSelect, onDelete }) {
   const { createRipple, RippleContainer } = useRipple();

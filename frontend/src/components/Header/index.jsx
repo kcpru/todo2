@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { useTheme } from "../ThemeContext";
-import { useDopamine } from "../DopamineContext";
-import { useAuth } from "../AuthContext";
-import { useCoinsSystem } from "../hooks/useCoinsSystem";
-import { ANIMATION_CONFIG } from "../constants/animations";
+import { useTheme } from "../../ThemeContext";
+import { useDopamine } from "../../DopamineContext";
+import { useAuth } from "../../AuthContext";
+import { useCoinsSystem } from "../../hooks/useCoinsSystem";
+import { ANIMATION_CONFIG } from "../../constants/animations";
 import { MdLightMode, MdDarkMode, MdPsychology } from "react-icons/md";
-import { GradientButton } from "./GradientButton";
-import "../styles/Header.scss";
+import { GradientButton } from "../GradientButton";
+import ProfileMenu from "./ProfileMenu";
+import "./Header.scss";
 
 export function Header() {
   const navigate = useNavigate();
