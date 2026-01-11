@@ -77,26 +77,7 @@
   }
 }
 
-/* Ripple effect */
-.filter-select__button .ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(var(--md-primary-rgb), 0.2);
-  width: 0;
-  height: 0;
-  transform: translate(-50%, -50%);
-  animation: filter-ripple 0.8s ease-out;
-  pointer-events: none;
-  filter: blur(10px);
-}
-
-@keyframes filter-ripple {
-  to {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
-  }
-}
+/* Ripple handled by global .input-with-ripple pseudo-element styles */
 
 .filter-select__label {
   display: flex;

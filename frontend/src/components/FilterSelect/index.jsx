@@ -36,7 +36,7 @@ export function FilterSelect({
     <div className="filter-select" ref={ref}>
       <button
         type="button"
-        className={`filter-select__button filter-select__button--${size}`}
+        className={`filter-select__button input-with-ripple filter-select__button--${size}`}
         aria-label={ariaLabel}
         onClick={handleButtonClick}
       >

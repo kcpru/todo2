@@ -59,26 +59,6 @@
   position: relative;
   overflow: hidden;
   min-width: 0;
-
-  /* Ripple for list items */
-  .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(var(--md-primary-rgb), 0.18);
-    width: 0;
-    height: 0;
-    animation: list-ripple 0.8s ease-out;
-    pointer-events: none;
-    filter: blur(10px);
-  }
-
-  @keyframes list-ripple {
-    to {
-      width: 300px;
-      height: 300px;
-      opacity: 0;
-    }
-  }
 }
 
 .list-item:hover {
@@ -90,10 +70,6 @@
   background-color: var(--accent-primary);
   color: #1c1b1f;
   border-color: var(--accent-primary);
-
-  .ripple {
-    background: rgba(255, 255, 255, 0.35);
-  }
 
   .list-count-badge {
     border-color: rgba(255, 255, 255, 0.75);
