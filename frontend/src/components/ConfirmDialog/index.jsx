@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from "motion/react";
 import { GradientButton } from "../GradientButton";
+import { ModalBase } from "../ModalBase";
 import "./ConfirmDialog.scss";
 
 export function ConfirmDialog({
@@ -13,48 +13,38 @@ export function ConfirmDialog({
   confirmVariant = "danger",
 }) {
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="confirm-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
+    <ModalBase
+      isOpen={isOpen}
+      onClose={onCancel}
+      overlayClassName="confirm-overlay"
+      panelClassName="confirm-modal"
+      overlayTransition={{ duration: 0.15 }}
+      panelTransition={{ duration: 0.15 }}
+      panelInitial={{ opacity: 0, scale: 0.95, y: 8 }}
+      panelAnimate={{ opacity: 1, scale: 1, y: 0 }}
+      panelExit={{ opacity: 0, scale: 0.95, y: 8 }}
+    >
+      <div className="confirm-title">{title}</div>
+      {message && <div className="confirm-message">{message}</div>}
+      <div className="confirm-buttons">
+        <GradientButton
+          variant="secondary"
+          size="md"
+          className="confirm-btn cancel-btn"
           onClick={onCancel}
         >
-          <motion.div
-            className="confirm-modal"
-            initial={{ opacity: 0, scale: 0.95, y: 8 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 8 }}
-            transition={{ duration: 0.15 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="confirm-title">{title}</div>
-            {message && <div className="confirm-message">{message}</div>}
-            <div className="confirm-buttons">
-              <GradientButton
-                variant="secondary"
-                size="md"
-                className="confirm-btn cancel-btn"
-                onClick={onCancel}
-              >
-                {cancelText}
-              </GradientButton>
-              <GradientButton
-                variant={confirmVariant}
-                size="md"
-                className="confirm-btn apply-btn"
-                onClick={onConfirm}
-                title={confirmText}
-              >
-                {confirmText}
-              </GradientButton>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          {cancelText}
+        </GradientButton>
+        <GradientButton
+          variant={confirmVariant}
+          size="md"
+          className="confirm-btn apply-btn"
+          onClick={onConfirm}
+          title={confirmText}
+        >
+          {confirmText}
+        </GradientButton>
+      </div>
+    </ModalBase>
   );
 }
