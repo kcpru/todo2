@@ -18,6 +18,7 @@ import {
 import { GradientButton } from "../GradientButton";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { Input } from "../Input";
+import { FilterSelect } from "../FilterSelect";
 import "./TodoList.scss";
 
 export function TodoList({
@@ -91,25 +92,13 @@ export function TodoList({
           </span>
         </div>
 
-<div className="filter-container">
-        <div className="filter-toggle-group">
-          {filters.map((f) => {
-            const isActive = filter === f.value;
-            return (
-              <GradientButton
-                key={f.value}
-                variant={isActive ? "primary" : "secondary"}
-                size="md"
-                iconOnly={false}
-                className={`filter-toggle ${isActive ? "active" : ""}`}
-                onClick={() => onFilterChange(f.value)}
-                title={f.label}
-                icon={f.icon}
-              >
-                <span>{f.label}</span>
-              </GradientButton>
-            );
-          })}
+        <div className="filter-select-wrapper">
+          <FilterSelect
+            options={filters}
+            value={filter}
+            onChange={onFilterChange}
+            ariaLabel="Filter tasks"
+          />
         </div>
       </div>
 

@@ -37,8 +37,12 @@ export function GradientButton({
       whileTap={{ scale: 0.95 }}
       {...props}
     >
-      {icon}
-      {children}
+      {(icon || children) && (
+        <span className="gradient-button__content">
+          {icon}
+          {children}
+        </span>
+      )}
       <RippleContainer />
     </motion.button>
   );

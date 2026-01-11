@@ -1,7 +1,7 @@
 /* Gradient Button Component */
 .gradient-button {
   position: relative;
-  padding: 0.65rem 1.25rem;
+  padding: 0.65rem 0.85rem;
   border: 2px solid rgba(var(--md-primary-rgb), 0.4);
   border-radius: 8px;
   background: var(--md-primary);
@@ -13,7 +13,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
   text-transform: none;
   user-select: none;
   -webkit-user-select: none;
@@ -62,7 +61,7 @@
 
 /* Size variants */
 .gradient-button-sm {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   font-size: 0.85rem;
   min-height: 34px;
 
@@ -72,7 +71,7 @@
 }
 
 .gradient-button-md {
-  padding: 0.65rem 1.25rem;
+  padding: 0.65rem 0.85rem;
   font-size: 0.95rem;
   min-height: 40px;
 
@@ -82,7 +81,7 @@
 }
 
 .gradient-button-lg {
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 1rem;
   font-size: 1.05rem;
   min-height: 46px;
 
