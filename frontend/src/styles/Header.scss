@@ -183,10 +183,29 @@
   margin-bottom: 0.5rem;
   text-align: left;
   justify-content: flex-start;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  border-width: 2px;
 
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.profile-dropdown .profile-theme-btn.gradient-button-secondary {
+  color: var(--text-primary);
+}
+
+.profile-dropdown .profile-theme-btn.gradient-button-secondary svg {
+  color: var(--text-primary);
+}
+
+.profile-dropdown .gradient-button {
+  border-width: 2px;
+}
+
+.profile-dropdown .gradient-button svg {
+  font-size: 1.1rem;
 }
 
 /* Responsive Design */
