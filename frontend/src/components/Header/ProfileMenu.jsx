@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { useTheme } from "../ThemeContext";
-import { useDopamine } from "../DopamineContext";
-import { useAuth } from "../AuthContext";
-import { ANIMATION_CONFIG } from "../constants/animations";
+import { useTheme } from "../../ThemeContext";
+import { useDopamine } from "../../DopamineContext";
+import { useAuth } from "../../AuthContext";
+import { ANIMATION_CONFIG } from "../../constants/animations";
 import { MdLightMode, MdDarkMode, MdPsychology } from "react-icons/md";
-import { GradientButton } from "./GradientButton";
+import { GradientButton } from "../GradientButton";
 
 export function ProfileMenu() {
   const navigate = useNavigate();

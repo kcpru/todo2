@@ -1,11 +1,11 @@
 /* Global App Styles */
-@import "./components/GradientButton/GradientButton.scss";
-@import "./components/Header/Header.scss";
-@import "./components/ListSelector/ListSelector.scss";
-@import "./components/TodoList/TodoList.scss";
-@import "./components/EditModal/EditModal.scss";
-@import "./components/DopamineVideo/DopamineVideo.scss";
-@import "./components/CoinsDisplay/CoinsDisplay.scss";
+@forward "./components/GradientButton/GradientButton.scss";
+@forward "./components/Header/Header.scss";
+@forward "./components/ListSelector/ListSelector.scss";
+@forward "./components/TodoList/TodoList.scss";
+@forward "./components/EditModal/EditModal.scss";
+@forward "./components/DopamineVideo/DopamineVideo.scss";
+@forward "./components/CoinsDisplay/CoinsDisplay.scss";
 
 .app {
   width: 100%;
