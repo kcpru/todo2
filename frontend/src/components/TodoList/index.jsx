@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useDopamine } from "../../DopamineContext";
 import { ANIMATION_CONFIG } from "../../constants/animations";
@@ -15,6 +16,7 @@ import {
   MdChecklistRtl,
 } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
+import { ConfirmDialog } from "../ConfirmDialog";
 import { Input } from "../Input";
 import "./TodoList.scss";
 
@@ -33,6 +35,7 @@ export function TodoList({
   registerCheckboxPosition,
 }) {
   const { isDopamineMode } = useDopamine();
+  const [confirmDeleteTodoId, setConfirmDeleteTodoId] = useState(null);
 
   const getEmptyMessage = () => {
     if (searchTerm.trim()) {
@@ -182,7 +185,7 @@ export function TodoList({
                         size="sm"
                         iconOnly={true}
                         className="todo-action-btn delete-btn"
-                        onClick={() => onDeleteTodo(todo.id)}
+                        onClick={() => setConfirmDeleteTodoId(todo.id)}
                         icon={<MdDelete />}
                       />
                     </div>
@@ -201,6 +204,22 @@ export function TodoList({
           >
             Add task
           </GradientButton>
+
+          <ConfirmDialog
+            isOpen={confirmDeleteTodoId !== null}
+            title="Delete Task"
+            message="Are you sure you want to delete this task? This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
+            onConfirm={() => {
+              if (confirmDeleteTodoId !== null) {
+                onDeleteTodo(confirmDeleteTodoId);
+              }
+              setConfirmDeleteTodoId(null);
+            }}
+            onCancel={() => setConfirmDeleteTodoId(null)}
+            confirmVariant="danger"
+          />
         </>
       )}
     </>
