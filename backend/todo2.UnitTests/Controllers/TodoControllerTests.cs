@@ -112,22 +112,22 @@ public class TodoControllerTests
     {
         var userId = Guid.NewGuid();
         await SeedUserWithListsAndTasksAsync(_db, userId);
-
+ 
         var owned = await _db.TodoLists.SingleAsync(l => l.Name == "L2");
-
+ 
         var sut = CreateSut(_db, userId);
-
+ 
         var result = await sut.GetList(owned.Id, CancellationToken.None);
-
+ 
         var ok = result.Result as OkObjectResult;
         Assert.IsNotNull(ok);
-
+ 
         var list = ok.Value as TodoListResponse;
         Assert.IsNotNull(list);
         Assert.AreEqual(owned.Id, list.Id);
         Assert.HasCount(2, list.Items);
     }
-
+ 
     [TestMethod]
     public async Task GivenBlankName_WhenCreateList_ThenBadRequest()
     {
@@ -151,6 +151,10 @@ public class TodoControllerTests
 
         var created = result.Result as CreatedAtActionResult;
         Assert.IsNotNull(created);
+
+        var createdList = created.Value as TodoListResponse;
+        Assert.IsNotNull(createdList);
+        Assert.IsEmpty(createdList.Items);
 
         Assert.AreEqual(1, await _db.TodoLists.CountAsync());
         var list = await _db.TodoLists.SingleAsync();
@@ -192,25 +196,25 @@ public class TodoControllerTests
         var list = new TodoList { Id = Guid.NewGuid(), Name = "Old", UserId = userId, CreatedAt = DateTime.UtcNow };
         _db.TodoLists.Add(list);
         await _db.SaveChangesAsync();
-
+ 
         var sut = CreateSut(_db, userId);
-
+ 
         var result = await sut.UpdateList(list.Id, new TodoListUpdateRequest("  New  "), CancellationToken.None);
-
+ 
         var ok = result.Result as OkObjectResult;
         Assert.IsNotNull(ok);
-
+ 
         var updated = await _db.TodoLists.SingleAsync();
         Assert.AreEqual("New", updated.Name);
     }
-
+ 
     [TestMethod]
     public async Task GivenNotFoundList_WhenDeleteList_ThenNotFound()
     {
         var sut = CreateSut(_db, Guid.NewGuid());
-
+ 
         var result = await sut.DeleteList(Guid.NewGuid(), CancellationToken.None);
-
+ 
         Assert.IsInstanceOfType<NotFoundResult>(result);
     }
 
@@ -493,4 +497,6 @@ public class TodoControllerTests
         Assert.IsInstanceOfType<NoContentResult>(result);
         Assert.AreEqual(0, await _db.TodoTasks.CountAsync());
     }
+
+    public TestContext TestContext { get; set; }
 }
