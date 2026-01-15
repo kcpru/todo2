@@ -220,4 +220,37 @@ public class UserControllerTests
         Assert.AreEqual(user.Username, me.Username);
         Assert.AreEqual(user.Email, me.Email);
     }
+
+    [TestMethod]
+    public async Task GivenExistingUserId_WhenGetUser_ThenReturnsUserResponse()
+    {
+        var user = new User { Id = Guid.NewGuid(), Username = "john", Email = "john@ex.com", PasswordHash = "x" };
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
+
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>())
+        {
+            ControllerContext = ControllerContextFactory.CreateWithUserId(Guid.NewGuid())
+        };
+
+        var result = await sut.GetUser(user.Id, CancellationToken.None);
+
+        var ok = result.Result as OkObjectResult;
+        Assert.IsNotNull(ok);
+
+        var response = ok.Value as UserResponse;
+        Assert.IsNotNull(response);
+        Assert.AreEqual("john", response.Username);
+    }
+
+    [TestMethod]
+    public async Task GivenNonExistingUserId_WhenGetUser_ThenReturnsNotFound()
+    {
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var nonExistingUserId = Guid.NewGuid();
+
+        var result = await sut.GetUser(nonExistingUserId, CancellationToken.None);
+
+        Assert.IsInstanceOfType<NotFoundResult>(result.Result);
+    }
 }

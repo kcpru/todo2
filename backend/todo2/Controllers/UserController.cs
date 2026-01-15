@@ -96,5 +96,17 @@ public class UserController : ControllerBase
         return Ok(new MeResponse(user.Id, user.Username, user.Email));
     }
 
-    // Coins system removed
+    [Authorize]
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserResponse>> GetUser(Guid id, CancellationToken ct)
+    {
+        var user = await _db.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Id == id, ct);
+
+        if (user is null)
+            return NotFound();
+
+        return Ok(new UserResponse(user.Username));
+    }
 }
