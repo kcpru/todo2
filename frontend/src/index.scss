@@ -106,7 +106,6 @@ body {
     rgba(var(--md-primary-rgb), 0.05) 0%,
     rgba(var(--md-primary-rgb), 0.03) 100%
   );
-  border-top: 1px solid rgba(var(--md-primary-rgb), 0.15);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -169,5 +168,37 @@ button:focus-visible {
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Global ripple implementation for inputs/buttons */
+.input-with-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.input-with-ripple::after {
+  content: "";
+  position: absolute;
+  left: var(--ripple-x, -9999px);
+  top: var(--ripple-y, -9999px);
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(var(--md-primary-rgb), 0.2);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: blur(10px);
+}
+
+.input-with-ripple.ripple-active::after {
+  animation: list-ripple 0.8s ease-out;
+}
+
+@keyframes list-ripple {
+  to {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
   }
 }

@@ -29,7 +29,7 @@ export function GradientButton({
 
   return (
     <motion.button
-      className={`gradient-button gradient-button-${variant} ${sizeClass} ${className}`}
+      className={`gradient-button input-with-ripple gradient-button-${variant} ${sizeClass} ${className}`}
       onClick={handleClick}
       type={type}
       disabled={disabled}

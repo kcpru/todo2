@@ -5,7 +5,6 @@
 @forward "./components/TodoList/TodoList.scss";
 @forward "./components/EditModal/EditModal.scss";
 @forward "./components/DopamineVideo/DopamineVideo.scss";
-@forward "./components/CoinsDisplay/CoinsDisplay.scss";
 
 .app {
   width: 100%;
@@ -32,7 +31,7 @@
   padding: 0;
   position: relative;
   box-sizing: border-box;
-  margin: 7rem 1.5rem 1.5rem 1.5rem;
+  margin: 8.5rem 1.5rem 1.5rem 1.5rem;
   background: transparent;
   border: none;
   border-radius: 0;
