@@ -26,12 +26,6 @@ public class TodoController : ControllerBase
         return Guid.TryParse(sub, out userId);
     }
 
-    private static TodoTaskResponse ToTaskResponse(TodoTask t) =>
-        new(t.Id, t.TodoListId, t.Title, t.Description, t.IsCompleted);
-
-    private static TodoListResponse ToListResponse(TodoList l) =>
-        new(l.Id, l.Name, l.CreatedAt, [.. l.Items.Select(ToTaskResponse)]);
-
     // Lists
 
     [HttpGet("lists")]
@@ -47,7 +41,7 @@ public class TodoController : ControllerBase
             .OrderByDescending(l => l.CreatedAt)
             .ToListAsync(ct);
 
-        return Ok(lists.Select(ToListResponse).ToList());
+        return Ok(lists.Select(TodoResponseMapper.ToListResponse).ToList());
     }
 
     [HttpGet("lists/{listId:guid}")]
@@ -65,7 +59,7 @@ public class TodoController : ControllerBase
         if (list is null)
             return NotFound();
 
-        return Ok(ToListResponse(list));
+        return Ok(TodoResponseMapper.ToListResponse(list));
     }
 
     [HttpPost("lists")]
@@ -83,13 +77,14 @@ public class TodoController : ControllerBase
             Id = Guid.NewGuid(),
             Name = name,
             CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
             UserId = userId
         };
 
         _db.TodoLists.Add(list);
         await _db.SaveChangesAsync(ct);
 
-        return CreatedAtAction(nameof(GetList), new { listId = list.Id }, new TodoListResponse(list.Id, list.Name, list.CreatedAt, []));
+        return CreatedAtAction(nameof(GetList), new { listId = list.Id }, new TodoListResponse(list.Id, list.Name, list.CreatedAt, list.UpdatedAt, []));
     }
 
     [HttpPut("lists/{listId:guid}")]
@@ -113,7 +108,7 @@ public class TodoController : ControllerBase
         list.Name = name;
         await _db.SaveChangesAsync(ct);
 
-        return Ok(ToListResponse(list));
+        return Ok(TodoResponseMapper.ToListResponse(list));
     }
 
     [HttpDelete("lists/{listId:guid}")]
@@ -155,7 +150,7 @@ public class TodoController : ControllerBase
             .OrderBy(t => t.Title)
             .ToListAsync(ct);
 
-        return Ok(tasks.Select(ToTaskResponse).ToList());
+        return Ok(tasks.Select(TodoResponseMapper.ToTaskResponse).ToList());
     }
 
     [HttpPost("lists/{listId:guid}/tasks")]
@@ -184,7 +179,7 @@ public class TodoController : ControllerBase
         _db.TodoTasks.Add(task);
         await _db.SaveChangesAsync(ct);
 
-        return CreatedAtAction(nameof(GetTasks), new { listId }, ToTaskResponse(task));
+        return CreatedAtAction(nameof(GetTasks), new { listId }, TodoResponseMapper.ToTaskResponse(task));
     }
 
     [HttpPut("tasks/{taskId:guid}")]
@@ -213,7 +208,7 @@ public class TodoController : ControllerBase
 
         await _db.SaveChangesAsync(ct);
 
-        return Ok(ToTaskResponse(task));
+        return Ok(TodoResponseMapper.ToTaskResponse(task));
     }
 
     [HttpPatch("tasks/{taskId:guid}")]
@@ -237,7 +232,7 @@ public class TodoController : ControllerBase
 
         await _db.SaveChangesAsync(ct);
 
-        return Ok(ToTaskResponse(task));
+        return Ok(TodoResponseMapper.ToTaskResponse(task));
     }
 
     [HttpDelete("tasks/{taskId:guid}")]

@@ -9,4 +9,4 @@ public sealed record TodoTaskPatchRequest(bool? IsCompleted);
 
 public sealed record TodoTaskResponse(Guid Id, Guid TodoListId, string Title, string? Description, bool IsCompleted);
 
-public sealed record TodoListResponse(Guid Id, string Name, DateTime CreatedAt, IReadOnlyList<TodoTaskResponse> Items);
+public sealed record TodoListResponse(Guid Id, string Name, DateTime CreatedAt, DateTime UpdatedAt, IReadOnlyList<TodoTaskResponse> Items);
