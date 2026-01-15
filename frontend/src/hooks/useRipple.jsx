@@ -1,43 +1,43 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export function useRipple() {
-  const [ripples, setRipples] = useState([]);
+  const [ripples, setRipples] = useState([]); // legacy; not used for DOM rendering anymore
+  const isAnimatingRef = useRef(false);
+  const RIPPLE_DURATION_MS = 800; // Must match CSS animation duration
 
   const createRipple = (event) => {
-    const button = event.currentTarget;
-    const rect = button.getBoundingClientRect();
+    // Prevent creating a new ripple while the previous one is animating
+    if (isAnimatingRef.current) {
+      return;
+    }
+
+    const inputEl = event.currentTarget;
+    const container =
+      inputEl.closest(".input-with-ripple") || inputEl.parentElement;
+    if (!container) return;
+
+    isAnimatingRef.current = true;
+    const rect = container.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    const ripple = {
-      x,
-      y,
-      id: Date.now() + Math.random(),
-    };
-
-    setRipples((prevRipples) => [...prevRipples, ripple]);
+    // Set CSS variables for ripple position
+    container.style.setProperty("--ripple-x", `${x}px`);
+    container.style.setProperty("--ripple-y", `${y}px`);
+    // Trigger ripple via class; CSS handles animation
+    container.classList.remove("ripple-active"); // reset if lingering
+    // Force reflow to restart animation if needed
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    container.offsetHeight;
+    container.classList.add("ripple-active");
 
     setTimeout(() => {
-      setRipples((prevRipples) =>
-        prevRipples.filter((r) => r.id !== ripple.id)
-      );
-    }, 800);
+      container.classList.remove("ripple-active");
+      isAnimatingRef.current = false;
+    }, RIPPLE_DURATION_MS);
   };
 
-  const RippleContainer = () => (
-    <>
-      {ripples.map((ripple) => (
-        <span
-          key={ripple.id}
-          className="ripple"
-          style={{
-            left: ripple.x,
-            top: ripple.y,
-          }}
-        />
-      ))}
-    </>
-  );
+  const RippleContainer = () => null;
 
   return { createRipple, RippleContainer };
 }

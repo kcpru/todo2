@@ -5,7 +5,6 @@
   left: 1.5rem;
   right: 1.5rem;
   width: calc(100% - 3rem);
-  height: 60px;
   background: linear-gradient(
     135deg,
     rgba(var(--md-primary-rgb), 0.08) 0%,
@@ -16,7 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
+  padding: 0.65rem 1.25rem;
   z-index: 1000;
   border-radius: 16px;
   box-sizing: border-box;
@@ -42,71 +41,6 @@
   justify-content: center;
 }
 
-.header-stats {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.header-coins,
-.header-multiplier {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  background: rgba(var(--md-primary-rgb), 0.08);
-  border: 1px solid rgba(var(--md-primary-rgb), 0.2);
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.coins-icon,
-.multiplier-icon {
-  font-size: 1.1rem;
-}
-
-.coins-value {
-  color: var(--accent-primary);
-  font-weight: 700;
-  min-width: 40px;
-  text-align: right;
-}
-
-.header-multiplier {
-  border-color: rgba(var(--md-primary-rgb), 0.2);
-}
-
-.header-multiplier.multiplier-x1 {
-  background: rgba(var(--md-primary-rgb), 0.08);
-}
-
-.header-multiplier.multiplier-x1-5 {
-  background: rgba(var(--md-warning-rgb), 0.12);
-  border-color: rgba(var(--md-warning-rgb), 0.3);
-}
-
-.header-multiplier.multiplier-x2 {
-  background: rgba(var(--md-error-rgb), 0.12);
-  border-color: rgba(var(--md-error-rgb), 0.3);
-}
-
-.multiplier-value {
-  color: var(--accent-primary);
-  font-weight: 700;
-  min-width: 35px;
-  text-align: right;
-}
-
-.header-multiplier.multiplier-x1-5 .multiplier-value {
-  color: var(--accent-warning);
-}
-
-.header-multiplier.multiplier-x2 .multiplier-value {
-  color: var(--accent-error);
-}
-
 .header-right {
   flex: 1;
   display: flex;
@@ -115,52 +49,35 @@
   position: relative;
 }
 
-.avatar-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--accent-primary) 0%,
-    var(--accent-variant) 100%
-  );
-  border: 2px solid rgba(var(--md-primary-rgb), 0.3);
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.avatar-button:hover {
-  border-color: rgba(var(--md-primary-rgb), 0.5);
+.profile-container {
+  position: relative;
+  overflow: visible;
 }
 
 .profile-dropdown {
   position: absolute;
-  top: calc(100% + 1.5rem);
-  right: 1.5rem;
+  top: calc(100% + 0.5rem);
+  right: 0;
   background: var(--md-surface);
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1rem;
-  min-width: 240px;
+  min-width: 220px;
   z-index: 1001;
+  display: block;
 }
 
 .profile-info {
-  padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(var(--md-primary-rgb), 0.2);
-  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(var(--md-primary-rgb), 0.15);
+  margin-bottom: 0.75rem;
 }
 
 .profile-username {
   font-weight: 700;
-  color: var(--accent-primary);
-  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
 }
 
 .profile-email {
@@ -168,36 +85,20 @@
   color: var(--text-secondary);
 }
 
-.profile-theme-btn,
-.profile-dopamine-btn,
-.profile-logout {
+.profile-btn {
   width: 100%;
   margin-bottom: 0.5rem;
-  text-align: left;
   justify-content: flex-start;
-  font-size: 0.95rem;
-  line-height: 1.2;
-  border-width: 2px;
+  text-align: left;
+  font-size: 0.9rem;
 
-  &:last-child {
+  &:last-of-type {
     margin-bottom: 0;
   }
 }
 
-.profile-dropdown .profile-theme-btn.gradient-button-secondary {
-  color: var(--text-primary);
-}
-
-.profile-dropdown .profile-theme-btn.gradient-button-secondary svg {
-  color: var(--text-primary);
-}
-
-.profile-dropdown .gradient-button {
-  border-width: 2px;
-}
-
 .profile-dropdown .gradient-button svg {
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 /* Responsive Design */
@@ -211,15 +112,7 @@
     font-size: 1.25rem;
   }
 
-  .header-stats {
-    gap: 1rem;
-  }
-
-  .header-coins,
-  .header-multiplier {
-    font-size: 0.85rem;
-    padding: 0.3rem 0.6rem;
-  }
+  /* coins system removed */
 
   .header-center {
     display: none;
@@ -231,13 +124,5 @@
 }
 
 @media (max-width: 480px) {
-  .header-coins,
-  .header-multiplier {
-    font-size: 0.8rem;
-  }
-
-  .coins-value,
-  .multiplier-value {
-    min-width: auto;
-  }
+  /* coins system removed */
 }

@@ -17,7 +17,7 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
 
   return (
     <motion.button
-      className={`list-item ${isActive ? "active" : ""}`}
+      className={`list-item input-with-ripple ${isActive ? "active" : ""}`}
       onClick={handleClick}
     >
       <span className="list-count-badge">{list.items?.length || 0}</span>

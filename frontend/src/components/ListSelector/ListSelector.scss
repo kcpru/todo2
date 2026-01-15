@@ -59,26 +59,6 @@
   position: relative;
   overflow: hidden;
   min-width: 0;
-
-  /* Ripple for list items */
-  .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(var(--md-primary-rgb), 0.18);
-    width: 0;
-    height: 0;
-    animation: list-ripple 0.8s ease-out;
-    pointer-events: none;
-    filter: blur(10px);
-  }
-
-  @keyframes list-ripple {
-    to {
-      width: 300px;
-      height: 300px;
-      opacity: 0;
-    }
-  }
 }
 
 .list-item:hover {
@@ -88,18 +68,21 @@
 
 .list-item.active {
   background-color: var(--accent-primary);
-  color: #1c1b1f;
+  color: white;
   border-color: var(--accent-primary);
-
-  .ripple {
-    background: rgba(255, 255, 255, 0.35);
-  }
 
   .list-count-badge {
     border-color: rgba(255, 255, 255, 0.75);
     background: rgba(255, 255, 255, 0.22);
     color: white;
   }
+}
+
+/* Dark mode - active list item badge colors */
+[data-theme="dark"] .list-item.active .list-count-badge {
+  border-color: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.2);
+  color: #1c1b1f;
 }
 
 .list-name {
@@ -111,7 +94,7 @@
   width: 28px;
   min-width: 28px;
   height: 28px;
-  border-radius: 8px;
+  border-radius: 50%;
   border: 2px solid rgba(var(--md-primary-rgb), 0.25);
   background: rgba(var(--md-primary-rgb), 0.1);
   color: var(--text-primary);
@@ -147,6 +130,11 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+/* Ensure input fills space and button stays compact */
+.new-list-input-row > .gradient-button {
+  flex: 0 0 auto;
 }
 
 .input-with-ripple {
