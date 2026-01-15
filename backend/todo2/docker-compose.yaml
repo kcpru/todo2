@@ -1,4 +1,29 @@
 services:
+  todo2-postgres:
+    image: postgres:16
+    container_name: todo2-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppassword
+      POSTGRES_DB: todo2db
+    ports:
+      - "5432:5432"
+    volumes:
+      - todo2_postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - todo2-postgres
+    ports:
+      - "5050:80"
+
   backend:
     build:
       context: .
@@ -13,3 +38,6 @@ services:
     volumes:
       - ./appsettings.json:/app/appsettings.json:ro
       - ./appsettings.Development.json:/app/appsettings.Development.json:ro
+
+volumes:
+  todo2_postgres_data:

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,9 +26,6 @@ public class Program
             options.ExceptionHandlingPath = "/error";
         });
         builder.Services.AddProblemDetails();
-
-        var keepAliveConnection = new SqliteConnection("Data Source=:memory:");
-        keepAliveConnection.Open();
 
         builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
@@ -66,12 +62,16 @@ public class Program
 
         builder.Services.AddAuthorization();
 
-        builder.Services.AddSingleton(keepAliveConnection);
+        var connectionString = builder.Configuration.GetConnectionString("Default")
+            ?? throw new InvalidOperationException("Missing connection string 'ConnectionStrings:Default'.");
 
-        builder.Services.AddDbContext<AppDbContext>((sp, opt) =>
+        builder.Services.AddDbContext<AppDbContext>(opt =>
         {
-            var conn = sp.GetRequiredService<SqliteConnection>();
-            opt.UseSqlite(conn);
+            opt.UseNpgsql(connectionString, npgsql =>
+            {
+                npgsql.CommandTimeout(10);
+                npgsql.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(1), errorCodesToAdd: null);
+            });
         });
 
         var spaOrigin = builder.Configuration["Cors:SpaOrigin"] ?? string.Empty;
