@@ -1,15 +1,14 @@
-import { useState } from "react";
 import { useTheme } from "../../ThemeContext";
 import { useDopamine } from "../../DopamineContext";
-import { useAuth } from "../../AuthContext";
-import { motion } from "motion/react";
 import { GradientButton } from "../GradientButton";
+import { NavTabs } from "../NavTabs";
 import ProfileMenu from "./ProfileMenu";
 import "./Header.scss";
 
 export function Header() {
-  const { isDarkMode } = useTheme();
-  const { isDopamineMode } = useDopamine();
+  // Theme and dopamine mode are used implicitly through CSS variables
+  useTheme();
+  useDopamine();
 
   // Coins system removed
 
@@ -19,7 +18,9 @@ export function Header() {
         <h1 className="app-title">todo2</h1>
       </div>
 
-      <div className="header-center" />
+      <div className="header-center">
+        <NavTabs />
+      </div>
 
       <div className="header-right">
         <ProfileMenu />
