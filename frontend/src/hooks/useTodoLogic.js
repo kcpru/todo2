@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useAuth } from "../AuthContext";
 import { useDopamine } from "../DopamineContext";
 import confetti from "canvas-confetti";
@@ -27,57 +27,71 @@ export function useTodoLogic() {
   const [loadingLists, setLoadingLists] = useState(true);
   const [loadingTodos, setLoadingTodos] = useState(false);
 
-  const loadLists = async () => {
+  const loadLists = useCallback(async () => {
     try {
       setLoadingLists(true);
       const data = await getLists();
       setLists(data || []);
-      if (data && data.length > 0 && !selectedListId) {
-        setSelectedListId(data[0].id);
+      if (data && data.length > 0) {
+        setSelectedListId((prevId) => prevId || data[0].id);
       }
     } catch (err) {
       console.error("Failed to load lists:", err);
     } finally {
       setLoadingLists(false);
     }
-  };
+  }, [getLists]);
 
-  const loadTasks = async () => {
+  const loadTasks = useCallback(async () => {
     try {
       setLoadingTodos(true);
       const tasksResponse = await getLists();
-      const list = tasksResponse.find((l) => l.id === selectedListId);
-      setTodos(list?.items || []);
+      setTodos((prevTodos) => {
+        const list = tasksResponse.find((l) => l.id === selectedListId);
+        return list?.items || prevTodos;
+      });
     } catch (err) {
       console.error("Failed to load tasks:", err);
     } finally {
       setLoadingTodos(false);
     }
-  };
+  }, [getLists, selectedListId]);
 
-  const handleAddList = async (newListName) => {
-    if (!newListName.trim()) return;
-    try {
-      const newList = await createList(newListName);
-      setLists([newList, ...lists]);
-      setSelectedListId(newList.id);
-    } catch (err) {
-      console.error("Failed to create list:", err);
-    }
-  };
-
-  const handleDeleteList = async (listId) => {
-    try {
-      await deleteList(listId);
-      setLists(lists.filter((l) => l.id !== listId));
-      if (selectedListId === listId) {
-        const nextList = lists.find((l) => l.id !== listId);
-        setSelectedListId(nextList?.id || null);
+  const handleAddList = useCallback(
+    async (newListName) => {
+      if (!newListName.trim()) return;
+      try {
+        const newList = await createList(newListName);
+        setLists((prevLists) => [newList, ...prevLists]);
+        setSelectedListId(newList.id);
+      } catch (err) {
+        console.error("Failed to create list:", err);
       }
-    } catch (err) {
-      console.error("Failed to delete list:", err);
-    }
-  };
+    },
+    [createList]
+  );
+
+  const handleDeleteList = useCallback(
+    async (listId) => {
+      try {
+        await deleteList(listId);
+        setLists((prevLists) => {
+          const filtered = prevLists.filter((l) => l.id !== listId);
+          setSelectedListId((prevId) => {
+            if (prevId === listId) {
+              const nextList = filtered.find((l) => l.id !== listId);
+              return nextList?.id || null;
+            }
+            return prevId;
+          });
+          return filtered;
+        });
+      } catch (err) {
+        console.error("Failed to delete list:", err);
+      }
+    },
+    [deleteList]
+  );
 
   // Register checkbox position
   const registerCheckboxPosition = (todoId, element) => {
