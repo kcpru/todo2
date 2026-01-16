@@ -1,0 +1,40 @@
+/* Navigation Tabs in Header */
+.nav-tabs-header {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-tab-header {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  border-radius: 8px;
+  z-index: 1;
+
+  &:hover:not(.active) {
+    color: var(--text-primary);
+  }
+
+  &.active {
+    color: var(--text-primary);
+  }
+}
+
+.tab-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--md-primary-rgb), 0.1);
+  border-radius: 8px;
+  z-index: -1;
+}
+
+.tab-label {
+  position: relative;
+  z-index: 1;
+}

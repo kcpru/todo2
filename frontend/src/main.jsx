@@ -9,6 +9,10 @@ import { DopamineProvider } from "./DopamineContext.jsx";
 import { NotificationsProvider } from "./NotificationsContext.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
+import { Home } from "./pages/Home.jsx";
+import { Layout } from "./components/Layout/index.jsx";
+import { MyTodoLayout } from "./components/MyTodoLayout/index.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -18,9 +22,16 @@ createRoot(document.getElementById("root")).render(
           <NotificationsProvider>
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={<App />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<Home />} />
+                  </Route>
+                  <Route element={<MyTodoLayout />}>
+                    <Route path="/my-todo" element={<App />} />
+                  </Route>
+                </Route>
               </Routes>
             </BrowserRouter>
           </NotificationsProvider>
