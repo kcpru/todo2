@@ -106,7 +106,9 @@ public class Program
         using (var scope = app.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
             db.Database.EnsureCreated();
+            await DataSeeder.SeedAsync(db, passwordHasher);
         }
 
         app.Run();
