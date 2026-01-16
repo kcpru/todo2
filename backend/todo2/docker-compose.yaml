@@ -30,11 +30,15 @@ services:
       dockerfile: Dockerfile
       args:
         DOTNET_VERSION: "10.0"
+    container_name: todo2-backend
+    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:8080"
+    depends_on:
+      - todo2-postgres
     volumes:
       - ./appsettings.json:/app/appsettings.json:ro
       - ./appsettings.Development.json:/app/appsettings.Development.json:ro
