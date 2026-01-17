@@ -1,0 +1,42 @@
+.action-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.action-menu__trigger {
+  padding: 0.4rem !important;
+}
+
+.action-menu__dropdown {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--md-primary-rgb), 0.12) 0%,
+    rgba(var(--md-primary-rgb), 0.08) 100%
+  );
+  backdrop-filter: blur(14px);
+  border: 2px solid rgba(var(--md-primary-rgb), 0.22);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  z-index: 999;
+}
+
+.action-menu__item-btn {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.action-menu__icon {
+  display: inline-flex;
+  font-size: 1.05rem;
+}
+
+.action-menu__label {
+  flex: 1;
+  text-align: left;
+}
