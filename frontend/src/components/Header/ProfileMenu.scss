@@ -1,0 +1,34 @@
+/* Profile Menu Styles */
+.profile-container {
+  position: relative;
+  overflow: visible;
+}
+
+.profile-info {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(var(--md-primary-rgb), 0.15);
+  margin-bottom: 0.75rem;
+}
+
+.profile-username {
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.profile-email {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.profile-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .gradient-button {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

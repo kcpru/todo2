@@ -14,7 +14,8 @@
   color: var(--text-primary);
   font-family: inherit;
   font-size: 1rem;
-  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+  transition:
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   &::placeholder {
@@ -32,6 +33,13 @@
   }
 }
 
+/* Textarea with same styling as input */
+textarea.search-input {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
 .input-with-ripple {
   position: relative;
   overflow: hidden;
@@ -39,6 +47,6 @@
 
   .search-input {
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 }

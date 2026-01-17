@@ -1,10 +1,32 @@
 import { useState, useEffect } from "react";
-import { MdThumbUp, MdComment, MdMoreVert } from "react-icons/md";
+import { MdThumbUp, MdComment, MdMoreVert, MdFavorite } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
 import { usePostsAPI } from "../hooks/usePostsAPI";
+import { Comment } from "../components/Comment";
+import { GradientButton } from "../components/GradientButton";
 import "./Home.scss";
 
 function PostCard({ post }) {
+  const [commentLikes, setCommentLikes] = useState({});
+  const [rippleEffects, setRippleEffects] = useState([]);
+
+  const handleDoubleTap = (commentId, x, y) => {
+    // Add like
+    setCommentLikes((prev) => ({
+      ...prev,
+      [commentId]: (prev[commentId] || 0) + 1,
+    }));
+
+    // Create ripple effect
+    const rippleId = Date.now();
+    setRippleEffects((prev) => [...prev, { id: rippleId, x, y, commentId }]);
+
+    // Remove ripple after animation
+    setTimeout(() => {
+      setRippleEffects((prev) => prev.filter((r) => r.id !== rippleId));
+    }, 1000);
+  };
+
   return (
     <div className="post-card">
       <div className="post-header">
@@ -27,29 +49,58 @@ function PostCard({ post }) {
       )}
 
       <div className="post-actions">
-        <button className="action-btn">
-          <MdThumbUp /> {post.likesCount || 0} Likes
-        </button>
-        <button className="action-btn">
-          <MdComment /> {post.comments?.length || 0} Comments
-        </button>
+        <GradientButton
+          variant="secondary"
+          size="sm"
+          icon={<MdThumbUp />}
+          onClick={(e) => {
+            // optional: handle like action here
+          }}
+        >
+          {post.likesCount || 0} Likes
+        </GradientButton>
+        <GradientButton
+          variant="secondary"
+          size="sm"
+          icon={<MdComment />}
+          onClick={(e) => {
+            // optional: handle comment action here
+          }}
+        >
+          {post.comments?.length || 0} Comments
+        </GradientButton>
       </div>
 
       {post.comments && post.comments.length > 0 && (
         <div className="post-comments">
-          {post.comments.map((comment) => (
-            <div key={comment.id} className="comment">
-              <div className="comment-header">
-                <span className="comment-user">
-                  User {comment.userId.slice(0, 8)}
-                </span>
-                <span className="comment-likes">
-                  {comment.likesCount || 0} ❤
-                </span>
+          {post.comments.map((comment) => {
+            const extraLikes = commentLikes[comment.id] || 0;
+            const totalLikes = (comment.likesCount || 0) + extraLikes;
+            const commentRipples = rippleEffects.filter(
+              (r) => r.commentId === comment.id,
+            );
+
+            return (
+              <div key={comment.id} style={{ position: "relative" }}>
+                <Comment
+                  comment={{ ...comment, likesCount: totalLikes }}
+                  onDoubleTap={handleDoubleTap}
+                />
+                {commentRipples.map((ripple) => (
+                  <div
+                    key={ripple.id}
+                    className="comment-ripple"
+                    style={{
+                      left: ripple.x,
+                      top: ripple.y,
+                    }}
+                  >
+                    <MdFavorite />
+                  </div>
+                ))}
               </div>
-              <div className="comment-text">{comment.commentText}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
