@@ -47,13 +47,31 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
         <div className="list-texts">
           <span className="list-name">{list.name}</span>
           <div className="list-progress">
-            <span className="progress-icon">
-              {completed === total && total > 0 ? (
-                <MdCheckCircle />
-              ) : (
-                <MdRadioButtonUnchecked />
-              )}
-            </span>
+            <div className="progress-icon-container">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={
+                    completed === total && total > 0
+                      ? "completed"
+                      : "incomplete"
+                  }
+                  className="progress-icon"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: [0.34, 1.56, 0.64, 1],
+                  }}
+                >
+                  {completed === total && total > 0 ? (
+                    <MdCheckCircle />
+                  ) : (
+                    <MdRadioButtonUnchecked />
+                  )}
+                </motion.span>
+              </AnimatePresence>
+            </div>
             <div className="progress-label-container">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
@@ -63,8 +81,8 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -20, opacity: 0 }}
                   transition={{
-                    duration: 0.2,
-                    ease: "easeOut",
+                    duration: 0.3,
+                    ease: [0.34, 1.56, 0.64, 1],
                   }}
                 >
                   {getProgressText()}
