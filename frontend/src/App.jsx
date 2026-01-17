@@ -1,4 +1,4 @@
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { useTodo } from "./TodoContext";
 import { TodoList } from "./components/TodoList";

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { MdExpandMore } from "react-icons/md";
 import { useRipple } from "../../hooks/useRipple";
 import "./FilterSelect.scss";
