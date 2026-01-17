@@ -18,5 +18,14 @@ public class TodoList
 
     public ICollection<TodoTask> Items { get; set; } = [];
 
-    public string ToJson() => System.Text.Json.JsonSerializer.Serialize(this, System.Text.Json.JsonSerializerOptions.Web);
+    public string ToJson()
+    {
+        var options = new System.Text.Json.JsonSerializerOptions
+        {
+            PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+            ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+        };
+        return System.Text.Json.JsonSerializer.Serialize(this, options);
+    }
 }
