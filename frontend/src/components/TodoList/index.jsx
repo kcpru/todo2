@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Input } from "../Input";
 import { useDopamine } from "../../DopamineContext";
 import { ANIMATION_CONFIG } from "../../constants/animations";
-import { MdEdit, MdDelete, MdAdd, MdAssignmentLate } from "react-icons/md";
+import { MdEdit, MdDelete, MdAdd, MdAssignmentLate, MdShare } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { ActionMenu } from "../ActionMenu";
 import { ConfirmDialog } from "../ConfirmDialog";
@@ -17,6 +17,10 @@ export function TodoList({
   onStartEdit,
   onAddTodo,
   registerCheckboxPosition,
+  onShare,
+  selectedListName,
+  completedCount,
+  totalCount,
 }) {
   const { isDopamineMode } = useDopamine();
   const [confirmDeleteTodoId, setConfirmDeleteTodoId] = useState(null);
@@ -105,15 +109,29 @@ export function TodoList({
             </AnimatePresence>
           </div>
 
-          <GradientButton
-            size="md"
-            className="add-btn"
-            onClick={onAddTodo}
-            title="Add new task"
-            icon={<MdAdd />}
-          >
-            Add task
-          </GradientButton>
+          <div className="button-group">
+            <GradientButton
+              size="md"
+              className="add-btn"
+              onClick={onAddTodo}
+              title="Add new task"
+              icon={<MdAdd />}
+            >
+              Add task
+            </GradientButton>
+
+            {onShare && (
+              <GradientButton
+                size="md"
+                className="share-btn"
+                onClick={onShare}
+                title="Share this achievement"
+                icon={<MdShare />}
+              >
+                Share
+              </GradientButton>
+            )}
+          </div>
 
           <ConfirmDialog
             isOpen={confirmDeleteTodoId !== null}
