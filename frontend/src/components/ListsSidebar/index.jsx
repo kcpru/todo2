@@ -6,7 +6,7 @@ import {
   MdRadioButtonUnchecked,
   MdSearch,
 } from "react-icons/md";
-import { AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";

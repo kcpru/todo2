@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { MdMoreVert } from "react-icons/md";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { GradientButton } from "../GradientButton";
 import "./ActionMenu.scss";
 
