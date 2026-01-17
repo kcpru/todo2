@@ -10,9 +10,10 @@ export function ModalBase({
   overlayTransition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
   panelTransition = {
     type: "spring",
-    stiffness: 300,
-    damping: 25,
-    mass: 0.8,
+    stiffness: 200,
+    damping: 20,
+    mass: 1,
+    restDelta: 0.001,
   },
   overlayInitial = { opacity: 0 },
   overlayAnimate = { opacity: 1 },
