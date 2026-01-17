@@ -3,7 +3,13 @@ import { motion, AnimatePresence } from "motion/react";
 import { Input } from "../Input";
 import { useDopamine } from "../../DopamineContext";
 import { ANIMATION_CONFIG } from "../../constants/animations";
-import { MdEdit, MdDelete, MdAdd, MdAssignmentLate, MdShare } from "react-icons/md";
+import {
+  MdEdit,
+  MdDelete,
+  MdAdd,
+  MdAssignmentLate,
+  MdShare,
+} from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { ActionMenu } from "../ActionMenu";
 import { ConfirmDialog } from "../ConfirmDialog";

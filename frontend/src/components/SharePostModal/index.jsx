@@ -49,11 +49,9 @@ export function SharePostModal({
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Add a caption (optional)..."
-        maxLength={500}
+        characterLimit={500}
         disabled={isLoading}
       />
-
-      <div className="char-count">{content.length}/500</div>
     </ModalForm>
   );
 }
