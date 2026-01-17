@@ -6,7 +6,7 @@ export default function ProtectedRoute() {
 
   if (loading) {
     return (
-      <div className="app">
+      <div className="app-loading">
         <div className="loading">Loading...</div>
       </div>
     );
