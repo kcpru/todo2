@@ -2,7 +2,12 @@ import { motion } from "motion/react";
 import { PostContent } from "../PostContent";
 import "./PostCard.scss";
 
-export function PostCard({ post, onClick, isSelected }) {
+export function PostCard({ post, onClick, isSelected, currentUserId }) {
+  // Get IDs of comments made by current user
+  const userCommentIds =
+    post.comments?.filter((c) => c.userId === currentUserId).map((c) => c.id) ||
+    [];
+
   return (
     <motion.div
       className="post-card"
@@ -25,7 +30,12 @@ export function PostCard({ post, onClick, isSelected }) {
         animate={{ opacity: isSelected ? 0 : 1 }}
         transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
       >
-        <PostContent post={post} showCommentButton={true} mode="card" />
+        <PostContent
+          post={post}
+          showCommentButton={true}
+          mode="card"
+          userCommentIds={userCommentIds}
+        />
       </motion.div>
     </motion.div>
   );

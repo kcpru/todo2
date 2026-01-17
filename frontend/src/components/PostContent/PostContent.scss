@@ -58,6 +58,16 @@
   gap: 0.35rem;
 }
 
+.post-stat-liked {
+  color: var(--md-primary);
+  font-weight: 600;
+}
+
+.post-stat-commented {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
 @media (max-width: 600px) {
   .post-actions {
     flex-direction: column;
