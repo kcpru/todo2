@@ -1,11 +1,14 @@
 import { AnimatePresence, motion } from "motion/react";
+import { useState, useCallback } from "react";
 
 import { useTodo } from "./TodoContext";
 import { TodoList } from "./components/TodoList";
 import { EditModal } from "./components/EditModal";
 import { DopamineVideo } from "./components/DopamineVideo";
+import { SharePostModal } from "./components/SharePostModal";
 import { Input } from "./components/Input";
 import { FilterSelect } from "./components/FilterSelect";
+import { useAuth } from "./AuthContext";
 import { ANIMATION_CONFIG } from "./constants/animations";
 import {
   MdFormatListBulleted,
@@ -40,7 +43,35 @@ function App() {
     registerCheckboxPosition,
   } = useTodo();
 
+  const { createPost } = useAuth();
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [isCreatingPost, setIsCreatingPost] = useState(false);
+
   const selectedList = lists.find((l) => l.id === selectedListId);
+
+  const completedCount = todos.filter((t) => t.isCompleted).length;
+  const totalCount = todos.length;
+
+  const handleShareClick = useCallback(() => {
+    setShareModalOpen(true);
+  }, []);
+
+  const handleSharePost = useCallback(
+    async (content) => {
+      if (!selectedList) return;
+
+      try {
+        setIsCreatingPost(true);
+        await createPost(selectedList.id, content);
+        setShareModalOpen(false);
+      } catch (err) {
+        console.error("Failed to share post:", err);
+      } finally {
+        setIsCreatingPost(false);
+      }
+    },
+    [selectedList, createPost]
+  );
 
   const filters = [
     { value: "ALL", label: "All", icon: <MdFormatListBulleted /> },
@@ -91,6 +122,10 @@ function App() {
               onStartEdit={startEdit}
               onAddTodo={addTodo}
               registerCheckboxPosition={registerCheckboxPosition}
+              onShare={handleShareClick}
+              selectedListName={selectedList.name}
+              completedCount={completedCount}
+              totalCount={totalCount}
             />
           </motion.div>
         ) : (
@@ -110,6 +145,16 @@ function App() {
         onEditDescriptionChange={setEditingDescription}
         onSave={saveEdit}
         onCancel={cancelEdit}
+      />
+
+      <SharePostModal
+        isOpen={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        todoListName={selectedList?.name || ""}
+        completedCount={completedCount}
+        totalCount={totalCount}
+        onShare={handleSharePost}
+        isLoading={isCreatingPost}
       />
 
       <DopamineVideo />
