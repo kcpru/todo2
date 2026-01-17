@@ -193,9 +193,8 @@
   margin: 1rem auto;
 }
 
-.input-with-ripple {
-  position: relative;
-  overflow: hidden;
+/* Keep ripple wrapper scoped; global ripple styles live in index.scss */
+.search-container .input-with-ripple {
   flex: 1; /* Ensure wrapper expands so .search-input can be 100% width */
 }
 
