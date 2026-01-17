@@ -1,34 +1,14 @@
 import { useState, useEffect } from "react";
-import { MdThumbUp, MdComment, MdMoreVert, MdFavorite } from "react-icons/md";
+import { MdThumbUp, MdComment } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
 import { usePostsAPI } from "../hooks/usePostsAPI";
-import { Comment } from "../components/Comment";
 import { GradientButton } from "../components/GradientButton";
+import { PostDetailModal } from "../components/PostDetailModal";
 import "./Home.scss";
 
-function PostCard({ post }) {
-  const [commentLikes, setCommentLikes] = useState({});
-  const [rippleEffects, setRippleEffects] = useState([]);
-
-  const handleDoubleTap = (commentId, x, y) => {
-    // Add like
-    setCommentLikes((prev) => ({
-      ...prev,
-      [commentId]: (prev[commentId] || 0) + 1,
-    }));
-
-    // Create ripple effect
-    const rippleId = Date.now();
-    setRippleEffects((prev) => [...prev, { id: rippleId, x, y, commentId }]);
-
-    // Remove ripple after animation
-    setTimeout(() => {
-      setRippleEffects((prev) => prev.filter((r) => r.id !== rippleId));
-    }, 1000);
-  };
-
+function PostCard({ post, onClick }) {
   return (
-    <div className="post-card">
+    <div className="post-card" onClick={onClick}>
       <div className="post-header">
         <div className="post-info">
           <div className="post-title">Todo: {post.id.slice(0, 8)}</div>
@@ -49,69 +29,24 @@ function PostCard({ post }) {
       )}
 
       <div className="post-actions">
-        <GradientButton
-          variant="secondary"
-          size="sm"
-          icon={<MdThumbUp />}
-          onClick={() => {
-            // optional: handle like action here
-          }}
-        >
+        <GradientButton variant="secondary" size="sm" icon={<MdThumbUp />}>
           {post.likesCount || 0} Likes
         </GradientButton>
-        <GradientButton
-          variant="secondary"
-          size="sm"
-          icon={<MdComment />}
-          onClick={() => {
-            // optional: handle comment action here
-          }}
-        >
+        <GradientButton variant="secondary" size="sm" icon={<MdComment />}>
           {post.comments?.length || 0} Comments
         </GradientButton>
       </div>
-
-      {post.comments && post.comments.length > 0 && (
-        <div className="post-comments">
-          {post.comments.map((comment) => {
-            const extraLikes = commentLikes[comment.id] || 0;
-            const totalLikes = (comment.likesCount || 0) + extraLikes;
-            const commentRipples = rippleEffects.filter(
-              (r) => r.commentId === comment.id
-            );
-
-            return (
-              <div key={comment.id} style={{ position: "relative" }}>
-                <Comment
-                  comment={{ ...comment, likesCount: totalLikes }}
-                  onDoubleTap={handleDoubleTap}
-                />
-                {commentRipples.map((ripple) => (
-                  <div
-                    key={ripple.id}
-                    className="comment-ripple"
-                    style={{
-                      left: ripple.x,
-                      top: ripple.y,
-                    }}
-                  >
-                    <MdFavorite />
-                  </div>
-                ))}
-              </div>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }
 
 export function Home() {
-  const { getPosts } = usePostsAPI();
+  const { getPosts, getPost } = usePostsAPI();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -129,6 +64,32 @@ export function Home() {
 
     loadPosts();
   }, [getPosts]);
+
+  const handlePostClick = async (post) => {
+    try {
+      const fullPost = await getPost(post.id);
+      setSelectedPost(fullPost);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.error("Failed to load post details:", err);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPost(null);
+  };
+
+  const handlePostUpdate = async (postId) => {
+    try {
+      const updatedPost = await getPost(postId);
+      setSelectedPost(updatedPost);
+      // Update in posts list
+      setPosts((prev) => prev.map((p) => (p.id === postId ? updatedPost : p)));
+    } catch (err) {
+      console.error("Failed to update post:", err);
+    }
+  };
 
   if (loading) {
     return (
@@ -150,9 +111,22 @@ export function Home() {
         {posts.length === 0 ? (
           <div className="no-posts">No posts yet. Be the first to share!</div>
         ) : (
-          posts.map((post) => <PostCard key={post.id} post={post} />)
+          posts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              onClick={() => handlePostClick(post)}
+            />
+          ))
         )}
       </div>
+
+      <PostDetailModal
+        post={selectedPost}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onPostUpdate={handlePostUpdate}
+      />
     </div>
   );
 }

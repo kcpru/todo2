@@ -6,6 +6,9 @@ export function Input({
   className = "",
   onMouseDown,
   isTextarea = false,
+  children,
+  characterLimit,
+  value,
   ...props
 }) {
   const mergedClassName = `search-input ${className}`.trim();
@@ -24,12 +27,14 @@ export function Input({
     <textarea
       className={mergedClassName}
       onMouseDown={handleMouseDown}
+      value={value}
       {...props}
     />
   ) : (
     <input
       className={mergedClassName}
       onMouseDown={handleMouseDown}
+      value={value}
       {...props}
     />
   );
@@ -39,9 +44,25 @@ export function Input({
       <div className={`input-with-ripple ${containerClassName}`.trim()}>
         <RippleContainer />
         {inputElement}
+        {characterLimit && value && (
+          <div className="character-counter">
+            {value.length}/{characterLimit}
+          </div>
+        )}
+        {children}
       </div>
     );
   }
 
-  return inputElement;
+  return (
+    <>
+      {inputElement}
+      {characterLimit && value && (
+        <div className="character-counter">
+          {value.length}/{characterLimit}
+        </div>
+      )}
+      {children}
+    </>
+  );
 }
