@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { Outlet } from "react-router-dom";
-import { motion } from "motion/react";
+import { Outlet, useLocation } from "react-router-dom";
 import { MdMenu, MdClose } from "react-icons/md";
 import { Header } from "../Header";
 import { ListsSidebar } from "../ListsSidebar";
+import { motion } from "motion/react";
 import { useTodo } from "../../TodoContext";
 import { useAuth } from "../../AuthContext";
 import "./MyTodoLayout.scss";
@@ -74,11 +74,20 @@ export function MyTodoLayout() {
     };
   }, [isResizing]);
 
+  const location = useLocation();
+
   return (
     <div className="app">
       <Header />
 
-      <div className="main-content">
+      <motion.div
+        key={location.pathname}
+        className="main-content"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 30 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      >
         {/* Sidebar Toggle Button */}
         <button
           className="sidebar-toggle"
@@ -129,7 +138,7 @@ export function MyTodoLayout() {
         <div className="content-wrapper">
           <Outlet />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
