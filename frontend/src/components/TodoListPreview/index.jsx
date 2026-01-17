@@ -8,12 +8,14 @@ export function TodoListPreview({ todoListJson }) {
   if (todoListJson) {
     try {
       todoListData = JSON.parse(todoListJson);
-      if (todoListData?.items) {
-        totalCount = todoListData.items.length;
-        completedCount = todoListData.items.filter(
-          (item) => item.completed
-        ).length;
-      }
+        const items = todoListData?.items || todoListData?.Items || todoListData?.tasks || [];
+        if (items.length > 0) {
+          totalCount = items.length;
+          completedCount = items.filter((item) => {
+            // Check all possible property names for completion status
+            return item.isCompleted || item.completed || item.done || item.finished;
+          }).length;
+        }
     } catch (e) {
       console.error("Failed to parse todo list:", e);
     }
