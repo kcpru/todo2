@@ -4,6 +4,7 @@ import { ModalForm } from "../ModalForm";
 import { Comment } from "../Comment";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
+import { TodoListPreview } from "../TodoListPreview";
 import { usePostsAPI } from "../../hooks/usePostsAPI";
 import "./PostDetailModal.scss";
 
@@ -74,10 +75,8 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
       <div className="post-detail-content">{post.content}</div>
 
       {post.todoListAsJson && (
-        <div className="post-detail-todo-preview">
-          <div className="preview-title">
-            {JSON.parse(post.todoListAsJson)?.name || "Todo List"}
-          </div>
+        <div className="post-detail-todo-section">
+          <TodoListPreview todoListJson={post.todoListAsJson} />
         </div>
       )}
 
