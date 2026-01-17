@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   MdDelete,
   MdAdd,
@@ -6,7 +6,7 @@ import {
   MdRadioButtonUnchecked,
   MdSearch,
 } from "react-icons/md";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, Reorder } from "motion/react";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
@@ -39,10 +39,19 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
   };
 
   return (
-    <motion.button
-      className={`list-item input-with-ripple ${isActive ? "active" : ""}`}
-      onClick={handleClick}
-    >
+    <div className={`list-item input-with-ripple ${isActive ? "active" : ""}`} onClick={handleClick}>
+      <AnimatePresence mode="wait">
+        {isActive && (
+          <motion.div
+            layoutId="list-active-bar"
+            className="list-active-bar"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ type: "spring", stiffness: 500, damping: 38, mass: 0.6 }}
+          />
+        )}
+      </AnimatePresence>
       <div className="list-main">
         <div className="list-texts">
           <span className="list-name">{list.name}</span>
@@ -104,8 +113,9 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
           />
         </div>
       </div>
+      </div>
       <RippleContainer />
-    </motion.button>
+    </div>
   );
 }
 
@@ -116,11 +126,17 @@ export function ListsSidebar({
   onSelectList,
   onDeleteList,
   onAddList,
+  onReorderLists,
 }) {
   const [newListName, setNewListName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmDeleteListId, setConfirmDeleteListId] = useState(null);
   const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false);
+  const [order, setOrder] = useState(lists || []);
+
+  useEffect(() => {
+    setOrder(lists);
+  }, [lists]);
 
   const filteredLists = lists.filter((list) =>
     list.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -162,18 +178,27 @@ export function ListsSidebar({
           </p>
         </div>
       ) : (
-        <div className="lists-container">
-          {filteredLists.map((list) => (
-            <div key={list.id} className="list-item-container">
+        <Reorder.Group
+          axis="y"
+          values={order}
+          onReorder={(newOrder) => {
+            setOrder(newOrder);
+            if (onReorderLists) onReorderLists(newOrder);
+          }}
+          as="div"
+          className="lists-container"
+        >
+          {order.map((list) => (
+            <Reorder.Item key={list.id} value={list} as="div" className="list-item-container">
               <ListItem
                 list={list}
                 isActive={selectedListId === list.id}
                 onSelect={onSelectList}
                 onDelete={() => setConfirmDeleteListId(list.id)}
               />
-            </div>
+            </Reorder.Item>
           ))}
-        </div>
+        </Reorder.Group>
       )}
 
       <ConfirmDialog
