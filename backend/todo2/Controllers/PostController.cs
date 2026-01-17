@@ -61,6 +61,7 @@ public class PostController : ControllerBase
     {
         var todoList = await _db.TodoLists
             .AsNoTracking()
+            .Include(t => t.Items)
             .Where(l => l.Id == request.TodoListId)
             .SingleOrDefaultAsync(ct);
 

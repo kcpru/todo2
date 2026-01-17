@@ -10,8 +10,10 @@ public class TodoTask
     public string? Description { get; set; }
     public bool IsCompleted { get; set; }
 
+    [JsonIgnore]
     [ForeignKey(nameof(TodoList))]
     public Guid TodoListId { get; set; }
-    [System.Text.Json.Serialization.JsonIgnore]
+
+    [JsonIgnore]
     public TodoList TodoList { get; set; } = null!;
 }
