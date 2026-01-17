@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { MdDelete, MdAdd } from "react-icons/md";
+import {
+  MdDelete,
+  MdAdd,
+  MdCheckCircle,
+  MdRadioButtonUnchecked,
+} from "react-icons/md";
 import { motion } from "motion/react";
 import { GradientButton } from "../GradientButton";
+import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { CreateListModal } from "../CreateListModal";
+import { ActionMenu } from "../ActionMenu";
 import { useRipple } from "../../hooks/useRipple.jsx";
 import "./ListsSidebar.scss";
 
 function ListItem({ list, isActive, onSelect, onDelete }) {
   const { createRipple, RippleContainer } = useRipple();
+  const total = list.items?.length || 0;
+  const completed = list.items?.filter((t) => t.isCompleted)?.length || 0;
 
   const handleClick = (e) => {
     createRipple(e);
@@ -20,21 +29,34 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
       className={`list-item input-with-ripple ${isActive ? "active" : ""}`}
       onClick={handleClick}
     >
-      <span className="list-count-badge">{list.items?.length || 0}</span>
-      <span className="list-name">{list.name}</span>
-      <div className="list-actions">
-        <GradientButton
-          variant="danger"
-          size="sm"
-          iconOnly={true}
-          className="list-delete-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete(list.id);
-          }}
-          title="Delete list"
-          icon={<MdDelete />}
-        />
+      <div className="list-main">
+        <div className="list-texts">
+          <span className="list-name">{list.name}</span>
+          <div className="list-progress">
+            <span className="progress-icon">
+              {completed === total ? (
+                <MdCheckCircle />
+              ) : (
+                <MdRadioButtonUnchecked />
+              )}
+            </span>
+            <span className="progress-label">
+              {completed}/{total} done
+            </span>
+          </div>
+        </div>
+        <div className="list-meta">
+          <ActionMenu
+            items={[
+              {
+                label: "Delete list",
+                icon: <MdDelete />,
+                variant: "danger",
+                onClick: () => onDelete(list.id),
+              },
+            ]}
+          />
+        </div>
       </div>
       <RippleContainer />
     </motion.button>
@@ -50,8 +72,13 @@ export function ListsSidebar({
   onAddList,
 }) {
   const [newListName, setNewListName] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [confirmDeleteListId, setConfirmDeleteListId] = useState(null);
   const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false);
+
+  const filteredLists = lists.filter((list) =>
+    list.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleCreateList = async () => {
     if (!newListName.trim()) return;
@@ -62,21 +89,30 @@ export function ListsSidebar({
 
   return (
     <div className="lists-sidebar">
-      <div className="lists-header">
-        <h2 className="lists-title">My Lists</h2>
-      </div>
+      <Input
+        type="text"
+        placeholder="Search lists..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        withRipple={true}
+        containerClassName="search-input-wrapper"
+      />
 
       {loadingLists ? (
         <div className="loading-lists">Loading lists...</div>
-      ) : lists.length === 0 ? (
+      ) : filteredLists.length === 0 ? (
         <div className="empty-state-lists">
           <div className="empty-icon">📝</div>
-          <h3>No Lists Yet</h3>
-          <p>Create your first list to get started</p>
+          <h3>{searchQuery ? "No lists found" : "No Lists Yet"}</h3>
+          <p>
+            {searchQuery
+              ? "Try a different search"
+              : "Create your first list to get started"}
+          </p>
         </div>
       ) : (
         <div className="lists-container">
-          {lists.map((list) => (
+          {filteredLists.map((list) => (
             <div key={list.id} className="list-item-container">
               <ListItem
                 list={list}
@@ -117,7 +153,7 @@ export function ListsSidebar({
       />
 
       <GradientButton
-        size="md"
+        size="sm"
         iconOnly={false}
         onClick={() => setIsCreateListModalOpen(true)}
         className="new-list-btn"
