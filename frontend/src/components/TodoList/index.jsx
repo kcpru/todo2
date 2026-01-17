@@ -64,6 +64,7 @@ export function TodoList({
                       <Input
                         id={`cbx-${todo.id}`}
                         type="checkbox"
+                        withRipple={false}
                         checked={todo.isCompleted}
                         onChange={(e) => {
                           const checkboxElement = e.currentTarget.parentElement;
