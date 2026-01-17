@@ -107,6 +107,18 @@ public class PostControllerTests
             UpdatedAt = DateTime.UtcNow
         };
         _db.TodoLists.Add(list);
+
+        var todoItem = new TodoTask
+        {
+            Id = Guid.NewGuid(),
+            Title = "Task 1",
+            Description = "task 1 description",
+            IsCompleted = false,
+            TodoListId = list.Id
+        };
+
+        list.Items = new List<TodoTask> { todoItem };
+
         await _db.SaveChangesAsync();
 
         var sut = CreateSut(_db, userId: null);
