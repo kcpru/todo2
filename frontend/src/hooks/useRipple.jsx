@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export function useRipple() {
-  const [ripples, setRipples] = useState([]); // legacy; not used for DOM rendering anymore
   const isAnimatingRef = useRef(false);
   const RIPPLE_DURATION_MS = 800; // Must match CSS animation duration
 
@@ -27,7 +26,7 @@ export function useRipple() {
     // Trigger ripple via class; CSS handles animation
     container.classList.remove("ripple-active"); // reset if lingering
     // Force reflow to restart animation if needed
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+
     container.offsetHeight;
     container.classList.add("ripple-active");
 

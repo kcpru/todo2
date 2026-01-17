@@ -2,6 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { useAuth } from "../AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import {
   MdPersonAdd,
@@ -21,7 +22,6 @@ export function Register() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [validationError, setValidationError] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
   const [shakeField, setShakeField] = useState(null);
   const { register, error } = useAuth();
@@ -60,7 +60,6 @@ export function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setValidationError("");
     const result = registerSchema.safeParse({
       username,
       email,
@@ -80,7 +79,6 @@ export function Register() {
       setValidationErrors(fieldErrors);
       const firstError = Object.keys(fieldErrors)[0];
       if (firstError) {
-        setValidationError(fieldErrors[firstError] || "");
         notify({
           type: "error",
           message: fieldErrors[firstError] || "Please check the fields",
@@ -92,7 +90,6 @@ export function Register() {
     }
 
     setValidationErrors({});
-    setValidationError("");
 
     setIsLoading(true);
     const success = await register(username, email, password);
@@ -124,8 +121,8 @@ export function Register() {
               validationErrors.username
                 ? "invalid"
                 : username.trim().length >= 3
-                ? "valid"
-                : ""
+                  ? "valid"
+                  : ""
             }`}
             {...getFieldMotion("username", 0.2)}
           >
@@ -194,8 +191,8 @@ export function Register() {
               validationErrors.password
                 ? "invalid"
                 : password.trim().length >= 6
-                ? "valid"
-                : ""
+                  ? "valid"
+                  : ""
             }`}
             {...getFieldMotion("password", 0.4)}
           >
@@ -228,8 +225,8 @@ export function Register() {
               validationErrors.passwordConfirm
                 ? "invalid"
                 : passwordConfirm.trim() && passwordConfirm === password
-                ? "valid"
-                : ""
+                  ? "valid"
+                  : ""
             }`}
             {...getFieldMotion("passwordConfirm", 0.5)}
           >

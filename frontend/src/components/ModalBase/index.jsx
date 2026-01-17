@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "motion/react";
 
 export function ModalBase({

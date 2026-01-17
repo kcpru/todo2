@@ -13,7 +13,8 @@
   padding: 0.65rem 0.85rem;
   border-radius: 8px;
   border: 2px solid rgba(var(--md-primary-rgb), 0.25);
-  background: linear-gradient(
+  background:
+    linear-gradient(
       135deg,
       rgba(var(--md-primary-rgb), 0.08) 0%,
       rgba(var(--md-primary-rgb), 0.05) 100%
@@ -23,7 +24,9 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.15s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.15s ease;
   position: relative;
   overflow: hidden;
   font-size: 0.95rem;
@@ -116,7 +119,9 @@
   padding: 0.65rem 0.85rem;
   cursor: pointer;
   color: var(--text-primary);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .filter-select__item:hover {
@@ -134,7 +139,8 @@
 
 [data-theme="dark"] .filter-select__button {
   border-color: rgba(var(--md-primary-rgb), 0.35);
-  background: linear-gradient(
+  background:
+    linear-gradient(
       135deg,
       rgba(var(--md-primary-rgb), 0.12) 0%,
       rgba(var(--md-primary-rgb), 0.08) 100%

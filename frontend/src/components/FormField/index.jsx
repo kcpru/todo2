@@ -1,7 +1,6 @@
 import { Input } from "../Input";
 
 export function FormField({
-  label,
   value,
   onChange,
   placeholder,

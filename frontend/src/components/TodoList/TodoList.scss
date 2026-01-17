@@ -50,7 +50,9 @@
   border: 2px solid var(--md-outline);
   border-radius: 4px;
   vertical-align: middle;
-  transition: background 0.1s ease, border-color 0.1s ease;
+  transition:
+    background 0.1s ease,
+    border-color 0.1s ease;
   cursor: pointer;
 }
 

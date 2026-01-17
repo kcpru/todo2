@@ -53,7 +53,7 @@ function PostCard({ post }) {
           variant="secondary"
           size="sm"
           icon={<MdThumbUp />}
-          onClick={(e) => {
+          onClick={() => {
             // optional: handle like action here
           }}
         >
@@ -63,7 +63,7 @@ function PostCard({ post }) {
           variant="secondary"
           size="sm"
           icon={<MdComment />}
-          onClick={(e) => {
+          onClick={() => {
             // optional: handle comment action here
           }}
         >
@@ -77,7 +77,7 @@ function PostCard({ post }) {
             const extraLikes = commentLikes[comment.id] || 0;
             const totalLikes = (comment.likesCount || 0) + extraLikes;
             const commentRipples = rippleEffects.filter(
-              (r) => r.commentId === comment.id,
+              (r) => r.commentId === comment.id
             );
 
             return (
@@ -128,7 +128,7 @@ export function Home() {
     };
 
     loadPosts();
-  }, []);
+  }, [getPosts]);
 
   if (loading) {
     return (

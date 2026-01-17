@@ -1,4 +1,5 @@
 import { useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "motion/react";
 import { Input } from "../Input";
 import { useDopamine } from "../../DopamineContext";
@@ -10,7 +11,6 @@ import { ConfirmDialog } from "../ConfirmDialog";
 import "./TodoList.scss";
 
 export function TodoList({
-  todos,
   filteredTodos,
   loadingTodos,
   onToggleTodo,

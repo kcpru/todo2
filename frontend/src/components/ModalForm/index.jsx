@@ -4,7 +4,6 @@ import "./ModalForm.scss";
 
 export function ModalForm({
   isOpen,
-  onClose,
   title,
   titleIcon,
   children,

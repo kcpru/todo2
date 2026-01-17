@@ -34,7 +34,8 @@
   color: var(--text-primary);
   font-family: inherit;
   font-size: 1rem;
-  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+  transition:
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -164,7 +165,8 @@
   color: var(--text-primary);
   font-family: inherit;
   font-size: 1rem;
-  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+  transition:
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -189,7 +191,9 @@
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   font-size: 1rem;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .form-group input:focus {
