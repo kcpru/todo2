@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
+import { useScrollLock } from "../../hooks/useScrollLock";
 
 export function ModalBase({
   isOpen,
@@ -24,6 +25,8 @@ export function ModalBase({
   layoutId,
 }) {
   const sizeClass = `modal-${size}`;
+  // Lock body scroll while modal is open
+  useScrollLock(isOpen);
 
   return (
     <AnimatePresence>
