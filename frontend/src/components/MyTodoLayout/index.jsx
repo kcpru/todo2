@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { Outlet, useLocation } from "react-router-dom";
 import { MdMenu, MdClose } from "react-icons/md";
 import { Header } from "../Header";
@@ -10,7 +11,7 @@ import "./MyTodoLayout.scss";
 
 export function MyTodoLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [sidebarWidth, setSidebarWidth] = useState(280);
+  const [sidebarWidth, setSidebarWidth] = useLocalStorage("sidebarWidth", 280);
   const [isResizing, setIsResizing] = useState(false);
   const { isAuthenticated, loading } = useAuth();
   const hasLoadedListsRef = useRef(false);
