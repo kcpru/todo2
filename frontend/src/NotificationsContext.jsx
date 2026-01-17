@@ -40,7 +40,6 @@ export function NotificationsProvider({ children }) {
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useNotifications() {
   const ctx = useContext(NotificationsContext);
   if (!ctx) {

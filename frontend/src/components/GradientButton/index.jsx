@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import { useRipple } from "../../hooks/useRipple.jsx";
 import "./GradientButton.scss";

@@ -3,7 +3,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import { MdMenu, MdClose } from "react-icons/md";
 import { Header } from "../Header";
 import { ListsSidebar } from "../ListsSidebar";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import { useTodo } from "../../TodoContext";
 import { useAuth } from "../../AuthContext";

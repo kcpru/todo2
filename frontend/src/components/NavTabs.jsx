@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import "./NavTabs.scss";
 

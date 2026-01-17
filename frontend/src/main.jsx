@@ -15,7 +15,6 @@ import { Layout } from "./components/Layout/index.jsx";
 import { MyTodoLayout } from "./components/MyTodoLayout/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-// eslint-disable-next-line react-refresh/only-export-components
 function AppRoutes() {
   const location = useLocation();
 
