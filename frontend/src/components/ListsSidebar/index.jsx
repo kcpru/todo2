@@ -39,7 +39,10 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
   };
 
   return (
-    <div className={`list-item input-with-ripple ${isActive ? "active" : ""}`} onClick={handleClick}>
+    <div
+      className={`list-item input-with-ripple ${isActive ? "active" : ""}`}
+      onClick={handleClick}
+    >
       <AnimatePresence mode="wait">
         {isActive && (
           <motion.div
@@ -48,7 +51,12 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 38, mass: 0.6 }}
+            transition={{
+              type: "spring",
+              stiffness: 500,
+              damping: 38,
+              mass: 0.6,
+            }}
           />
         )}
       </AnimatePresence>
@@ -113,7 +121,6 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
           />
         </div>
       </div>
-      </div>
       <RippleContainer />
     </div>
   );
@@ -132,7 +139,28 @@ export function ListsSidebar({
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmDeleteListId, setConfirmDeleteListId] = useState(null);
   const [isCreateListModalOpen, setIsCreateListModalOpen] = useState(false);
-  const [order, setOrder] = useState(lists || []);
+  const [savedOrderIds, setSavedOrderIds] = useLocalStorage("listsOrder", null);
+  const [order, setOrder] = useState(() => {
+    if (!lists) return [];
+    if (!savedOrderIds) return lists;
+    const byId = Object.fromEntries(lists.map((l) => [l.id, l]));
+    const ordered = savedOrderIds.map((id) => byId[id]).filter(Boolean);
+    // append any new lists that aren't in saved order
+    const remaining = lists.filter((l) => !savedOrderIds.includes(l.id));
+    return [...ordered, ...remaining];
+  });
+
+  useEffect(() => {
+    if (!lists) return;
+    if (!savedOrderIds) {
+      setOrder(lists);
+      return;
+    }
+    const byId = Object.fromEntries(lists.map((l) => [l.id, l]));
+    const ordered = savedOrderIds.map((id) => byId[id]).filter(Boolean);
+    const remaining = lists.filter((l) => !savedOrderIds.includes(l.id));
+    setOrder([...ordered, ...remaining]);
+  }, [lists, savedOrderIds]);
 
   useEffect(() => {
     setOrder(lists);
@@ -153,6 +181,9 @@ export function ListsSidebar({
     <div className="lists-sidebar">
       <div className="search-container">
         <Input
+            const ids = newOrder.map((l) => l.id);
+            setSavedOrderIds(ids);
+            if (onReorderLists) onReorderLists(ids);
           type="text"
           placeholder="Search lists..."
           value={searchQuery}
@@ -189,7 +220,12 @@ export function ListsSidebar({
           className="lists-container"
         >
           {order.map((list) => (
-            <Reorder.Item key={list.id} value={list} as="div" className="list-item-container">
+            <Reorder.Item
+              key={list.id}
+              value={list}
+              as="div"
+              className="list-item-container"
+            >
               <ListItem
                 list={list}
                 isActive={selectedListId === list.id}
