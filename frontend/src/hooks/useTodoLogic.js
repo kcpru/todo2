@@ -6,6 +6,7 @@ import confetti from "canvas-confetti";
 export function useTodoLogic() {
   const {
     getLists,
+    getTasks,
     createList,
     deleteList,
     createTask,
@@ -43,19 +44,17 @@ export function useTodoLogic() {
   }, [getLists]);
 
   const loadTasks = useCallback(async () => {
+    if (!selectedListId) return;
     try {
       setLoadingTodos(true);
-      const tasksResponse = await getLists();
-      setTodos((prevTodos) => {
-        const list = tasksResponse.find((l) => l.id === selectedListId);
-        return list?.items || prevTodos;
-      });
+      const tasksResponse = await getTasks(selectedListId);
+      setTodos(tasksResponse || []);
     } catch (err) {
       console.error("Failed to load tasks:", err);
     } finally {
       setLoadingTodos(false);
     }
-  }, [getLists, selectedListId]);
+  }, [getTasks, selectedListId]);
 
   const handleAddList = useCallback(
     async (newListName) => {
@@ -176,89 +175,100 @@ export function useTodoLogic() {
     })();
   };
 
-  const toggleTodo = async (id, checkboxElement) => {
-    const todo = todos.find((t) => t.id === id);
+  const toggleTodo = useCallback(
+    async (id, checkboxElement) => {
+      const todo = todos.find((t) => t.id === id);
 
-    if (todo && !todo.isCompleted) {
-      if (checkboxElement) {
-        registerCheckboxPosition(id, checkboxElement);
-      }
-      triggerConfetti(id);
-    }
-
-    try {
-      await patchTask(id, !todo.isCompleted);
-      const updatedTodos = todos.map((t) =>
-        t.id === id ? { ...t, isCompleted: !t.isCompleted } : t
-      );
-      setTodos(updatedTodos);
-      setLists(
-        lists.map((list) =>
-          list.id === selectedListId ? { ...list, items: updatedTodos } : list
-        )
-      );
-
-      // Earn coins when task is completed
-      if (todo && !todo.isCompleted && isDopamineMode) {
-        const completedCount = updatedTodos.filter((t) => t.isCompleted).length;
-
-        // Check if all tasks are completed
-        if (completedCount === updatedTodos.length && updatedTodos.length > 0) {
-          // Delay confetti slightly to celebrate
-          setTimeout(() => {
-            triggerSchoolPrideConfetti();
-          }, 300);
+      if (todo && !todo.isCompleted) {
+        if (checkboxElement) {
+          registerCheckboxPosition(id, checkboxElement);
         }
+        triggerConfetti(id);
       }
-    } catch (err) {
-      console.error("Failed to toggle task:", err);
-    }
-  };
 
-  const deleteTodo = async (id) => {
-    try {
-      await deleteTask(id);
-      const updatedTodos = todos.filter((todo) => todo.id !== id);
-      setTodos(updatedTodos);
-      setLists(
-        lists.map((list) =>
-          list.id === selectedListId ? { ...list, items: updatedTodos } : list
-        )
-      );
-    } catch (err) {
-      console.error("Failed to delete task:", err);
-    }
-  };
+      try {
+        await patchTask(id, !todo.isCompleted);
+        const updatedTodos = todos.map((t) =>
+          t.id === id ? { ...t, isCompleted: !t.isCompleted } : t
+        );
+        setTodos(updatedTodos);
 
-  const addTodo = () => {
+        // Update lists state locally to update sidebar counter immediately
+        setLists((prevLists) =>
+          prevLists.map((list) =>
+            list.id === selectedListId ? { ...list, items: updatedTodos } : list
+          )
+        );
+
+        // Earn coins when task is completed
+        if (todo && !todo.isCompleted && isDopamineMode) {
+          const completedCount = updatedTodos.filter(
+            (t) => t.isCompleted
+          ).length;
+
+          // Check if all tasks are completed
+          if (
+            completedCount === updatedTodos.length &&
+            updatedTodos.length > 0
+          ) {
+            // Delay confetti slightly to celebrate
+            setTimeout(() => {
+              triggerSchoolPrideConfetti();
+            }, 300);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to toggle task:", err);
+      }
+    },
+    [todos, patchTask, selectedListId, isDopamineMode]
+  );
+
+  const deleteTodo = useCallback(
+    async (id) => {
+      try {
+        await deleteTask(id);
+        const updatedTodos = todos.filter((todo) => todo.id !== id);
+        setTodos(updatedTodos);
+
+        // Update lists state locally to update sidebar counter immediately
+        setLists((prevLists) =>
+          prevLists.map((list) =>
+            list.id === selectedListId ? { ...list, items: updatedTodos } : list
+          )
+        );
+      } catch (err) {
+        console.error("Failed to delete task:", err);
+      }
+    },
+    [todos, deleteTask, selectedListId]
+  );
+
+  const addTodo = useCallback(() => {
     if (!selectedListId) return;
     setEditingId("new");
     setEditingDescription("");
-  };
+  }, [selectedListId]);
 
-  const startEdit = (todo) => {
+  const startEdit = useCallback((todo) => {
     setEditingId(todo.id);
     setEditingText(todo.title);
     setEditingDescription(todo.description || "");
-  };
+  }, []);
 
-  const saveEdit = async () => {
+  const saveEdit = useCallback(async () => {
     if (!editingText.trim()) return;
 
     try {
+      let updatedTodos;
       if (editingId === "new") {
         const newTask = await createTask(
           selectedListId,
           editingText,
           editingDescription
         );
-        const updatedTodos = [...todos, newTask];
+        updatedTodos = [...todos, newTask];
         setTodos(updatedTodos);
-        setLists(
-          lists.map((list) =>
-            list.id === selectedListId ? { ...list, items: updatedTodos } : list
-          )
-        );
       } else {
         const updatedTask = await updateTask(
           editingId,
@@ -266,29 +276,40 @@ export function useTodoLogic() {
           editingDescription,
           todos.find((t) => t.id === editingId)?.isCompleted || false
         );
-        const updatedTodos = todos.map((todo) =>
+        updatedTodos = todos.map((todo) =>
           todo.id === editingId ? updatedTask : todo
         );
         setTodos(updatedTodos);
-        setLists(
-          lists.map((list) =>
-            list.id === selectedListId ? { ...list, items: updatedTodos } : list
-          )
-        );
       }
+
+      // Update lists state locally to update sidebar counter immediately
+      setLists((prevLists) =>
+        prevLists.map((list) =>
+          list.id === selectedListId ? { ...list, items: updatedTodos } : list
+        )
+      );
+
       setEditingId(null);
       setEditingText("");
       setEditingDescription("");
     } catch (err) {
       console.error("Failed to save task:", err);
     }
-  };
+  }, [
+    editingText,
+    editingId,
+    selectedListId,
+    editingDescription,
+    todos,
+    createTask,
+    updateTask,
+  ]);
 
-  const cancelEdit = () => {
+  const cancelEdit = useCallback(() => {
     setEditingId(null);
     setEditingText("");
     setEditingDescription("");
-  };
+  }, []);
 
   const filteredTodos = todos.filter((todo) => {
     const matchesSearch = todo.title

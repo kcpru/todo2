@@ -1,16 +1,20 @@
-import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useAuth } from "./AuthContext";
+import { useTodo } from "./TodoContext";
 import { TodoList } from "./components/TodoList";
 import { EditModal } from "./components/EditModal";
 import { DopamineVideo } from "./components/DopamineVideo";
-import { useTodoLogic } from "./hooks/useTodoLogic";
+import { Input } from "./components/Input";
+import { FilterSelect } from "./components/FilterSelect";
 import { ANIMATION_CONFIG } from "./constants/animations";
+import {
+  MdFormatListBulleted,
+  MdRadioButtonUnchecked,
+  MdCheckCircle,
+  MdSearch,
+} from "react-icons/md";
 import "./App.scss";
 
 function App() {
-  const { isAuthenticated, loading } = useAuth();
-
   const {
     lists,
     selectedListId,
@@ -21,8 +25,6 @@ function App() {
     editingText,
     editingDescription,
     loadingTodos,
-    loadLists,
-    loadTasks,
     toggleTodo,
     deleteTodo,
     addTodo,
@@ -35,26 +37,44 @@ function App() {
     setEditingText,
     setEditingDescription,
     registerCheckboxPosition,
-  } = useTodoLogic();
-
-  // Load lists on mount
-  useEffect(() => {
-    if (isAuthenticated && !loading) {
-      loadLists();
-    }
-  }, [isAuthenticated, loading, loadLists]);
-
-  // Load tasks when list is selected
-  useEffect(() => {
-    if (selectedListId && isAuthenticated) {
-      loadTasks();
-    }
-  }, [selectedListId, isAuthenticated, loadTasks]);
+  } = useTodo();
 
   const selectedList = lists.find((l) => l.id === selectedListId);
 
+  const filters = [
+    { value: "ALL", label: "All", icon: <MdFormatListBulleted /> },
+    { value: "ACTIVE", label: "Active", icon: <MdRadioButtonUnchecked /> },
+    { value: "COMPLETED", label: "Done", icon: <MdCheckCircle /> },
+  ];
+
   return (
     <div className="app-todo-wrapper">
+      {selectedList && (
+        <div className="controls">
+          <div className="search-container">
+            <Input
+              withRipple
+              type="text"
+              placeholder="Search task..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <span className="search-icon">
+              <MdSearch />
+            </span>
+          </div>
+
+          <div className="filter-select-wrapper">
+            <FilterSelect
+              options={filters}
+              value={filter}
+              onChange={setFilter}
+              ariaLabel="Filter tasks"
+            />
+          </div>
+        </div>
+      )}
+
       <AnimatePresence mode="wait">
         {selectedList ? (
           <motion.div
@@ -64,14 +84,10 @@ function App() {
             <TodoList
               todos={todos}
               filteredTodos={filteredTodos}
-              filter={filter}
-              searchTerm={searchTerm}
               loadingTodos={loadingTodos}
               onToggleTodo={toggleTodo}
               onDeleteTodo={deleteTodo}
               onStartEdit={startEdit}
-              onFilterChange={setFilter}
-              onSearchChange={setSearchTerm}
               onAddTodo={addTodo}
               registerCheckboxPosition={registerCheckboxPosition}
             />

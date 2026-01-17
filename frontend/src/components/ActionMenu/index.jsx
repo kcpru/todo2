@@ -91,7 +91,11 @@ export function ActionMenu({ items = [], size = "sm", className = "" }) {
   );
 
   return (
-    <div className={`action-menu ${className}`} ref={wrapperRef}>
+    <div
+      className={`action-menu ${className}`}
+      ref={wrapperRef}
+      onClick={(e) => e.stopPropagation()}
+    >
       <GradientButton
         ref={triggerRef}
         size={size}

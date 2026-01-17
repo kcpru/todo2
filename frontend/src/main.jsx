@@ -7,6 +7,7 @@ import { ThemeProvider } from "./ThemeContext.jsx";
 import { AuthProvider } from "./AuthContext.jsx";
 import { DopamineProvider } from "./DopamineContext.jsx";
 import { NotificationsProvider } from "./NotificationsContext.jsx";
+import { TodoProvider } from "./TodoContext.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Home } from "./pages/Home.jsx";
@@ -20,20 +21,22 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <DopamineProvider>
           <NotificationsProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route element={<Layout />}>
-                    <Route path="/" element={<Home />} />
+            <TodoProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<Layout />}>
+                      <Route path="/" element={<Home />} />
+                    </Route>
+                    <Route element={<MyTodoLayout />}>
+                      <Route path="/my-todo" element={<App />} />
+                    </Route>
                   </Route>
-                  <Route element={<MyTodoLayout />}>
-                    <Route path="/my-todo" element={<App />} />
-                  </Route>
-                </Route>
-              </Routes>
-            </BrowserRouter>
+                </Routes>
+              </BrowserRouter>
+            </TodoProvider>
           </NotificationsProvider>
         </DopamineProvider>
       </AuthProvider>

@@ -1,16 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { motion } from "motion/react";
 import { MdMenu, MdClose } from "react-icons/md";
 import { Header } from "../Header";
 import { ListsSidebar } from "../ListsSidebar";
-import { useTodoLogic } from "../../hooks/useTodoLogic";
+import { useTodo } from "../../TodoContext";
 import { useAuth } from "../../AuthContext";
 import "./MyTodoLayout.scss";
 
 export function MyTodoLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(280);
+  const [isResizing, setIsResizing] = useState(false);
   const { isAuthenticated, loading } = useAuth();
+  const hasLoadedListsRef = useRef(false);
 
   const {
     lists,
@@ -21,11 +24,12 @@ export function MyTodoLayout() {
     handleAddList,
     loadLists,
     loadTasks,
-  } = useTodoLogic();
+  } = useTodo();
 
   // Load lists on mount
   useEffect(() => {
-    if (isAuthenticated && !loading) {
+    if (isAuthenticated && !loading && !hasLoadedListsRef.current) {
+      hasLoadedListsRef.current = true;
       loadLists();
     }
   }, [isAuthenticated, loading, loadLists]);
@@ -36,6 +40,39 @@ export function MyTodoLayout() {
       loadTasks();
     }
   }, [selectedListId, isAuthenticated, loadTasks]);
+
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    setIsResizing(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isResizing) return;
+      const newWidth = e.clientX;
+      if (newWidth >= 240 && newWidth <= 500) {
+        setSidebarWidth(newWidth);
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "ew-resize";
+      document.body.style.userSelect = "none";
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, [isResizing]);
 
   return (
     <div className="app">
@@ -71,6 +108,7 @@ export function MyTodoLayout() {
             opacity: sidebarOpen ? 1 : 0,
           }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
+          style={{ width: sidebarOpen ? `${sidebarWidth}px` : "280px" }}
         >
           <ListsSidebar
             lists={lists}
@@ -79,6 +117,11 @@ export function MyTodoLayout() {
             onSelectList={setSelectedListId}
             onDeleteList={handleDeleteList}
             onAddList={handleAddList}
+          />
+          <div
+            className="sidebar-resizer"
+            onMouseDown={handleMouseDown}
+            style={{ cursor: isResizing ? "ew-resize" : "default" }}
           />
         </motion.aside>
 

@@ -1,107 +1,29 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Input } from "../Input";
 import { useDopamine } from "../../DopamineContext";
 import { ANIMATION_CONFIG } from "../../constants/animations";
-import {
-  MdEdit,
-  MdDelete,
-  MdFormatListBulleted,
-  MdRadioButtonUnchecked,
-  MdCheckCircle,
-  MdSearch,
-  MdAdd,
-  MdAssignmentLate,
-  MdSearchOff,
-  MdEventBusy,
-  MdChecklistRtl,
-} from "react-icons/md";
+import { MdEdit, MdDelete, MdAdd, MdAssignmentLate } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { ActionMenu } from "../ActionMenu";
 import { ConfirmDialog } from "../ConfirmDialog";
-import { Input } from "../Input";
-import { FilterSelect } from "../FilterSelect";
 import "./TodoList.scss";
 
 export function TodoList({
   todos,
   filteredTodos,
-  filter,
-  searchTerm,
   loadingTodos,
   onToggleTodo,
   onDeleteTodo,
   onStartEdit,
-  onFilterChange,
-  onSearchChange,
   onAddTodo,
   registerCheckboxPosition,
 }) {
   const { isDopamineMode } = useDopamine();
   const [confirmDeleteTodoId, setConfirmDeleteTodoId] = useState(null);
 
-  const getEmptyMessage = () => {
-    if (searchTerm.trim()) {
-      return {
-        icon: <MdSearchOff className="no-todos-icon" />,
-        title: "No results",
-        subtitle: `No tasks matching "${searchTerm}"`,
-      };
-    }
-
-    if (filter === "COMPLETED") {
-      return {
-        icon: <MdEventBusy className="no-todos-icon" />,
-        title: "No completed tasks",
-        subtitle: "Complete some tasks to see them here",
-      };
-    }
-
-    if (filter === "ACTIVE") {
-      return {
-        icon: <MdChecklistRtl className="no-todos-icon" />,
-        title: "All tasks done!",
-        subtitle: "Great job! You have completed all tasks",
-      };
-    }
-
-    return {
-      icon: <MdAssignmentLate className="no-todos-icon" />,
-      title: "No tasks yet",
-      subtitle: "Add one to get started!",
-    };
-  };
-  const filters = [
-    { value: "ALL", label: "All", icon: <MdFormatListBulleted /> },
-    { value: "ACTIVE", label: "Active", icon: <MdRadioButtonUnchecked /> },
-    { value: "COMPLETED", label: "Done", icon: <MdCheckCircle /> },
-  ];
-
   return (
     <>
-      <div className="controls">
-        <div className="search-container">
-          <Input
-            withRipple
-            type="text"
-            placeholder="Search task..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
-          <span className="search-icon">
-            <MdSearch />
-          </span>
-        </div>
-
-        <div className="filter-select-wrapper">
-          <FilterSelect
-            options={filters}
-            value={filter}
-            onChange={onFilterChange}
-            ariaLabel="Filter tasks"
-          />
-        </div>
-      </div>
-
       {loadingTodos ? (
         <div className="loading-todos">Loading tasks...</div>
       ) : (
@@ -110,11 +32,11 @@ export function TodoList({
             <AnimatePresence mode="popLayout">
               {filteredTodos.length === 0 ? (
                 <div className="no-todos">
-                  {getEmptyMessage().icon}
+                  <MdAssignmentLate className="no-todos-icon" />
                   <div className="no-todos-text">
-                    <p className="no-todos-title">{getEmptyMessage().title}</p>
+                    <p className="no-todos-title">No tasks</p>
                     <p className="no-todos-subtitle">
-                      {getEmptyMessage().subtitle}
+                      No tasks match your current filter
                     </p>
                   </div>
                 </div>

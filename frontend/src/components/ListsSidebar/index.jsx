@@ -4,8 +4,9 @@ import {
   MdAdd,
   MdCheckCircle,
   MdRadioButtonUnchecked,
+  MdSearch,
 } from "react-icons/md";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
@@ -24,6 +25,19 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
     onSelect(list.id);
   };
 
+  const getProgressText = () => {
+    if (total === 0) {
+      return "No tasks yet";
+    }
+    if (completed === total) {
+      return "All done!";
+    }
+    if (total - completed === 1) {
+      return "One more to go!";
+    }
+    return `${completed}/${total} done`;
+  };
+
   return (
     <motion.button
       className={`list-item input-with-ripple ${isActive ? "active" : ""}`}
@@ -34,15 +48,29 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
           <span className="list-name">{list.name}</span>
           <div className="list-progress">
             <span className="progress-icon">
-              {completed === total ? (
+              {completed === total && total > 0 ? (
                 <MdCheckCircle />
               ) : (
                 <MdRadioButtonUnchecked />
               )}
             </span>
-            <span className="progress-label">
-              {completed}/{total} done
-            </span>
+            <div className="progress-label-container">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={getProgressText()}
+                  className="progress-label"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{
+                    duration: 0.2,
+                    ease: "easeOut",
+                  }}
+                >
+                  {getProgressText()}
+                </motion.span>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
         <div className="list-meta">
@@ -89,14 +117,19 @@ export function ListsSidebar({
 
   return (
     <div className="lists-sidebar">
-      <Input
-        type="text"
-        placeholder="Search lists..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        withRipple={true}
-        containerClassName="search-input-wrapper"
-      />
+      <div className="search-container">
+        <Input
+          type="text"
+          placeholder="Search lists..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          withRipple={true}
+          containerClassName="search-input-wrapper"
+        />
+        <span className="search-icon">
+          <MdSearch />
+        </span>
+      </div>
 
       {loadingLists ? (
         <div className="loading-lists">Loading lists...</div>

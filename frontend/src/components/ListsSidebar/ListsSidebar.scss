@@ -17,6 +17,31 @@
   box-sizing: border-box;
 }
 
+/* Search Container */
+.lists-sidebar .search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lists-sidebar .search-container .search-input {
+  padding-right: 2.5rem;
+}
+
+.lists-sidebar .search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  z-index: 2;
+}
+
 /* Search Input Wrapper */
 .search-input-wrapper {
   flex-shrink: 0;
@@ -99,7 +124,7 @@
   align-items: center;
   padding: 0.65rem 0.8rem;
   border: 2px solid rgba(var(--md-primary-rgb), 0.15);
-  border-radius: 6px;
+  border-radius: 12px;
   background-color: transparent;
   color: var(--text-primary);
   font-weight: 600;
@@ -172,6 +197,18 @@
   color: var(--text-secondary);
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+.progress-label-container {
+  position: relative;
+  overflow: hidden;
+  min-height: 1.2em;
+  display: flex;
+  align-items: center;
+}
+
+.progress-label {
+  display: block;
 }
 
 .progress-icon {
