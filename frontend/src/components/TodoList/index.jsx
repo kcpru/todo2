@@ -16,6 +16,7 @@ import {
   MdChecklistRtl,
 } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
+import { ActionMenu } from "../ActionMenu";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { Input } from "../Input";
 import { FilterSelect } from "../FilterSelect";
@@ -161,21 +162,20 @@ export function TodoList({
                       )}
                     </div>
                     <div className="todo-actions">
-                      <GradientButton
-                        variant="secondary"
-                        size="sm"
-                        iconOnly={true}
-                        className="todo-action-btn edit-btn"
-                        onClick={() => onStartEdit(todo)}
-                        icon={<MdEdit />}
-                      />
-                      <GradientButton
-                        variant="danger"
-                        size="sm"
-                        iconOnly={true}
-                        className="todo-action-btn delete-btn"
-                        onClick={() => setConfirmDeleteTodoId(todo.id)}
-                        icon={<MdDelete />}
+                      <ActionMenu
+                        items={[
+                          {
+                            label: "Edit",
+                            icon: <MdEdit />,
+                            onClick: () => onStartEdit(todo),
+                          },
+                          {
+                            label: "Delete",
+                            icon: <MdDelete />,
+                            variant: "danger",
+                            onClick: () => setConfirmDeleteTodoId(todo.id),
+                          },
+                        ]}
                       />
                     </div>
                   </motion.div>
