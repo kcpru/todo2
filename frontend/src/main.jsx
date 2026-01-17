@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import "./index.scss";
 import App from "./App.jsx";
 import { ThemeProvider } from "./ThemeContext.jsx";
@@ -15,6 +15,25 @@ import { Layout } from "./components/Layout/index.jsx";
 import { MyTodoLayout } from "./components/MyTodoLayout/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
+function AppRoutes() {
+  const location = useLocation();
+
+  return (
+    <Routes location={location} key={location.pathname}>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+        <Route element={<MyTodoLayout />}>
+          <Route path="/my-todo" element={<App />} />
+        </Route>
+      </Route>
+    </Routes>
+  );
+}
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
@@ -23,18 +42,7 @@ createRoot(document.getElementById("root")).render(
           <NotificationsProvider>
             <TodoProvider>
               <BrowserRouter>
-                <Routes>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route element={<ProtectedRoute />}>
-                    <Route element={<Layout />}>
-                      <Route path="/" element={<Home />} />
-                    </Route>
-                    <Route element={<MyTodoLayout />}>
-                      <Route path="/my-todo" element={<App />} />
-                    </Route>
-                  </Route>
-                </Routes>
+                <AppRoutes />
               </BrowserRouter>
             </TodoProvider>
           </NotificationsProvider>

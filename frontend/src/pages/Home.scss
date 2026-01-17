@@ -9,6 +9,28 @@
   overflow-y: auto;
 }
 
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+.spinner-icon {
+  font-size: 3rem;
+  color: var(--md-primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .posts-feed {
   max-width: 450px;
   width: 100%;
