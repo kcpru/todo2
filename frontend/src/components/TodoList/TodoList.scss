@@ -204,11 +204,13 @@
   padding: 1.5rem 1rem;
   margin-top: 0.5rem;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 
   .add-btn,
   .share-btn {
-    flex: 1;
-    min-width: 150px;
+    flex: 0 0 auto;
+    min-width: auto;
   }
 }
 
@@ -236,8 +238,7 @@
 
     .add-btn,
     .share-btn {
-      flex: 1;
-      min-width: auto;
+      flex: 0 0 auto;
     }
   }
 }
