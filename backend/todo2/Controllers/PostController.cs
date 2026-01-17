@@ -29,31 +29,39 @@ public class PostController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<PostResponse>>> GetPosts(CancellationToken ct, [FromQuery] int startIndex = 0)
     {
+        if (!TryGetUserId(out var userId))
+            return Unauthorized();
+
         var offset = startIndex < 0 ? 0 : startIndex;
 
         var posts = await _db.Posts
             .AsNoTracking()
             .Include(p => p.Comments)
+            .Include(p => p.Likes)
             .OrderByDescending(p => p.CreatedAt)
             .Skip(offset)
             .Take(10)
             .ToListAsync(ct);
 
-        return Ok(posts.Select(PostResponseMapper.ToResponse).ToList());
+        return Ok(posts.Select(p => PostResponseMapper.ToResponse(p, userId)).ToList());
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<PostResponse>> GetPost(Guid id, CancellationToken ct)
     {
+        if (!TryGetUserId(out var userId))
+            return Unauthorized();
+
         var post = await _db.Posts
             .AsNoTracking()
             .Include(p => p.Comments)
+            .Include(p => p.Likes)
             .SingleOrDefaultAsync(p => p.Id == id, ct);
 
         if (post is null)
             return NotFound();
 
-        return Ok(PostResponseMapper.ToResponse(post));
+        return Ok(PostResponseMapper.ToResponse(post, userId));
     }
 
     [HttpPost]
