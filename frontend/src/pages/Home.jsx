@@ -1,44 +1,9 @@
 import { useState, useEffect } from "react";
-import { MdThumbUp, MdComment } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
 import { usePostsAPI } from "../hooks/usePostsAPI";
-import { GradientButton } from "../components/GradientButton";
+import { PostCard } from "../components/PostCard";
 import { PostDetailModal } from "../components/PostDetailModal";
 import "./Home.scss";
-
-function PostCard({ post, onClick }) {
-  return (
-    <div className="post-card" onClick={onClick}>
-      <div className="post-header">
-        <div className="post-info">
-          <div className="post-title">Todo: {post.id.slice(0, 8)}</div>
-          <div className="post-time">
-            {new Date(post.createdAt).toLocaleDateString()}
-          </div>
-        </div>
-      </div>
-
-      <div className="post-content">{post.content}</div>
-
-      {post.todoListAsJson && (
-        <div className="post-todo-preview">
-          <div className="preview-title">
-            {JSON.parse(post.todoListAsJson)?.name || "Todo List"}
-          </div>
-        </div>
-      )}
-
-      <div className="post-actions">
-        <GradientButton variant="secondary" size="sm" icon={<MdThumbUp />}>
-          {post.likesCount || 0} Likes
-        </GradientButton>
-        <GradientButton variant="secondary" size="sm" icon={<MdComment />}>
-          {post.comments?.length || 0} Comments
-        </GradientButton>
-      </div>
-    </div>
-  );
-}
 
 export function Home() {
   const { getPosts, getPost } = usePostsAPI();

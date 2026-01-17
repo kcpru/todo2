@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace todo2.Models.Db;
 
@@ -11,5 +12,6 @@ public class TodoTask
 
     [ForeignKey(nameof(TodoList))]
     public Guid TodoListId { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore]
     public TodoList TodoList { get; set; } = null!;
 }
