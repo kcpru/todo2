@@ -253,19 +253,14 @@
 
 .todo-actions {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
   opacity: 0;
   transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .todo-item:hover .todo-actions {
   opacity: 1;
-}
-
-.todo-action-btn {
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 
 .add-btn {
