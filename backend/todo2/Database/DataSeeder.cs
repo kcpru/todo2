@@ -240,7 +240,7 @@ public static class DataSeeder
                 Content = "Just completed my work project documentation! Really proud of the comprehensive API guide I created. Ready to share with the team. 🚀",
                 CreatedAt = DateTime.UtcNow.AddDays(-5),
                 UpdatedAt = DateTime.UtcNow.AddDays(-5),
-                TodoListAsJson = System.Text.Json.JsonSerializer.Serialize(new { adminList1.Id, adminList1.Name }),
+                TodoListAsJson = adminList1.ToJson(),
                 Comments = [],
                 Likes = []
             },
@@ -250,7 +250,7 @@ public static class DataSeeder
                 Content = "Started learning Rust! Really excited about this new journey. Already completed the first few chapters of the book. #programming #rust",
                 CreatedAt = DateTime.UtcNow.AddDays(-3),
                 UpdatedAt = DateTime.UtcNow.AddDays(-3),
-                TodoListAsJson = System.Text.Json.JsonSerializer.Serialize(new { adminList2.Id, adminList2.Name }),
+                TodoListAsJson = adminList2.ToJson(),
                 Comments = [],
                 Likes = []
             },
@@ -260,7 +260,7 @@ public static class DataSeeder
                 Content = "Finally got all my groceries! Meal prep for the week is ready. Time to cook! 👨‍🍳",
                 CreatedAt = DateTime.UtcNow.AddDays(-2),
                 UpdatedAt = DateTime.UtcNow.AddDays(-2),
-                TodoListAsJson = System.Text.Json.JsonSerializer.Serialize(new { user1List.Id, user1List.Name }),
+                TodoListAsJson = user1List.ToJson(),
                 Comments = [],
                 Likes = []
             },
@@ -270,7 +270,7 @@ public static class DataSeeder
                 Content = "Booked my dream vacation to Paris! Can't wait for summer. Planning to visit the Eiffel Tower, Louvre Museum, and many cafes! ✈️🇫🇷",
                 CreatedAt = DateTime.UtcNow.AddDays(-1),
                 UpdatedAt = DateTime.UtcNow.AddDays(-1),
-                TodoListAsJson = System.Text.Json.JsonSerializer.Serialize(new { user2List.Id, user2List.Name }),
+                TodoListAsJson = user2List.ToJson(),
                 Comments = [],
                 Likes = []
             },
@@ -280,7 +280,7 @@ public static class DataSeeder
                 Content = "Living room renovation is coming along great! Just installed the new light fixtures and they look amazing. Next step: painting! 🏠",
                 CreatedAt = DateTime.UtcNow.AddHours(-12),
                 UpdatedAt = DateTime.UtcNow.AddHours(-12),
-                TodoListAsJson = System.Text.Json.JsonSerializer.Serialize(new { user3List.Id, user3List.Name }),
+                TodoListAsJson = user3List.ToJson(),
                 Comments = [],
                 Likes = []
             }
