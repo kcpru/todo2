@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ImSpinner2 } from "react-icons/im";
+import { LayoutGroup } from "motion/react";
 import { usePostsAPI } from "../hooks/usePostsAPI";
 import { PostCard } from "../components/PostCard";
 import { PostDetailModal } from "../components/PostDetailModal";
@@ -72,26 +73,29 @@ export function Home() {
 
   return (
     <div className="home-container">
-      <div className="posts-feed">
-        {posts.length === 0 ? (
-          <div className="no-posts">No posts yet. Be the first to share!</div>
-        ) : (
-          posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onClick={() => handlePostClick(post)}
-            />
-          ))
-        )}
-      </div>
+      <LayoutGroup>
+        <div className="posts-feed">
+          {posts.length === 0 ? (
+            <div className="no-posts">No posts yet. Be the first to share!</div>
+          ) : (
+            posts.map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                isSelected={isModalOpen && selectedPost?.id === post.id}
+                onClick={() => handlePostClick(post)}
+              />
+            ))
+          )}
+        </div>
 
-      <PostDetailModal
-        post={selectedPost}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onPostUpdate={handlePostUpdate}
-      />
+        <PostDetailModal
+          post={selectedPost}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onPostUpdate={handlePostUpdate}
+        />
+      </LayoutGroup>
     </div>
   );
 }

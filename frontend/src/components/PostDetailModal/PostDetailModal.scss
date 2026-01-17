@@ -1,42 +1,10 @@
 /* Post Detail Modal - specific styles */
-.post-detail-content {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--text-primary);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin-bottom: 1rem;
-}
-
-.post-detail-todo-preview {
-  padding: 1rem;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--md-primary-rgb), 0.1) 0%,
-    rgba(var(--md-primary-rgb), 0.05) 100%
-  );
-  border-left: 3px solid var(--accent-primary);
-  border-radius: 8px;
-  margin-bottom: 1rem;
-
-  .preview-title {
-    font-weight: 600;
-    color: var(--accent-primary);
-    font-size: 0.9rem;
-  }
-}
-
-.post-detail-actions {
-  display: flex;
-  gap: 1rem;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(var(--md-primary-rgb), 0.15);
-}
-
 .post-detail-comments-section {
   display: flex;
   flex-direction: column;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(var(--md-primary-rgb), 0.15);
+  overflow: hidden;
 }
 
 .comments-title {

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { MdThumbUp, MdFavorite, MdSend } from "react-icons/md";
+import { MdFavorite, MdSend } from "react-icons/md";
+import { motion } from "motion/react";
 import { ModalForm } from "../ModalForm";
 import { Comment } from "../Comment";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
-import { TodoListPreview } from "../TodoListPreview";
+import { PostContent } from "../PostContent";
 import { usePostsAPI } from "../../hooks/usePostsAPI";
 import "./PostDetailModal.scss";
 
@@ -71,25 +72,9 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
       title={`Todo: ${post.id.slice(0, 8)}`}
       showFooter={false}
       showCloseButton={true}
+      layoutId={`post-${post.id}`}
     >
-      <div className="post-detail-content">{post.content}</div>
-
-      {post.todoListAsJson && (
-        <div className="post-detail-todo-section">
-          <TodoListPreview todoListJson={post.todoListAsJson} />
-        </div>
-      )}
-
-      <div className="post-detail-actions">
-        <GradientButton
-          variant="secondary"
-          size="sm"
-          icon={<MdThumbUp />}
-          onClick={handleLike}
-        >
-          {post.likesCount || 0} Likes
-        </GradientButton>
-      </div>
+      <PostContent post={post} onLike={handleLike} showCommentButton={false} />
 
       <div className="post-detail-comments-section">
         <h3 className="comments-title">
@@ -120,7 +105,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
 
         <div className="post-detail-comments">
           {post.comments && post.comments.length > 0 ? (
-            post.comments.map((comment) => {
+            post.comments.map((comment, index) => {
               const extraLikes = commentLikes[comment.id] || 0;
               const totalLikes = (comment.likesCount || 0) + extraLikes;
               const commentRipples = rippleEffects.filter(
