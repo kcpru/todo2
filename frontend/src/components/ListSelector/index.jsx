@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { motion } from "motion/react";
-import { MdDelete, MdAdd } from "react-icons/md";
+
+import { MdAdd, MdDelete } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";

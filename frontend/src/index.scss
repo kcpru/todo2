@@ -106,7 +106,9 @@ body {
     rgba(var(--md-primary-rgb), 0.05) 0%,
     rgba(var(--md-primary-rgb), 0.03) 100%
   );
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Scrollbar Styling */
@@ -155,7 +157,10 @@ button {
   background-color: var(--button-bg);
   color: var(--text-primary);
   cursor: pointer;
-  transition: border-color 0.25s, background-color 0.3s ease, color 0.3s ease;
+  transition:
+    border-color 0.25s,
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 button:hover {
   border-color: var(--border-color);

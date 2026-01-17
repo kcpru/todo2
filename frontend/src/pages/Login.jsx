@@ -2,6 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { useAuth } from "../AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import { MdLogin, MdMailOutline, MdLockOutline } from "react-icons/md";
 import "../styles/Auth.scss";
@@ -101,8 +102,8 @@ export function Login() {
               validationErrors.login
                 ? "invalid"
                 : usernameOrEmail.trim()
-                ? "valid"
-                : ""
+                  ? "valid"
+                  : ""
             }`}
             {...getFieldMotion("login", 0.2)}
           >
@@ -118,7 +119,7 @@ export function Login() {
                 setUsernameOrEmail(value);
                 if (validationErrors.login && value.trim()) {
                   setValidationErrors((prev) => {
-                    const { login, ...rest } = prev;
+                    const { login: _login, ...rest } = prev;
                     return rest;
                   });
                 }
@@ -135,8 +136,8 @@ export function Login() {
               validationErrors.password
                 ? "invalid"
                 : password.trim().length >= 8
-                ? "valid"
-                : ""
+                  ? "valid"
+                  : ""
             }`}
             {...getFieldMotion("password", 0.3)}
           >
@@ -152,7 +153,7 @@ export function Login() {
                 setPassword(value);
                 if (validationErrors.password && value.trim().length >= 8) {
                   setValidationErrors((prev) => {
-                    const { password: pw, ...rest } = prev;
+                    const { password: _pw, ...rest } = prev;
                     return rest;
                   });
                 }

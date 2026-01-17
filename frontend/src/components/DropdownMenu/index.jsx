@@ -1,10 +1,9 @@
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+
 import { ANIMATION_CONFIG } from "../../constants/animations";
 
 export function DropdownMenu({
   isOpen,
-  onClose,
-  anchor,
   children,
   className = "",
   position = "bottom-right",

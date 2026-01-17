@@ -221,7 +221,14 @@ export function useTodoLogic() {
         console.error("Failed to toggle task:", err);
       }
     },
-    [todos, patchTask, selectedListId, isDopamineMode]
+    [
+      todos,
+      patchTask,
+      selectedListId,
+      isDopamineMode,
+      triggerConfetti,
+      triggerSchoolPrideConfetti,
+    ]
   );
 
   const deleteTodo = useCallback(
