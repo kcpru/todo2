@@ -1,4 +1,4 @@
-import { AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 import { ANIMATION_CONFIG } from "../../constants/animations";
 

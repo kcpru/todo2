@@ -4,6 +4,7 @@ export function ModalBase({
   isOpen,
   onClose,
   children,
+  size = "md", // sm, md, lg
   overlayClassName = "",
   panelClassName = "",
   overlayTransition = { duration: 0.2 },
@@ -15,11 +16,13 @@ export function ModalBase({
   panelAnimate = { opacity: 1, scale: 1, y: 0 },
   panelExit = { opacity: 0, scale: 0.95, y: 10 },
 }) {
+  const sizeClass = `modal-${size}`;
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className={overlayClassName}
+          className={`modal-overlay ${overlayClassName}`}
           initial={overlayInitial}
           animate={overlayAnimate}
           exit={overlayExit}
@@ -27,7 +30,7 @@ export function ModalBase({
           onClick={onClose}
         >
           <motion.div
-            className={panelClassName}
+            className={`modal ${sizeClass} ${panelClassName}`}
             initial={panelInitial}
             animate={panelAnimate}
             exit={panelExit}

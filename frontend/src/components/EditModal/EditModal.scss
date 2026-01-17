@@ -1,4 +1,4 @@
-/* Modal Styles */
+/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -12,24 +12,50 @@
   z-index: 2000;
 }
 
+/* Modal Base */
 .modal {
   background-color: var(--surface, var(--bg-primary));
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
   border-radius: 16px;
-  padding: 1.25rem;
-  max-width: 460px;
   width: 92vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Modal Sizes */
+.modal-sm {
+  max-width: 400px;
+}
+
+.modal-md {
+  max-width: 500px;
+}
+
+.modal-lg {
+  max-width: 700px;
+  max-height: 90vh;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.25rem 0.75rem;
+  border-bottom: 1px solid rgba(var(--md-primary-rgb), 0.15);
 }
 
 .modal-title {
   text-align: left;
   font-size: 1.15rem;
   font-weight: 800;
-  margin: 0 0 0.75rem 0;
+  margin: 0;
   color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex: 1;
 }
 
 .modal-title svg {
@@ -37,6 +63,42 @@
   flex-shrink: 0;
 }
 
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(var(--md-primary-rgb), 0.1);
+    color: var(--text-primary);
+  }
+}
+
+/* Modal Body */
+.modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  padding: 0.75rem 1.25rem 1.25rem;
+  border-top: 1px solid rgba(var(--md-primary-rgb), 0.15);
+}
+
+/* Input fields specific to EditModal */
 .modal-input {
   width: 100%;
   padding: 0.65rem 0.85rem;
@@ -52,15 +114,15 @@
   margin-bottom: 0.9rem;
   box-sizing: border-box;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
-.modal-input::placeholder {
-  color: var(--text-secondary);
-}
+  &::placeholder {
+    color: var(--text-secondary);
+  }
 
-.modal-input:focus {
-  outline: none;
-  border-color: #646cff;
+  &:focus {
+    outline: none;
+    border-color: #646cff;
+  }
 }
 
 .modal-textarea {
@@ -80,23 +142,25 @@
   box-sizing: border-box;
   transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   resize: vertical;
+
+  &::placeholder {
+    color: var(--text-secondary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #646cff;
+  }
 }
 
-.modal-textarea::placeholder {
-  color: var(--text-secondary);
-}
+@media (max-width: 768px) {
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+  }
 
-.modal-textarea:focus {
-  outline: none;
-  border-color: #646cff;
-}
-
-.modal-buttons {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-}
-
-.modal-btn {
-  min-width: 110px;
+  .modal-lg {
+    max-height: 100vh;
+  }
 }

@@ -50,3 +50,16 @@ textarea.search-input {
     z-index: 2;
   }
 }
+
+.character-counter {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(var(--bg-primary-rgb, 0), 0.8);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 3;
+}
