@@ -1,36 +1,33 @@
-import { MdThumbUp, MdComment } from "react-icons/md";
-import { GradientButton } from "../GradientButton";
-import { TodoListPreview } from "../TodoListPreview";
+import { motion } from "motion/react";
+import { PostContent } from "../PostContent";
 import "./PostCard.scss";
 
-export function PostCard({ post, onClick }) {
+export function PostCard({ post, onClick, isSelected }) {
   return (
-    <div className="post-card" onClick={onClick}>
-      <div className="post-header">
-        <div className="post-info">
-          <div className="post-title">Todo: {post.id.slice(0, 8)}</div>
-          <div className="post-time">
-            {new Date(post.createdAt).toLocaleDateString()}
-          </div>
-        </div>
-      </div>
-
-      <div className="post-content">{post.content}</div>
-
-      {post.todoListAsJson && (
-        <div className="post-todo-section">
-          <TodoListPreview todoListJson={post.todoListAsJson} />
-        </div>
-      )}
-
-      <div className="post-actions">
-        <GradientButton variant="secondary" size="sm" icon={<MdThumbUp />}>
-          {post.likesCount || 0} Likes
-        </GradientButton>
-        <GradientButton variant="secondary" size="sm" icon={<MdComment />}>
-          {post.comments?.length || 0} Comments
-        </GradientButton>
-      </div>
-    </div>
+    <motion.div
+      className="post-card"
+      onClick={onClick}
+      layoutId={`post-${post.id}`}
+      layout
+      whileHover={{ y: -6, scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{
+        layout: {
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
+        },
+        default: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: isSelected ? 0 : 1 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
+      >
+        <PostContent post={post} showCommentButton={true} />
+      </motion.div>
+    </motion.div>
   );
 }

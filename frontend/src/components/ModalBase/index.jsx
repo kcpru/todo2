@@ -7,14 +7,20 @@ export function ModalBase({
   size = "md", // sm, md, lg
   overlayClassName = "",
   panelClassName = "",
-  overlayTransition = { duration: 0.2 },
-  panelTransition = { duration: 0.2 },
+  overlayTransition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+  panelTransition = {
+    type: "spring",
+    stiffness: 300,
+    damping: 25,
+    mass: 0.8,
+  },
   overlayInitial = { opacity: 0 },
   overlayAnimate = { opacity: 1 },
   overlayExit = { opacity: 0 },
-  panelInitial = { opacity: 0, scale: 0.95, y: 10 },
-  panelAnimate = { opacity: 1, scale: 1, y: 0 },
-  panelExit = { opacity: 0, scale: 0.95, y: 10 },
+  panelInitial = {},
+  panelAnimate = {},
+  panelExit = {},
+  layoutId,
 }) {
   const sizeClass = `modal-${size}`;
 
@@ -31,10 +37,13 @@ export function ModalBase({
         >
           <motion.div
             className={`modal ${sizeClass} ${panelClassName}`}
+            layoutId={layoutId}
+            layout
             initial={panelInitial}
             animate={panelAnimate}
             exit={panelExit}
             transition={panelTransition}
+            style={{ opacity: 1 }}
             onClick={(e) => e.stopPropagation()}
           >
             {children}

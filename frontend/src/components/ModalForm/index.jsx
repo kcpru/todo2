@@ -17,6 +17,7 @@ export function ModalForm({
   isSaveDisabled = false,
   showFooter = true,
   showCloseButton = false,
+  layoutId,
 }) {
   const handleClose = onClose || onCancel;
 
@@ -25,8 +26,7 @@ export function ModalForm({
       isOpen={isOpen}
       onClose={handleClose}
       size={size}
-      overlayTransition={{ duration: 0.2 }}
-      panelTransition={{ duration: 0.2 }}
+      layoutId={layoutId}
     >
       {title && (
         <div className="modal-header">

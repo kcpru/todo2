@@ -21,6 +21,9 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+  z-index: 2001;
+  opacity: 1 !important;
 }
 
 /* Modal Sizes */
