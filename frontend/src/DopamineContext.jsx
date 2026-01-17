@@ -26,7 +26,6 @@ export function DopamineProvider({ children }) {
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useDopamine() {
   const context = useContext(DopamineContext);
   if (!context) {

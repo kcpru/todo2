@@ -2,7 +2,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { useAuth } from "../AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import {
   MdPersonAdd,
