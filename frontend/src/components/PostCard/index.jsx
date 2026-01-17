@@ -23,9 +23,9 @@ export function PostCard({ post, onClick, isSelected }) {
       <motion.div
         initial={{ opacity: 1 }}
         animate={{ opacity: isSelected ? 0 : 1 }}
-        transition={{ duration: 0.15, ease: "easeOut" }}
+        transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
       >
-        <PostContent post={post} showCommentButton={true} />
+        <PostContent post={post} showCommentButton={true} mode="card" />
       </motion.div>
     </motion.div>
   );

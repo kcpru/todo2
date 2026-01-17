@@ -74,9 +74,25 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
       showCloseButton={true}
       layoutId={`post-${post.id}`}
     >
-      <PostContent post={post} onLike={handleLike} showCommentButton={false} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.15, ease: [0.4, 0, 0.2, 1] }}
+      >
+        <PostContent
+          post={post}
+          onLike={handleLike}
+          showCommentButton={false}
+          mode="modal"
+        />
+      </motion.div>
 
-      <div className="post-detail-comments-section">
+      <motion.div
+        className="post-detail-comments-section"
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.35, ease: [0.4, 0, 0.2, 1] }}
+      >
         <h3 className="comments-title">
           Comments ({post.comments?.length || 0})
         </h3>
@@ -113,7 +129,17 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
               );
 
               return (
-                <div key={comment.id} style={{ position: "relative" }}>
+                <motion.div
+                  key={comment.id}
+                  style={{ position: "relative" }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.25,
+                    delay: 0.4 + 0.08 * index,
+                    ease: [0.4, 0, 0.2, 1],
+                  }}
+                >
                   <Comment
                     comment={{ ...comment, likesCount: totalLikes }}
                     onDoubleTap={handleDoubleTap}
@@ -130,7 +156,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
                       <MdFavorite />
                     </div>
                   ))}
-                </div>
+                </motion.div>
               );
             })
           ) : (
@@ -139,7 +165,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
     </ModalForm>
   );
 }
