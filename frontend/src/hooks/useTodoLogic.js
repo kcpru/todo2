@@ -14,7 +14,7 @@ export function useTodoLogic() {
     patchTask,
     deleteTask,
   } = useAuth();
-  const { isDopamineMode, confettiCount } = useDopamine();
+  const { isDopamineMode, confettiCount, animationSpeed } = useDopamine();
   const checkboxPositionsRef = useRef({});
 
   const [lists, setLists] = useState([]);
@@ -118,16 +118,21 @@ export function useTodoLogic() {
     const randomType =
       confettiTypes[Math.floor(Math.random() * confettiTypes.length)];
 
+    const speedMap = {
+      fast: { startVelocity: 18, decay: 0.9, delay: 120 },
+      slow: { startVelocity: 10, decay: 0.97, delay: 350 },
+    };
+    const speed = speedMap[animationSpeed] || speedMap.fast;
     confetti({
       particleCount: Math.max(1, Math.round(confettiCount)),
       spread: 360,
       origin: origin,
-      startVelocity: 17.5,
+      startVelocity: speed.startVelocity,
       gravity: 0.8,
       colors: [randomType.color, "#dde1ff", "#ffffff"],
       shapes: [randomType.shape, "circle"],
       scalar: 0.8,
-      decay: 0.92,
+      decay: speed.decay,
     });
 
     // Secondary burst
@@ -136,13 +141,13 @@ export function useTodoLogic() {
         particleCount: Math.max(1, Math.round(confettiCount * 0.5)),
         spread: 360,
         origin: origin,
-        startVelocity: 12.5,
+        startVelocity: speed.startVelocity * 0.7,
         gravity: 0.8,
         colors: ["#4355b9", "#b8c3ff", "#dde1ff"],
         scalar: 0.6,
-        decay: 0.95,
+        decay: speed.decay + 0.03,
       });
-    }, 150);
+    }, speed.delay);
   };
 
   // School Pride confetti - full screen celebration when all tasks are completed

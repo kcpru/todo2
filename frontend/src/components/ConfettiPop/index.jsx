@@ -1,13 +1,16 @@
 import { motion } from "motion/react";
 import { MdFavorite } from "react-icons/md";
+import { useDopamine } from "../../DopamineContext";
 import "./ConfettiPop.scss";
 
 export function ConfettiPop({ x, y }) {
+  const { animationSpeed } = useDopamine();
   const particleCount = Math.floor(Math.random() * 3) + 6;
+  const duration = animationSpeed === "slow" ? 1.2 : 0.6;
   const particles = Array.from({ length: particleCount }, (_, i) => ({
     id: i,
     angle: (360 / particleCount) * i + (Math.random() - 0.5) * 30,
-    duration: 0.6 + Math.random() * 0.3,
+    duration: duration + Math.random() * 0.3,
   }));
 
   return (

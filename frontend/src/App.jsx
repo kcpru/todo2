@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState, useCallback } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import { useTodo } from "./TodoContext";
 import { TodoList } from "./components/TodoList";
@@ -17,6 +18,7 @@ import {
   MdCheckCircle,
   MdSearch,
 } from "react-icons/md";
+import Stats from "./pages/Stats";
 import "./App.scss";
 
 function App() {
@@ -164,6 +166,11 @@ function App() {
       />
 
       <DopamineVideo />
+
+      <Routes>
+        <Route path="/stats" element={<Stats />} />
+        {/* Add other routes here if needed */}
+      </Routes>
     </div>
   );
 }

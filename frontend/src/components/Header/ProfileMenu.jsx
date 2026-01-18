@@ -24,13 +24,11 @@ export function ProfileMenu() {
 
   return (
     <div className="profile-container">
-      <GradientButton
-        variant="primary"
-        size="md"
-        iconOnly
-        className="profile-button"
+      <button
+        className="profile-avatar-btn"
         onClick={() => setShowProfile(!showProfile)}
         title={user?.username}
+        type="button"
       >
         {(() => {
           const [avatarUrl, setAvatarUrl] = useState(null);
@@ -77,9 +75,13 @@ export function ProfileMenu() {
               />
             );
           }
-          return user?.username?.charAt(0).toUpperCase() || "U";
+          return (
+            <span className="profile-avatar-fallback">
+              {user?.username?.charAt(0).toUpperCase() || "U"}
+            </span>
+          );
         })()}
-      </GradientButton>
+      </button>
 
       <DropdownMenu
         isOpen={showProfile}

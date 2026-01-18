@@ -1,6 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { MdLeaderboard, MdHome, MdCheckCircle } from "react-icons/md";
+import {
+  MdLeaderboard,
+  MdHome,
+  MdCheckCircle,
+  MdSettings,
+} from "react-icons/md";
 import "./NavTabs.scss";
 
 export function NavTabs() {
@@ -10,6 +15,7 @@ export function NavTabs() {
   const isHome = location.pathname === "/";
   const isTodo = location.pathname === "/my-todo";
   const isStats = location.pathname === "/stats";
+  const isSettings = location.pathname === "/settings";
 
   return (
     <div className="nav-tabs-header modern">
@@ -36,6 +42,14 @@ export function NavTabs() {
         {isStats && <motion.div className="tab-bg" layoutId="tab-bg" />}
         <MdLeaderboard className="nav-tab-icon" />
         <span className="nav-tab-label-main">Stats</span>
+      </button>
+      <button
+        className={`nav-tab-header modern ${isSettings ? "active" : ""}`}
+        onClick={() => navigate("/settings")}
+      >
+        {isSettings && <motion.div className="tab-bg" layoutId="tab-bg" />}
+        <MdSettings className="nav-tab-icon" />
+        <span className="nav-tab-label-main">Settings</span>
       </button>
     </div>
   );

@@ -1,12 +1,22 @@
+.fixed-video.medium {
+  max-height: 260px;
+  height: 260px;
+}
 /* Fixed video in bottom-right corner */
 .fixed-video {
   position: fixed;
   right: 1rem;
   bottom: 1rem;
-  max-height: 300px;
-  height: 300px;
-  width: auto;
   border-radius: 8px;
   z-index: 1500;
   pointer-events: none;
+  width: auto;
+}
+.fixed-video.small {
+  max-height: 180px;
+  height: 180px;
+}
+.fixed-video.large {
+  max-height: 340px;
+  height: 340px;
 }

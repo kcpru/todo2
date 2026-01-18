@@ -1,8 +1,8 @@
 import { useTheme } from "../../ThemeContext";
 import { useDopamine } from "../../DopamineContext";
-import { GradientButton } from "../GradientButton";
 import { NavTabs } from "../NavTabs";
 import ProfileMenu from "./ProfileMenu";
+import { MdCheckCircle } from "react-icons/md";
 import "./Header.scss";
 
 export function Header() {
@@ -15,7 +15,13 @@ export function Header() {
   return (
     <header className="app-header">
       <div className="header-left">
-        <h1 className="app-title">todo2</h1>
+        <div className="app-logo-title">
+          <MdCheckCircle className="app-logo" />
+          <div className="app-title-group">
+            <span className="app-title">todo2</span>
+            <span className="app-slogan">get sh*t done</span>
+          </div>
+        </div>
       </div>
 
       <div className="header-center">

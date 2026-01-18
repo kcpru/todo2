@@ -12,7 +12,7 @@ import { usePostsAPI } from "../../hooks/usePostsAPI";
 import "./PostDetailModal.scss";
 
 export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
-  const { isDopamineMode, confettiCount } = useDopamine();
+  const { isDopamineMode, confettiCount, animationSpeed } = useDopamine();
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [commentLikes, setCommentLikes] = useState({});
@@ -35,6 +35,11 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
   }, []);
 
   const fireConfetti = (x, y) => {
+    const speedMap = {
+      fast: { startVelocity: 18, decay: 0.9, delay: 120 },
+      slow: { startVelocity: 10, decay: 0.97, delay: 350 },
+    };
+    const speed = speedMap[animationSpeed] || speedMap.fast;
     if (!confettiInstanceRef.current) {
       const canvas = document.createElement("canvas");
       canvas.style.position = "fixed";
@@ -61,8 +66,8 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
     confettiInstanceRef.current({
       particleCount: Math.max(1, Math.round(confettiCount)),
       spread: 320,
-      startVelocity: 18,
-      decay: 0.9,
+      startVelocity: speed.startVelocity,
+      decay: speed.decay,
       scalar: 0.75,
       gravity: 0.8,
       origin: { x: normalizedX, y: normalizedY },
@@ -74,15 +79,15 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
       confettiInstanceRef.current?.({
         particleCount: Math.max(1, Math.round(confettiCount * 0.57)),
         spread: 320,
-        startVelocity: 12,
-        decay: 0.92,
+        startVelocity: speed.startVelocity * 0.7,
+        decay: speed.decay + 0.03,
         scalar: 0.65,
         gravity: 0.8,
         origin: { x: normalizedX, y: normalizedY },
         shapes,
         colors: palette,
       });
-    }, 120);
+    }, speed.delay);
   };
 
   const handleSubmitComment = async () => {

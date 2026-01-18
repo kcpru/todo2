@@ -2,7 +2,6 @@
 .settings-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  margin-top: 1.5rem;
 }
 .settings-card {
   background: var(--md-surface);
@@ -130,11 +129,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background: rgba(var(--md-primary-rgb), 0.01);
-  padding: 0.6rem 0.8rem;
-  border-radius: 10px;
-  margin-top: 0.5rem;
-  margin-bottom: 0.2rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -342,12 +336,7 @@
 }
 
 .settings-section {
-  background: linear-gradient(
-    180deg,
-    rgba(var(--md-primary-rgb), 0.01),
-    rgba(var(--md-primary-rgb), 0.005)
-  );
-  border: 1px solid rgba(var(--md-primary-rgb), 0.06);
+  background: rgba(var(--md-primary-rgb), 0.01);
   padding: 1.25rem;
   border-radius: 12px;
   margin-bottom: 1.25rem;
