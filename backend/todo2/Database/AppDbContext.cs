@@ -10,6 +10,4 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<TodoTask> TodoTasks => Set<TodoTask>();
     public DbSet<Post> Posts => Set<Post>();
     public DbSet<PostComment> PostComments => Set<PostComment>();
-    public DbSet<PostLike> PostLikes => Set<PostLike>();
-    public DbSet<PostCommentLike> PostCommentLikes => Set<PostCommentLike>();
 }
