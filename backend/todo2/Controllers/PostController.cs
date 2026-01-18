@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
 using todo2.Database;
 using todo2.Models.Db;
 using todo2.Models.Dto;
+using todo2.Auth;
 
 namespace todo2.Controllers;
 
@@ -20,16 +20,10 @@ public class PostController : ControllerBase
         _db = db;
     }
 
-    private bool TryGetUserId(out Guid userId)
-    {
-        var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        return Guid.TryParse(sub, out userId);
-    }
-
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<PostResponse>>> GetPosts(CancellationToken ct, [FromQuery] int startIndex = 0)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var offset = startIndex < 0 ? 0 : startIndex;
@@ -48,7 +42,7 @@ public class PostController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<PostResponse>> GetPost(Guid id, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var post = await _db.Posts
@@ -93,7 +87,7 @@ public class PostController : ControllerBase
     [Authorize]
     public async Task<ActionResult<PostCommentResponse>> CommentOnPost(Guid postId, [FromBody] CreatePostCommentRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var post = await _db.Posts
@@ -125,7 +119,7 @@ public class PostController : ControllerBase
     [HttpPost("{postId:guid}/likes")]
     public async Task<ActionResult> LikePost(Guid postId, [FromBody] LikePostRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var post = await _db.Posts.FirstOrDefaultAsync(p => p.Id == postId, ct);
@@ -143,7 +137,7 @@ public class PostController : ControllerBase
     [HttpPost("comments/{commentId:guid}/likes")]
     public async Task<ActionResult> LikeComment(Guid commentId, [FromBody] LikePostCommentRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var comment = await _db.PostComments.FirstOrDefaultAsync(c => c.Id == commentId, ct);

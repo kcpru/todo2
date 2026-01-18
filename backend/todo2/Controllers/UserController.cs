@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
 using todo2.Auth;
 using todo2.Database;
 using todo2.Files;
@@ -26,12 +25,6 @@ public class UserController : ControllerBase
         _jwt = jwt;
         _passwordHasher = passwordHasher;
         _files = files;
-    }
-
-    private bool TryGetUserId(out Guid userId)
-    {
-        var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        return Guid.TryParse(sub, out userId);
     }
 
     private static bool TryGetAvatarExtension(string fileName, out string extension)
@@ -101,8 +94,7 @@ public class UserController : ControllerBase
     [HttpGet("me")]
     public async Task<ActionResult<MeResponse>> Me(CancellationToken ct)
     {
-        var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        if (!Guid.TryParse(sub, out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var user = await _db.Users
@@ -134,7 +126,7 @@ public class UserController : ControllerBase
     [RequestSizeLimit(5 * 1024 * 1024)]
     public async Task<ActionResult> UploadMyAvatar([FromForm] IFormFile file, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         if (file is null)
@@ -162,7 +154,7 @@ public class UserController : ControllerBase
     [HttpGet("me/avatar")]
     public async Task<IActionResult> GetMyAvatar(CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         foreach (var ext in new[] { "jpg", "jpeg", "png" })
