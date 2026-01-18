@@ -37,7 +37,6 @@ public class PostController : ControllerBase
         var posts = await _db.Posts
             .AsNoTracking()
             .Include(p => p.Comments)
-            .Include(p => p.Likes)
             .OrderByDescending(p => p.CreatedAt)
             .Skip(offset)
             .Take(10)
@@ -55,7 +54,6 @@ public class PostController : ControllerBase
         var post = await _db.Posts
             .AsNoTracking()
             .Include(p => p.Comments)
-            .Include(p => p.Likes)
             .SingleOrDefaultAsync(p => p.Id == id, ct);
 
         if (post is null)
@@ -125,131 +123,37 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("{postId:guid}/likes")]
-    public async Task<ActionResult> LikePost(Guid postId, CancellationToken ct)
+    public async Task<ActionResult> LikePost(Guid postId, [FromBody] LikePostRequest request, CancellationToken ct)
     {
         if (!TryGetUserId(out var userId))
             return Unauthorized();
 
-        var postExists = await _db.Posts
-            .AsNoTracking()
-            .AnyAsync(p => p.Id == postId, ct);
+        var post = await _db.Posts.FirstOrDefaultAsync(p => p.Id == postId, ct);
 
-        if (!postExists)
+        if (post == null)
             return NotFound("Post not found.");
 
-        var alreadyLiked = await _db.PostLikes
-            .AsNoTracking()
-            .AnyAsync(l => l.PostId == postId && l.UserId == userId, ct);
-
-        if (!alreadyLiked)
-        {
-            _db.PostLikes.Add(new PostLike
-            {
-                Id = Guid.NewGuid(),
-                PostId = postId,
-                UserId = userId
-            });
-
-            await _db.SaveChangesAsync(ct);
-        }
-
-        var likesCount = await _db.PostLikes
-            .AsNoTracking()
-            .CountAsync(l => l.PostId == postId, ct);
-
-        return Ok(new { postId, likesCount });
-    }
-
-    [HttpDelete("{postId:guid}/likes")]
-    public async Task<ActionResult> UnlikePost(Guid postId, CancellationToken ct)
-    {
-        if (!TryGetUserId(out var userId))
-            return Unauthorized();
-
-        var postExists = await _db.Posts
-            .AsNoTracking()
-            .AnyAsync(p => p.Id == postId, ct);
-
-        if (!postExists)
-            return NotFound("Post not found.");
-
-        var like = await _db.PostLikes
-            .SingleOrDefaultAsync(l => l.PostId == postId && l.UserId == userId, ct);
-
-        if (like is not null)
-        {
-            _db.PostLikes.Remove(like);
-            await _db.SaveChangesAsync(ct);
-        }
-
-        var likesCount = await _db.PostLikes
-            .AsNoTracking()
-            .CountAsync(l => l.PostId == postId, ct);
+        post.LikesCount += request.LikesCount;
+        long likesCount = post.LikesCount;
+        await _db.SaveChangesAsync(ct);
 
         return Ok(new { postId, likesCount });
     }
 
     [HttpPost("comments/{commentId:guid}/likes")]
-    public async Task<ActionResult> LikeComment(Guid commentId, CancellationToken ct)
+    public async Task<ActionResult> LikeComment(Guid commentId, [FromBody] LikePostCommentRequest request, CancellationToken ct)
     {
         if (!TryGetUserId(out var userId))
             return Unauthorized();
 
-        var commentExists = await _db.PostComments
-            .AsNoTracking()
-            .AnyAsync(c => c.Id == commentId, ct);
+        var comment = await _db.PostComments.FirstOrDefaultAsync(c => c.Id == commentId, ct);
 
-        if (!commentExists)
+        if (comment == null)
             return NotFound("Comment not found.");
 
-        var alreadyLiked = await _db.PostCommentLikes
-            .AsNoTracking()
-            .AnyAsync(l => l.CommentId == commentId && l.UserId == userId, ct);
-
-        if (!alreadyLiked)
-        {
-            _db.PostCommentLikes.Add(new PostCommentLike
-            {
-                Id = Guid.NewGuid(),
-                CommentId = commentId,
-                UserId = userId
-            });
-
-            await _db.SaveChangesAsync(ct);
-        }
-
-        var likesCount = await _db.PostCommentLikes
-            .AsNoTracking()
-            .CountAsync(l => l.CommentId == commentId, ct);
-
-        return Ok(new { commentId, likesCount });
-    }
-
-    [HttpDelete("comments/{commentId:guid}/likes")]
-    public async Task<ActionResult> UnlikeComment(Guid commentId, CancellationToken ct)
-    {
-        if (!TryGetUserId(out var userId))
-            return Unauthorized();
-
-        var commentExists = await _db.PostComments
-            .AsNoTracking()
-            .AnyAsync(c => c.Id == commentId, ct);
-
-        if (!commentExists)
-            return NotFound("Comment not found.");
-
-        var like = await _db.PostCommentLikes
-            .SingleOrDefaultAsync(l => l.CommentId == commentId && l.UserId == userId, ct);
-
-        if (like is not null)
-        {
-            _db.PostCommentLikes.Remove(like);
-            await _db.SaveChangesAsync(ct);
-        }
-
-        var likesCount = await _db.PostCommentLikes
-            .AsNoTracking()
-            .CountAsync(l => l.CommentId == commentId, ct);
+        comment.LikesCount += request.LikesCount;
+        long likesCount = comment.LikesCount;
+        await _db.SaveChangesAsync(ct);
 
         return Ok(new { commentId, likesCount });
     }

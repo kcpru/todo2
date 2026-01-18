@@ -244,7 +244,7 @@ public static class DataSeeder
                 UpdatedAt = DateTime.UtcNow.AddDays(-5),
                 TodoListAsJson = adminList1.ToJson(),
                 Comments = [],
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 100)
             },
             new Post
             {
@@ -254,7 +254,7 @@ public static class DataSeeder
                 UpdatedAt = DateTime.UtcNow.AddDays(-3),
                 TodoListAsJson = adminList2.ToJson(),
                 Comments = [],
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 100)
             },
             new Post
             {
@@ -264,7 +264,7 @@ public static class DataSeeder
                 UpdatedAt = DateTime.UtcNow.AddDays(-2),
                 TodoListAsJson = user1List.ToJson(),
                 Comments = [],
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 100)
             },
             new Post
             {
@@ -274,7 +274,7 @@ public static class DataSeeder
                 UpdatedAt = DateTime.UtcNow.AddDays(-1),
                 TodoListAsJson = user2List.ToJson(),
                 Comments = [],
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 100)
             },
             new Post
             {
@@ -284,26 +284,12 @@ public static class DataSeeder
                 UpdatedAt = DateTime.UtcNow.AddHours(-12),
                 TodoListAsJson = user3List.ToJson(),
                 Comments = [],
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 100)
             }
         };
 
         context.Posts.AddRange(posts);
         await context.SaveChangesAsync();
-
-        // Add some likes to posts
-        var postLikes = new List<PostLike>
-        {
-            new PostLike { Id = Guid.NewGuid(), PostId = posts[0].Id, UserId = user1.Id },
-            new PostLike { Id = Guid.NewGuid(), PostId = posts[0].Id, UserId = user2.Id },
-            new PostLike { Id = Guid.NewGuid(), PostId = posts[1].Id, UserId = user3.Id },
-            new PostLike { Id = Guid.NewGuid(), PostId = posts[2].Id, UserId = adminUser.Id },
-            new PostLike { Id = Guid.NewGuid(), PostId = posts[3].Id, UserId = adminUser.Id },
-            new PostLike { Id = Guid.NewGuid(), PostId = posts[3].Id, UserId = user1.Id },
-            new PostLike { Id = Guid.NewGuid(), PostId = posts[4].Id, UserId = user2.Id },
-        };
-
-        context.PostLikes.AddRange(postLikes);
 
         // Add some comments to posts
         var postComments = new List<PostComment>
@@ -314,7 +300,7 @@ public static class DataSeeder
                 PostId = posts[0].Id,
                 UserId = user1.Id,
                 CommentText = "That's awesome! Great work on the documentation! 👍",
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 5)
             },
             new PostComment
             {
@@ -322,7 +308,7 @@ public static class DataSeeder
                 PostId = posts[1].Id,
                 UserId = user2.Id,
                 CommentText = "Rust is so cool! Good luck with your learning journey!",
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 5)
             },
             new PostComment
             {
@@ -330,7 +316,7 @@ public static class DataSeeder
                 PostId = posts[3].Id,
                 UserId = user3.Id,
                 CommentText = "Paris is amazing! Don't forget to visit the catacombs!",
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 5)
             },
             new PostComment
             {
@@ -338,22 +324,11 @@ public static class DataSeeder
                 PostId = posts[4].Id,
                 UserId = adminUser.Id,
                 CommentText = "Looking beautiful! Love the light fixtures choice!",
-                Likes = []
+                LikesCount = Random.Shared.Next(0, 5)
             }
         };
 
         context.PostComments.AddRange(postComments);
-
-        // Add likes to comments
-        var commentLikes = new List<PostCommentLike>
-        {
-            new PostCommentLike { Id = Guid.NewGuid(), CommentId = postComments[0].Id, UserId = user3.Id },
-            new PostCommentLike { Id = Guid.NewGuid(), CommentId = postComments[1].Id, UserId = adminUser.Id },
-            new PostCommentLike { Id = Guid.NewGuid(), CommentId = postComments[2].Id, UserId = user1.Id },
-        };
-
-        context.PostCommentLikes.AddRange(commentLikes);
-
         await context.SaveChangesAsync();
     }
 }

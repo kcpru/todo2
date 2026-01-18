@@ -10,8 +10,6 @@ public static class PostResponseMapper
             .Select(c => new PostCommentResponse(c.Id, c.PostId, c.UserId, c.CommentText, c.LikesCount))
             .ToList();
 
-        var isLiked = currentUserId.HasValue && post.Likes.Any(l => l.UserId == currentUserId.Value);
-
-        return new PostResponse(post.Id, post.TodoListAsJson, post.Content, post.LikesCount, isLiked, post.CreatedAt, post.UpdatedAt, comments);
+        return new PostResponse(post.Id, post.TodoListAsJson, post.Content, post.LikesCount, post.CreatedAt, post.UpdatedAt, comments);
     }
 }
