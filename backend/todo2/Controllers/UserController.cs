@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using todo2.Auth;
 using todo2.Database;
+using todo2.Files;
 using todo2.Models.Db;
 using todo2.Models.Dto;
 
@@ -17,12 +18,30 @@ public class UserController : ControllerBase
     private readonly AppDbContext _db;
     private readonly IJwtTokenService _jwt;
     private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IFilesManager _files;
 
-    public UserController(AppDbContext db, IJwtTokenService jwt, IPasswordHasher<User> passwordHasher)
+    public UserController(AppDbContext db, IJwtTokenService jwt, IPasswordHasher<User> passwordHasher, IFilesManager files)
     {
         _db = db;
         _jwt = jwt;
         _passwordHasher = passwordHasher;
+        _files = files;
+    }
+
+    private bool TryGetUserId(out Guid userId)
+    {
+        var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        return Guid.TryParse(sub, out userId);
+    }
+
+    private static bool TryGetAvatarExtension(string fileName, out string extension)
+    {
+        extension = Path.GetExtension(fileName);
+        if (string.IsNullOrWhiteSpace(extension))
+            return false;
+
+        extension = extension.TrimStart('.').ToLowerInvariant();
+        return extension is "jpg" or "jpeg" or "png";
     }
 
     [HttpPost("register")]
@@ -108,5 +127,54 @@ public class UserController : ControllerBase
             return NotFound();
 
         return Ok(new UserResponse(user.Username));
+    }
+
+    [Authorize]
+    [HttpPost("me/avatar")]
+    [RequestSizeLimit(5 * 1024 * 1024)]
+    public async Task<ActionResult> UploadMyAvatar([FromForm] IFormFile file, CancellationToken ct)
+    {
+        if (!TryGetUserId(out var userId))
+            return Unauthorized();
+
+        if (file is null)
+            return BadRequest(new { error = "File is required." });
+
+        if (file.Length <= 0)
+            return BadRequest(new { error = "File is empty." });
+
+        const long maxSize = 5L * 1024 * 1024;
+        if (file.Length > maxSize)
+            return BadRequest(new { error = "Max file size is 5MB." });
+
+        if (!TryGetAvatarExtension(file.FileName, out var ext))
+            return BadRequest(new { error = "Invalid file extension. Allowed: jpg, jpeg, png." });
+
+        var relativePath = $"user_avatars/{userId}.{ext}";
+
+        await using var stream = file.OpenReadStream();
+        await _files.SaveAsync(relativePath, stream, ct);
+
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpGet("me/avatar")]
+    public async Task<IActionResult> GetMyAvatar(CancellationToken ct)
+    {
+        if (!TryGetUserId(out var userId))
+            return Unauthorized();
+
+        foreach (var ext in new[] { "jpg", "jpeg", "png" })
+        {
+            var relativePath = $"user_avatars/{userId}.{ext}";
+            var stream = await _files.OpenReadAsync(relativePath, ct);
+            if (stream is null)
+                continue;
+
+            return File(stream, ext is "png" ? "image/png" : "image/jpeg");
+        }
+
+        return NoContent();
     }
 }

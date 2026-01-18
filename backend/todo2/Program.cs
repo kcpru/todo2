@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using todo2.Auth;
 using todo2.Database;
+using todo2.Files;
 using todo2.Models.Db;
 
 namespace todo2;
@@ -29,6 +30,7 @@ public class Program
 
         builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+        builder.Services.AddSingleton<IFilesManager>(new FileManager(builder.Environment.ContentRootPath));
 
         var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
 
