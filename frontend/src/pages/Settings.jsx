@@ -1,13 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../AuthContext";
+import { useTheme } from "../ThemeContext";
 import { useDopamine } from "../DopamineContext";
 import { useNotifications } from "../NotificationsContext";
 import { GradientButton } from "../components/GradientButton";
 import { Input } from "../components/Input";
-import { MdPhotoCamera } from "react-icons/md";
+import { CustomSlider } from "../components/CustomSlider";
+import { MdPhotoCamera, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { uploadAvatar, getAvatarUrl } from "../api/avatar";
 import "./Settings.scss";
 
 export function Settings() {
+  const { isDarkMode, toggleTheme } = useTheme();
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const { notify } = useNotifications();
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarDataUrl, setAvatarDataUrl] = useState("");
   const { user, updateProfile, changePassword } = useAuth();
   const {
     isDopamineMode,
@@ -17,12 +26,8 @@ export function Settings() {
     updateConfettiCount,
     updateAnimationSpeed,
   } = useDopamine();
-  const { notify } = useNotifications();
-
   const [username, setUsername] = useState(user?.username || "");
-  const [avatarDataUrl, setAvatarDataUrl] = useState(
-    () => localStorage.getItem("avatarDataUrl") || user?.avatar || ""
-  );
+  const [usernameWarning, setUsernameWarning] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
@@ -30,27 +35,94 @@ export function Settings() {
   const confettiCanvasRef = useRef(null);
   const animationBoxRef = useRef(null);
 
+  const handleAvatarReset = async () => {
+    setAvatarFile(null);
+    setAvatarDataUrl("");
+    try {
+      // Send a blank avatar (or call a delete endpoint if backend supports)
+      // Here, we simulate by uploading an empty 1x1 transparent PNG
+      const emptyPng = new Uint8Array([
+        137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0,
+        1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 13, 73, 68, 65,
+        84, 120, 156, 99, 0, 1, 0, 0, 5, 0, 1, 13, 10, 26, 10, 0, 0, 0, 0, 73,
+        69, 78, 68, 174, 66, 96, 130,
+      ]);
+      const blob = new Blob([emptyPng], { type: "image/png" });
+      const file = new File([blob], "avatar.png", { type: "image/png" });
+      await uploadAvatar(file);
+      setAvatarDataUrl("");
+      notify({ message: "Avatar reset to default.", type: "success" });
+    } catch (err) {
+      notify({ message: "Failed to reset avatar", type: "error" });
+    }
+  };
+
   useEffect(() => {
     setUsername(user?.username || "");
-  }, [user?.username]);
+    if (user?.id) {
+      // Fetch avatar as blob with Authorization
+      const url = getAvatarUrl("me");
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setAvatarDataUrl("");
+        return;
+      }
+      fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => {
+          if (res.status === 200) return res.blob();
+          return null;
+        })
+        .then((blob) => {
+          if (blob) {
+            setAvatarDataUrl(URL.createObjectURL(blob));
+          } else {
+            setAvatarDataUrl("");
+          }
+        })
+        .catch(() => setAvatarDataUrl(""));
+    } else {
+      setAvatarDataUrl("");
+    }
+  }, [user?.username, user?.id]);
 
   const fileInputRef = useRef(null);
 
-  const handleAvatarPick = (e) => {
+  const handleAvatarPick = async (e) => {
     const f = e.target.files?.[0];
     if (!f) return;
+    setAvatarFile(f);
+    // Show preview
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       setAvatarDataUrl(reader.result);
+      // Auto-upload avatar and show feedback
+      try {
+        await uploadAvatar(f);
+        setAvatarFile(null);
+        setAvatarDataUrl(getAvatarUrl("me") + `?t=${Date.now()}`);
+        notify({ message: "Avatar updated!", type: "success" });
+      } catch (err) {
+        notify({ message: "Failed to update avatar", type: "error" });
+      }
     };
     reader.readAsDataURL(f);
   };
 
   const handleSaveProfile = async () => {
     setSavingProfile(true);
+    setUsernameWarning("");
+    if (!username.trim()) {
+      setUsernameWarning("Username cannot be empty");
+      setSavingProfile(false);
+      return;
+    }
+    if (username.length < 3) {
+      setUsernameWarning("Username must be at least 3 characters");
+      setSavingProfile(false);
+      return;
+    }
     try {
-      localStorage.setItem("avatarDataUrl", avatarDataUrl || "");
-      const res = await updateProfile({ username, avatar: avatarDataUrl });
+      const res = await updateProfile({ username });
       if (res.ok) {
         notify({ message: "Profile updated", type: "success" });
       } else {
@@ -152,14 +224,21 @@ export function Settings() {
 
   return (
     <div className="settings-page">
-      <h2>Settings</h2>
+      <h2 className="settings-header">Settings</h2>
 
       <section className="settings-section profile-section">
         <h3>Profile</h3>
         <div className="profile-row">
           <div className="avatar-preview">
             {avatarDataUrl ? (
-              <img src={avatarDataUrl} alt="Avatar" />
+              <img
+                src={avatarDataUrl}
+                alt="Avatar"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "";
+                }}
+              />
             ) : (
               <div className="avatar-placeholder">
                 {(username || "U").charAt(0).toUpperCase()}
@@ -172,28 +251,48 @@ export function Settings() {
               onChange={handleAvatarPick}
               style={{ display: "none" }}
             />
-            <GradientButton
-              size="sm"
-              icon={<MdPhotoCamera />}
-              onClick={() => fileInputRef.current?.click()}
-            >
-              Change Avatar
-            </GradientButton>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <GradientButton
+                size="sm"
+                icon={<MdPhotoCamera />}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Change Avatar
+              </GradientButton>
+              <GradientButton
+                size="sm"
+                variant="danger"
+                onClick={handleAvatarReset}
+                title="Reset to default avatar"
+              >
+                Reset
+              </GradientButton>
+            </div>
           </div>
 
           <div className="profile-fields">
             <Input
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setUsernameWarning("");
+              }}
               placeholder="Display name"
             />
+            {usernameWarning && (
+              <div className="input-warning">{usernameWarning}</div>
+            )}
             <div className="profile-actions">
               <GradientButton
                 onClick={handleSaveProfile}
                 disabled={savingProfile}
+                title="Save display name"
               >
-                {savingProfile ? "Saving..." : "Save Profile"}
+                {savingProfile ? "Saving..." : "Save Name"}
               </GradientButton>
+            </div>
+            <div className="profile-hint">
+              Avatar is saved automatically after change.
             </div>
           </div>
         </div>
@@ -202,18 +301,42 @@ export function Settings() {
       <section className="settings-section security-section">
         <h3>Security</h3>
         <div className="security-row">
-          <Input
-            type="password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            placeholder="Current password"
-          />
-          <Input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="New password"
-          />
+          <div style={{ position: "relative" }}>
+            <Input
+              type={showCurrentPassword ? "text" : "password"}
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Current password"
+            />
+            <button
+              type="button"
+              className="password-toggle-btn"
+              onClick={() => setShowCurrentPassword((v) => !v)}
+              tabIndex={-1}
+              aria-label={
+                showCurrentPassword ? "Hide password" : "Show password"
+              }
+            >
+              {showCurrentPassword ? <MdVisibilityOff /> : <MdVisibility />}
+            </button>
+          </div>
+          <div style={{ position: "relative" }}>
+            <Input
+              type={showNewPassword ? "text" : "password"}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="New password"
+            />
+            <button
+              type="button"
+              className="password-toggle-btn"
+              onClick={() => setShowNewPassword((v) => !v)}
+              tabIndex={-1}
+              aria-label={showNewPassword ? "Hide password" : "Show password"}
+            >
+              {showNewPassword ? <MdVisibilityOff /> : <MdVisibility />}
+            </button>
+          </div>
           <div className="profile-actions">
             <GradientButton
               onClick={handleChangePassword}
@@ -225,54 +348,109 @@ export function Settings() {
         </div>
       </section>
 
+      <section className="settings-section theme-section">
+        <h3>Theme</h3>
+        <div className="theme-row">
+          <span className="theme-label">Color mode</span>
+          <GradientButton
+            variant={isDarkMode ? "primary" : "secondary"}
+            onClick={toggleTheme}
+            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDarkMode ? "Dark" : "Light"}
+          </GradientButton>
+        </div>
+      </section>
+
       <section className="settings-section dopamine-section">
         <h3>Dopamine Effects</h3>
         <div className="dopamine-row">
-          <label>Enable Dopamine Mode</label>
           <div className="dopamine-controls">
-            <GradientButton
-              variant={isDopamineMode ? "primary" : "secondary"}
-              onClick={toggleDopamineMode}
-            >
-              {isDopamineMode ? "On" : "Off"}
-            </GradientButton>
+            <div className="dopamine-toggle-row">
+              <span className="dopamine-label">Enable Dopamine Mode</span>
+              <GradientButton
+                variant={isDopamineMode ? "primary" : "secondary"}
+                onClick={toggleDopamineMode}
+              >
+                {isDopamineMode ? "On" : "Off"}
+              </GradientButton>
+            </div>
 
             <div className="dopamine-field dopamine-with-preview">
               <div className="dopamine-field-main">
-                <label>Confetti amount</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="300"
+                <CustomSlider
+                  min={0}
+                  max={300}
                   value={confettiCount}
                   onChange={(e) => updateConfettiCount(e.target.value)}
+                  label="Confetti amount"
                 />
-                <div className="value">{confettiCount}</div>
+                <div className="confetti-slider-info">
+                  <span className="confetti-slider-value">{confettiCount}</span>
+                  <span className="confetti-slider-desc">
+                    - Number of confetti particles per burst
+                  </span>
+                </div>
               </div>
               <div className="dopamine-preview">
-                <div className="preview-label">Preview</div>
                 <canvas ref={confettiCanvasRef} className="preview-canvas" />
               </div>
             </div>
 
             <div className="dopamine-field dopamine-with-preview">
               <div className="dopamine-field-main">
-                <label>Animation speed (scale)</label>
-                <input
-                  type="range"
-                  min="0.25"
-                  max="2"
-                  step="0.05"
-                  value={animationSpeed}
-                  onChange={(e) => updateAnimationSpeed(e.target.value)}
-                />
-                <div className="value">{animationSpeed}</div>
+                <span className="dopamine-label">Animation speed</span>
+                <div className="speed-toggle-row">
+                  <GradientButton
+                    variant={
+                      animationSpeed === "fast" ? "primary" : "secondary"
+                    }
+                    onClick={() => updateAnimationSpeed("fast")}
+                    size="sm"
+                  >
+                    Fast
+                  </GradientButton>
+                  <GradientButton
+                    variant={
+                      animationSpeed === "slow" ? "primary" : "secondary"
+                    }
+                    onClick={() => updateAnimationSpeed("slow")}
+                    size="sm"
+                  >
+                    Slow
+                  </GradientButton>
+                </div>
               </div>
               <div className="dopamine-preview">
-                <div className="preview-label">Speed</div>
-                <div className="preview-box" ref={animationBoxRef} />
+                <div className={`speed-preview-bar ${animationSpeed}`}></div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      <section className="settings-section about-section">
+        <h3>About</h3>
+        <div className="about-content">
+          <div className="about-row">
+            <span className="about-label">App version:</span>
+            <span className="about-value">2.0.0</span>
+          </div>
+          <div className="about-row">
+            <span className="about-label">Repository:</span>
+            <a
+              className="about-link"
+              href="https://github.com/kcpru/todo2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/kcpru/todo2
+            </a>
+          </div>
+          <div className="about-row">
+            <span className="about-label">Contact:</span>
+            <a className="about-link" href="mailto:support@todo2.app">
+              support@todo2.app
+            </a>
           </div>
         </div>
       </section>

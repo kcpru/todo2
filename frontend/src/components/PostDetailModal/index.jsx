@@ -12,7 +12,7 @@ import { usePostsAPI } from "../../hooks/usePostsAPI";
 import "./PostDetailModal.scss";
 
 export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
-  const { isDopamineMode } = useDopamine();
+  const { isDopamineMode, confettiCount } = useDopamine();
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [commentLikes, setCommentLikes] = useState({});
@@ -59,7 +59,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
     const shapes = ["square", "circle", "star"];
 
     confettiInstanceRef.current({
-      particleCount: 70,
+      particleCount: Math.max(1, Math.round(confettiCount)),
       spread: 320,
       startVelocity: 18,
       decay: 0.9,
@@ -72,7 +72,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
 
     setTimeout(() => {
       confettiInstanceRef.current?.({
-        particleCount: 40,
+        particleCount: Math.max(1, Math.round(confettiCount * 0.57)),
         spread: 320,
         startVelocity: 12,
         decay: 0.92,

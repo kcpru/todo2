@@ -14,7 +14,7 @@ export function useTodoLogic() {
     patchTask,
     deleteTask,
   } = useAuth();
-  const { isDopamineMode } = useDopamine();
+  const { isDopamineMode, confettiCount } = useDopamine();
   const checkboxPositionsRef = useRef({});
 
   const [lists, setLists] = useState([]);
@@ -119,7 +119,7 @@ export function useTodoLogic() {
       confettiTypes[Math.floor(Math.random() * confettiTypes.length)];
 
     confetti({
-      particleCount: 150,
+      particleCount: Math.max(1, Math.round(confettiCount)),
       spread: 360,
       origin: origin,
       startVelocity: 17.5,
@@ -133,7 +133,7 @@ export function useTodoLogic() {
     // Secondary burst
     setTimeout(() => {
       confetti({
-        particleCount: 80,
+        particleCount: Math.max(1, Math.round(confettiCount * 0.5)),
         spread: 360,
         origin: origin,
         startVelocity: 12.5,

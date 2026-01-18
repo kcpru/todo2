@@ -15,7 +15,7 @@ export function DopamineProvider({ children }) {
 
   const [animationSpeed, setAnimationSpeed] = useState(() => {
     const saved = localStorage.getItem("dopamine_animationSpeed");
-    return saved ? Number(saved) : 1.0;
+    return saved === "fast" || saved === "slow" ? saved : "fast";
   });
 
   const toggleDopamineMode = () => {
@@ -30,10 +30,10 @@ export function DopamineProvider({ children }) {
     localStorage.setItem("dopamine_confettiCount", String(n));
   };
 
-  const updateAnimationSpeed = (speed) => {
-    const n = Number(speed) || 1;
-    setAnimationSpeed(n);
-    localStorage.setItem("dopamine_animationSpeed", String(n));
+  const updateAnimationSpeed = (mode) => {
+    const value = mode === "slow" ? "slow" : "fast";
+    setAnimationSpeed(value);
+    localStorage.setItem("dopamine_animationSpeed", value);
   };
 
   return (

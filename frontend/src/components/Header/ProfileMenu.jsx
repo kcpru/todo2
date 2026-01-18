@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../ThemeContext";
 import { useDopamine } from "../../DopamineContext";
@@ -12,7 +12,7 @@ import {
 } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { DropdownMenu } from "../DropdownMenu";
-import "./ProfileMenu.scss";
+import { getAvatarUrl } from "../../api/avatar";
 import "./ProfileMenu.scss";
 
 export function ProfileMenu() {
@@ -33,10 +33,49 @@ export function ProfileMenu() {
         title={user?.username}
       >
         {(() => {
-          const stored = localStorage.getItem("avatarDataUrl");
-          const avatar = user?.avatar || stored;
-          if (avatar) {
-            return <img className="profile-avatar" src={avatar} alt="avatar" />;
+          const [avatarUrl, setAvatarUrl] = useState(null);
+          useEffect(() => {
+            let isMounted = true;
+            if (user?.id) {
+              const url = getAvatarUrl("me");
+              const token = localStorage.getItem("token");
+              if (!token) {
+                setAvatarUrl(null);
+                return;
+              }
+              fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+                .then((res) => {
+                  if (res.status === 200) return res.blob();
+                  return null;
+                })
+                .then((blob) => {
+                  if (isMounted) {
+                    if (blob) {
+                      setAvatarUrl(URL.createObjectURL(blob));
+                    } else {
+                      setAvatarUrl(null);
+                    }
+                  }
+                });
+            } else {
+              setAvatarUrl(null);
+            }
+            return () => {
+              isMounted = false;
+            };
+          }, [user?.id]);
+          if (avatarUrl) {
+            return (
+              <img
+                className="profile-avatar"
+                src={avatarUrl}
+                alt="avatar"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "";
+                }}
+              />
+            );
           }
           return user?.username?.charAt(0).toUpperCase() || "U";
         })()}
