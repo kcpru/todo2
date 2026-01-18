@@ -17,7 +17,6 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
   const [submitting, setSubmitting] = useState(false);
   const [commentLikes, setCommentLikes] = useState({});
   const [rippleEffects, setRippleEffects] = useState([]);
-  const [liked, setLiked] = useState(post?.isLiked || false);
   const [likesCount, setLikesCount] = useState(post?.likesCount || 0);
   const likeButtonRef = useRef(null);
   const confettiInstanceRef = useRef(null);
@@ -104,14 +103,13 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
   };
 
   useEffect(() => {
-    setLiked(post?.isLiked || false);
     setLikesCount(post?.likesCount || 0);
   }, [post?.id]);
 
   const handleLike = async () => {
-    const nextLiked = !liked;
-
-    if (nextLiked) {
+    // Allow multiple likes: always send a POST like request and increment UI count
+    try {
+      // Run the like animation
       likeAnimationControls.start({
         scale: [1, 1.7, 1.05, 1],
         rotate: [0, -12, 2, 0],
@@ -122,34 +120,30 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
           ease: [0.16, 1, 0.3, 1],
         },
       });
-    }
 
-    if (nextLiked && likeButtonRef.current) {
-      const buttonElement =
-        likeButtonRef.current.querySelector("button") || likeButtonRef.current;
-      const rect = buttonElement.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-
-      fireConfetti(x, y);
-    }
-
-    setLiked(nextLiked);
-    setLikesCount((c) => c + (nextLiked ? 1 : -1));
-
-    try {
-      if (nextLiked) {
-        await likePost(post.id);
-      } else {
-        await unlikePost(post.id);
+      if (likeButtonRef.current) {
+        const buttonElement =
+          likeButtonRef.current.querySelector("button") ||
+          likeButtonRef.current;
+        const rect = buttonElement.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        fireConfetti(x, y);
       }
+
+      // Optimistically update UI
+      setLikesCount((c) => c + 1);
+
+      // Persist to backend (backend supports repeated likes)
+      await likePost(post.id);
+
       if (onPostUpdate) {
         await onPostUpdate(post.id);
       }
     } catch (error) {
-      console.error("Failed to like/unlike post:", error);
-      setLiked(!nextLiked);
-      setLikesCount((c) => c + (nextLiked ? -1 : 1));
+      console.error("Failed to like post:", error);
+      // Rollback optimistic increment
+      setLikesCount((c) => Math.max(0, c - 1));
     }
   };
 
@@ -186,7 +180,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
           transition={{ duration: 0.3, delay: 0.15, ease: [0.4, 0, 0.2, 1] }}
         >
           <PostContent
-            post={{ ...post, isLiked: liked, likesCount }}
+            post={{ ...post, likesCount }}
             onLike={handleLike}
             showCommentButton={false}
             mode="modal"

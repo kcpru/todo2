@@ -68,6 +68,17 @@
   font-weight: 600;
 }
 
+.post-stat-clickable {
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    transform 0.12s ease;
+}
+.post-stat-clickable:hover {
+  color: var(--md-primary);
+  transform: translateY(-2px);
+}
+
 @media (max-width: 600px) {
   .post-actions {
     flex-direction: column;
