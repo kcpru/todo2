@@ -7,9 +7,7 @@ public class Post
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string TodoListAsJson { get; set; } = null!;
+    public long LikesCount { get; set; }
 
     public ICollection<PostComment> Comments { get; set; } = [];
-    public ICollection<PostLike> Likes { get; set; } = [];
-
-    public int LikesCount => Likes.Count;
 }

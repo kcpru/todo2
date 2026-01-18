@@ -36,7 +36,8 @@ public class PostControllerTests
     [TestMethod]
     public async Task GivenPosts_WhenGetPosts_ThenReturnsOrderedWithComments()
     {
-        var owner = new User { Id = Guid.NewGuid(), Username = "owner", Email = "owner@ex.com", PasswordHash = "x" };
+        var userId = Guid.NewGuid();
+        var owner = new User { Id = userId, Username = "owner", Email = "owner@ex.com", PasswordHash = "x" };
         _db.Users.Add(owner);
 
         var list = new TodoList
@@ -76,7 +77,7 @@ public class PostControllerTests
 
         await _db.SaveChangesAsync();
 
-        var sut = CreateSut(_db, userId: null);
+        var sut = CreateSut(_db, userId);
 
         var result = await sut.GetPosts(CancellationToken.None);
 
@@ -254,7 +255,7 @@ public class PostControllerTests
     {
         var sut = CreateSut(_db, userId: null);
 
-        var result = await sut.LikePost(Guid.NewGuid(), CancellationToken.None);
+        var result = await sut.LikePost(Guid.NewGuid(), new LikePostRequest(1), CancellationToken.None);
 
         Assert.IsInstanceOfType<UnauthorizedResult>(result);
     }
@@ -268,13 +269,13 @@ public class PostControllerTests
 
         var sut = CreateSut(_db, userId);
 
-        var result = await sut.LikePost(Guid.NewGuid(), CancellationToken.None);
+        var result = await sut.LikePost(Guid.NewGuid(), new LikePostRequest(1), CancellationToken.None);
 
         Assert.IsInstanceOfType<NotFoundObjectResult>(result);
     }
 
     [TestMethod]
-    public async Task GivenValidPost_WhenLikePostTwice_ThenCreatesSingleLikeAndReturnsCount()
+    public async Task GivenValidPost_WhenLikePost_ThenAddsToLikeCountAndReturnsCount()
     {
         var ownerId = Guid.NewGuid();
         var likerId = Guid.NewGuid();
@@ -304,63 +305,17 @@ public class PostControllerTests
 
         var sut = CreateSut(_db, likerId);
 
-        var first = await sut.LikePost(post.Id, CancellationToken.None);
+        var first = await sut.LikePost(post.Id, new LikePostRequest(50), CancellationToken.None);
         var ok1 = first as OkObjectResult;
         Assert.IsNotNull(ok1);
 
-        var second = await sut.LikePost(post.Id, CancellationToken.None);
+        var second = await sut.LikePost(post.Id, new LikePostRequest(10), CancellationToken.None);
         var ok2 = second as OkObjectResult;
         Assert.IsNotNull(ok2);
 
-        Assert.AreEqual(1, await _db.PostLikes.CountAsync());
+        var postAfterLike = await _db.Posts.SingleAsync();
 
-        var likesCountProperty = ok2!.Value?.GetType().GetProperty("likesCount");
-        Assert.IsNotNull(likesCountProperty);
-        Assert.AreEqual(1, (int)likesCountProperty!.GetValue(ok2.Value)!);
-    }
-
-    [TestMethod]
-    public async Task GivenLikedPost_WhenUnlikePost_ThenRemovesLikeAndReturnsCount()
-    {
-        var ownerId = Guid.NewGuid();
-        var likerId = Guid.NewGuid();
-        _db.Users.Add(new User { Id = ownerId, Username = "owner", Email = "owner@ex.com", PasswordHash = "x" });
-        _db.Users.Add(new User { Id = likerId, Username = "liker", Email = "liker@ex.com", PasswordHash = "x" });
-
-        var list = new TodoList
-        {
-            Id = Guid.NewGuid(),
-            Name = "Public",
-            UserId = ownerId,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
-        _db.TodoLists.Add(list);
-
-        var post = new Post
-        {
-            Id = Guid.NewGuid(),
-            Content = "content",
-            TodoListAsJson = list.ToJson(),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
-        _db.Posts.Add(post);
-
-        _db.PostLikes.Add(new PostLike { Id = Guid.NewGuid(), PostId = post.Id, UserId = likerId });
-        await _db.SaveChangesAsync();
-
-        var sut = CreateSut(_db, likerId);
-
-        var result = await sut.UnlikePost(post.Id, CancellationToken.None);
-        var ok = result as OkObjectResult;
-        Assert.IsNotNull(ok);
-
-        Assert.AreEqual(0, await _db.PostLikes.CountAsync());
-
-        var likesCountProperty = ok!.Value?.GetType().GetProperty("likesCount");
-        Assert.IsNotNull(likesCountProperty);
-        Assert.AreEqual(0, (int)likesCountProperty!.GetValue(ok.Value)!);
+        Assert.AreEqual(50 + 10, postAfterLike.LikesCount);
     }
 
     [TestMethod]
@@ -368,9 +323,9 @@ public class PostControllerTests
     {
         var sut = CreateSut(_db, userId: null);
 
-        var result = await sut.LikeComment(Guid.NewGuid(), CancellationToken.None);
+        var result = await sut.LikeComment(Guid.NewGuid(), new LikePostCommentRequest(1), CancellationToken.None);
 
-        Assert.IsInstanceOfType(result, typeof(UnauthorizedResult));
+        Assert.IsInstanceOfType<UnauthorizedResult>(result);
     }
 
     [TestMethod]
@@ -382,7 +337,7 @@ public class PostControllerTests
 
         var sut = CreateSut(_db, userId);
 
-        var result = await sut.LikeComment(Guid.NewGuid(), CancellationToken.None);
+        var result = await sut.LikeComment(Guid.NewGuid(), new LikePostCommentRequest(1), CancellationToken.None);
 
         Assert.IsInstanceOfType<NotFoundObjectResult>(result);
     }
@@ -425,68 +380,16 @@ public class PostControllerTests
 
         var sut = CreateSut(_db, likerId);
 
-        var first = await sut.LikeComment(comment.Id, CancellationToken.None);
+        var first = await sut.LikeComment(comment.Id, new LikePostCommentRequest(40), CancellationToken.None);
         var ok1 = first as OkObjectResult;
         Assert.IsNotNull(ok1);
 
-        var second = await sut.LikeComment(comment.Id, CancellationToken.None);
+        var second = await sut.LikeComment(comment.Id, new LikePostCommentRequest(30), CancellationToken.None);
         var ok2 = second as OkObjectResult;
         Assert.IsNotNull(ok2);
 
-        Assert.AreEqual(1, await _db.PostCommentLikes.CountAsync());
+        var postCommentAfterLike = await _db.PostComments.SingleAsync();
 
-        var likesCountProperty = ok2!.Value?.GetType().GetProperty("likesCount");
-        Assert.IsNotNull(likesCountProperty);
-        Assert.AreEqual(1, (int)likesCountProperty!.GetValue(ok2.Value)!);
-    }
-
-    [TestMethod]
-    public async Task GivenLikedComment_WhenUnlikeComment_ThenRemovesLikeAndReturnsCount()
-    {
-        var ownerId = Guid.NewGuid();
-        var commenterId = Guid.NewGuid();
-        var likerId = Guid.NewGuid();
-
-        _db.Users.Add(new User { Id = ownerId, Username = "owner", Email = "owner@ex.com", PasswordHash = "x" });
-        _db.Users.Add(new User { Id = commenterId, Username = "commenter", Email = "commenter@ex.com", PasswordHash = "x" });
-        _db.Users.Add(new User { Id = likerId, Username = "liker", Email = "liker@ex.com", PasswordHash = "x" });
-
-        var list = new TodoList
-        {
-            Id = Guid.NewGuid(),
-            Name = "Public",
-            UserId = ownerId,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
-        _db.TodoLists.Add(list);
-
-        var post = new Post
-        {
-            Id = Guid.NewGuid(),
-            Content = "content",
-            TodoListAsJson = list.ToJson(),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
-        _db.Posts.Add(post);
-
-        var comment = new PostComment { Id = Guid.NewGuid(), PostId = post.Id, UserId = commenterId, CommentText = "Nice!" };
-        _db.PostComments.Add(comment);
-
-        _db.PostCommentLikes.Add(new PostCommentLike { Id = Guid.NewGuid(), CommentId = comment.Id, UserId = likerId });
-        await _db.SaveChangesAsync();
-
-        var sut = CreateSut(_db, likerId);
-
-        var result = await sut.UnlikeComment(comment.Id, CancellationToken.None);
-        var ok = result as OkObjectResult;
-        Assert.IsNotNull(ok);
-
-        Assert.AreEqual(0, await _db.PostCommentLikes.CountAsync());
-
-        var likesCountProperty = ok!.Value?.GetType().GetProperty("likesCount");
-        Assert.IsNotNull(likesCountProperty);
-        Assert.AreEqual(0, (int)likesCountProperty!.GetValue(ok.Value)!);
+        Assert.AreEqual(40 + 30, postCommentAfterLike.LikesCount);
     }
 }
