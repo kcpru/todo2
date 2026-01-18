@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import { MdLeaderboard, MdHome, MdCheckCircle } from "react-icons/md";
 import "./NavTabs.scss";
 
 export function NavTabs() {
@@ -8,22 +9,33 @@ export function NavTabs() {
 
   const isHome = location.pathname === "/";
   const isTodo = location.pathname === "/my-todo";
+  const isStats = location.pathname === "/stats";
 
   return (
-    <div className="nav-tabs-header">
+    <div className="nav-tabs-header modern">
       <button
-        className={`nav-tab-header ${isHome ? "active" : ""}`}
+        className={`nav-tab-header modern ${isHome ? "active" : ""}`}
         onClick={() => navigate("/")}
       >
         {isHome && <motion.div className="tab-bg" layoutId="tab-bg" />}
-        <span className="tab-label">HOME</span>
+        <MdHome className="nav-tab-icon" />
+        <span className="nav-tab-label-main">Home</span>
       </button>
       <button
-        className={`nav-tab-header ${isTodo ? "active" : ""}`}
+        className={`nav-tab-header modern ${isTodo ? "active" : ""}`}
         onClick={() => navigate("/my-todo")}
       >
         {isTodo && <motion.div className="tab-bg" layoutId="tab-bg" />}
-        <span className="tab-label">MY TODO</span>
+        <MdCheckCircle className="nav-tab-icon" />
+        <span className="nav-tab-label-main">My Todo</span>
+      </button>
+      <button
+        className={`nav-tab-header modern ${isStats ? "active" : ""}`}
+        onClick={() => navigate("/stats")}
+      >
+        {isStats && <motion.div className="tab-bg" layoutId="tab-bg" />}
+        <MdLeaderboard className="nav-tab-icon" />
+        <span className="nav-tab-label-main">Stats</span>
       </button>
     </div>
   );

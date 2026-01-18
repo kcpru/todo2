@@ -1,3 +1,47 @@
+.nav-tabs-header.modern {
+  gap: 1.2rem;
+  justify-content: center;
+  align-items: flex-end;
+}
+.nav-tab-header.modern {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 90px;
+  padding: 0.7rem 1.1rem 0.5rem 1.1rem;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: none;
+  gap: 0.18rem;
+  transition:
+    color 0.18s,
+    background 0.18s,
+    box-shadow 0.18s;
+}
+.nav-tab-header.modern .nav-tab-icon {
+  font-size: 1.55rem;
+  margin-bottom: 0.13rem;
+  color: var(--accent-primary);
+  transition: color 0.18s;
+}
+.nav-tab-header.modern.active .nav-tab-icon {
+  color: var(--md-primary);
+}
+.nav-tab-label-main {
+  font-size: 1.01rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 0.1rem;
+  letter-spacing: 0.01em;
+}
+.nav-tab-label-sub {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 0.01rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
 /* Navigation Tabs in Header */
 .nav-tabs-header {
   display: flex;

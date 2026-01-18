@@ -1,0 +1,100 @@
+.stats-page {
+  max-width: 980px;
+  margin: 2.5rem auto 0 auto;
+  box-sizing: border-box;
+}
+.stats-header {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  gap: 0.7rem;
+}
+.stats-header-icon {
+  font-size: 2.1rem;
+  color: var(--accent-primary);
+  background: rgba(var(--md-primary-rgb), 0.09);
+  border-radius: 12px;
+  padding: 7px;
+  box-shadow: 0 2px 8px rgba(77, 150, 255, 0.08);
+  min-width: 44px;
+  min-height: 44px;
+}
+.stats-cards {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2.2rem;
+}
+.stats-card {
+  background: var(--md-surface);
+  border: 2px solid rgba(var(--md-primary-rgb), 0.09);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(9, 12, 20, 0.06);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  margin-bottom: 0;
+  transition:
+    box-shadow 0.18s,
+    border-color 0.18s;
+  position: relative;
+}
+.stats-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+.stats-card-icon {
+  font-size: 1.5rem;
+  color: var(--accent-primary);
+  background: rgba(var(--md-primary-rgb), 0.09);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(77, 150, 255, 0.08);
+  min-width: 32px;
+  min-height: 32px;
+}
+.stats-card-title {
+  font-size: 1.13rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.stats-card-desc {
+  font-size: 0.97rem;
+  color: var(--text-secondary);
+}
+.stats-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+.stats-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.stats-summary-label {
+  color: var(--text-secondary);
+  font-size: 1.01rem;
+  min-width: 110px;
+}
+.stats-summary-value {
+  color: var(--text-primary);
+  font-size: 1.13rem;
+  font-weight: 600;
+}
+.stats-summary-value.completed {
+  color: var(--accent-primary);
+}
+.stats-summary-value.streak {
+  color: var(--accent-success, #6bcb77);
+  font-weight: 700;
+}
+@media (max-width: 900px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+}
