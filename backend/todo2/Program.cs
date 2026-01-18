@@ -11,10 +11,10 @@ using todo2.Models.Db;
 namespace todo2;
 
 public class Program
+{
+    public static async Task Main(string[] args)
     {
-        public static async Task Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);        builder.Logging.ClearProviders();
+        var builder = WebApplication.CreateBuilder(args); builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
 
         builder.Services.AddControllers();
