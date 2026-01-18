@@ -8,9 +8,11 @@ import {
   MdDarkMode,
   MdPsychology,
   MdLogout,
+  MdSettings,
 } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { DropdownMenu } from "../DropdownMenu";
+import "./ProfileMenu.scss";
 import "./ProfileMenu.scss";
 
 export function ProfileMenu() {
@@ -30,7 +32,14 @@ export function ProfileMenu() {
         onClick={() => setShowProfile(!showProfile)}
         title={user?.username}
       >
-        {user?.username?.charAt(0).toUpperCase() || "U"}
+        {(() => {
+          const stored = localStorage.getItem("avatarDataUrl");
+          const avatar = user?.avatar || stored;
+          if (avatar) {
+            return <img className="profile-avatar" src={avatar} alt="avatar" />;
+          }
+          return user?.username?.charAt(0).toUpperCase() || "U";
+        })()}
       </GradientButton>
 
       <DropdownMenu
@@ -64,6 +73,14 @@ export function ProfileMenu() {
             icon={<MdPsychology />}
           >
             {isDopamineMode ? "Focus Mode" : "Dopamine Mode"}
+          </GradientButton>
+          <GradientButton
+            variant="secondary"
+            size="md"
+            onClick={() => navigate("/settings")}
+            icon={<MdSettings />}
+          >
+            Settings
           </GradientButton>
           <GradientButton
             variant="danger"

@@ -1,4 +1,5 @@
 import "./TodoListPreview.scss";
+import { MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
 
 export function TodoListPreview({ todoListJson }) {
   let todoListData = null;
@@ -8,14 +9,17 @@ export function TodoListPreview({ todoListJson }) {
   if (todoListJson) {
     try {
       todoListData = JSON.parse(todoListJson);
-        const items = todoListData?.items || todoListData?.Items || todoListData?.tasks || [];
-        if (items.length > 0) {
-          totalCount = items.length;
-          completedCount = items.filter((item) => {
-            // Check all possible property names for completion status
-            return item.isCompleted || item.completed || item.done || item.finished;
-          }).length;
-        }
+      const items =
+        todoListData?.items || todoListData?.Items || todoListData?.tasks || [];
+      if (items.length > 0) {
+        totalCount = items.length;
+        completedCount = items.filter((item) => {
+          // Check all possible property names for completion status
+          return (
+            item.isCompleted || item.completed || item.done || item.finished
+          );
+        }).length;
+      }
     } catch (e) {
       console.error("Failed to parse todo list:", e);
     }
@@ -27,8 +31,21 @@ export function TodoListPreview({ todoListJson }) {
     <div className="todo-list-preview">
       <div className="preview-title">{todoListData.name || "Todo List"}</div>
       <div className="preview-progress">
-        <div className="progress-text">
-          {completedCount}/{totalCount} completed
+        <div className="progress-meta">
+          {totalCount > 0 && (
+            <div className="progress-icon-container">
+              <span className="progress-icon">
+                {completedCount === totalCount ? (
+                  <MdCheckCircle />
+                ) : (
+                  <MdRadioButtonUnchecked />
+                )}
+              </span>
+            </div>
+          )}
+          <div className="progress-text">
+            {completedCount}/{totalCount} completed
+          </div>
         </div>
         <div className="progress-bar">
           <div

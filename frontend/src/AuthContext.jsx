@@ -112,6 +112,59 @@ export function AuthProvider({ children }) {
     setError(null);
   };
 
+  const updateProfile = async (updates) => {
+    // updates: { username, avatarDataUrl }
+    try {
+      if (!token) throw new Error("Not authenticated");
+      const response = await fetch(`${API_URL}/user/me`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to update profile");
+      }
+
+      const data = await response.json();
+      setUser(data);
+      return { ok: true, data };
+    } catch (err) {
+      console.error("updateProfile failed:", err);
+      // fallback: update locally
+      setUser((u) => ({ ...(u || {}), ...updates }));
+      return { ok: false, error: err.message };
+    }
+  };
+
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      if (!token) throw new Error("Not authenticated");
+      const response = await fetch(`${API_URL}/user/change-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to change password");
+      }
+
+      return { ok: true };
+    } catch (err) {
+      console.error("changePassword failed:", err);
+      return { ok: false, error: err.message };
+    }
+  };
+
   // Todo Lists API
   const getLists = async () => {
     try {
