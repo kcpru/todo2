@@ -6,7 +6,16 @@ import { useNotifications } from "../NotificationsContext";
 import { GradientButton } from "../components/GradientButton";
 import { Input } from "../components/Input";
 import { CustomSlider } from "../components/CustomSlider";
-import { MdPhotoCamera, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import {
+  MdPhotoCamera,
+  MdVisibility,
+  MdVisibilityOff,
+  MdPerson,
+  MdLock,
+  MdPalette,
+  MdCelebration,
+  MdInfo,
+} from "react-icons/md";
 import { uploadAvatar, getAvatarUrl } from "../api/avatar";
 import "./Settings.scss";
 
@@ -230,271 +239,314 @@ export function Settings() {
   return (
     <div className="settings-page">
       <h2 className="settings-header">Settings</h2>
-
-      <section className="settings-section profile-section">
-        <h3>Profile</h3>
-        <div className="profile-row">
-          <div className="avatar-preview">
-            {avatarDataUrl ? (
-              <img
-                src={avatarDataUrl}
-                alt="Avatar"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "";
-                }}
-              />
-            ) : (
-              <div className="avatar-placeholder">
-                {(username || "U").charAt(0).toUpperCase()}
+      <div className="settings-cards">
+        <section className="settings-section profile-section settings-card">
+          <div className="settings-header-row">
+            <MdPerson className="settings-section-icon" />
+            <div>
+              <h3>Profile</h3>
+              <div className="settings-section-desc">
+                Manage your display name and avatar.
               </div>
-            )}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleAvatarPick}
-              style={{ display: "none" }}
-            />
-            <div style={{ display: "flex", gap: "0.5rem" }}>
-              <GradientButton
-                size="sm"
-                icon={<MdPhotoCamera />}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Change Avatar
-              </GradientButton>
-              <GradientButton
-                size="sm"
-                variant="danger"
-                onClick={handleAvatarReset}
-                title="Reset to default avatar"
-              >
-                Reset
-              </GradientButton>
             </div>
           </div>
+          <div className="profile-row">
+            <div className="avatar-preview">
+              {avatarDataUrl ? (
+                <img
+                  src={avatarDataUrl}
+                  alt="Avatar"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "";
+                  }}
+                />
+              ) : (
+                <div className="avatar-placeholder">
+                  {(username || "U").charAt(0).toUpperCase()}
+                </div>
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarPick}
+                style={{ display: "none" }}
+              />
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <GradientButton
+                  size="sm"
+                  icon={<MdPhotoCamera />}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Change Avatar
+                </GradientButton>
+                <GradientButton
+                  size="sm"
+                  variant="danger"
+                  onClick={handleAvatarReset}
+                  title="Reset to default avatar"
+                >
+                  Reset
+                </GradientButton>
+              </div>
+            </div>
 
-          <div className="profile-fields">
+            <div className="profile-fields">
+              <Input
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setUsernameWarning("");
+                }}
+                placeholder="Display name"
+              />
+              {usernameWarning && (
+                <div className="input-warning">{usernameWarning}</div>
+              )}
+              <div className="profile-actions">
+                <GradientButton
+                  onClick={handleSaveProfile}
+                  disabled={savingProfile}
+                  title="Save display name"
+                >
+                  {savingProfile ? "Saving..." : "Save Name"}
+                </GradientButton>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="settings-section security-section settings-card">
+          <div className="settings-header-row">
+            <MdLock className="settings-section-icon" />
+            <div>
+              <h3>Security</h3>
+              <div className="settings-section-desc">
+                Change your password for better account safety.
+              </div>
+            </div>
+          </div>
+          <div className="security-row">
             <Input
-              value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-                setUsernameWarning("");
-              }}
-              placeholder="Display name"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Current password"
             />
-            {usernameWarning && (
-              <div className="input-warning">{usernameWarning}</div>
-            )}
+            <Input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="New password"
+            />
             <div className="profile-actions">
               <GradientButton
-                onClick={handleSaveProfile}
-                disabled={savingProfile}
-                title="Save display name"
+                onClick={handleChangePassword}
+                disabled={changingPassword}
               >
-                {savingProfile ? "Saving..." : "Save Name"}
+                {changingPassword ? "..." : "Change Password"}
               </GradientButton>
             </div>
-            <div className="profile-hint">
-              Avatar is saved automatically after change.
+          </div>
+        </section>
+
+        <section className="settings-section theme-section settings-card">
+          <div className="settings-header-row">
+            <MdPalette className="settings-section-icon" />
+            <div>
+              <h3>Theme</h3>
+              <div className="settings-section-desc">
+                Personalize the app's color mode.
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="settings-section security-section">
-        <h3>Security</h3>
-        <div className="security-row">
-          <Input
-            type="password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            placeholder="Current password"
-          />
-          <Input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="New password"
-          />
-          <div className="profile-actions">
+          <div className="theme-row">
+            <span className="theme-label">Color mode</span>
             <GradientButton
-              onClick={handleChangePassword}
-              disabled={changingPassword}
+              variant={isDarkMode ? "primary" : "secondary"}
+              onClick={toggleTheme}
+              title={
+                isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+              }
             >
-              {changingPassword ? "..." : "Change Password"}
+              {isDarkMode ? "Dark" : "Light"}
             </GradientButton>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="settings-section theme-section">
-        <h3>Theme</h3>
-        <div className="theme-row">
-          <span className="theme-label">Color mode</span>
-          <GradientButton
-            variant={isDarkMode ? "primary" : "secondary"}
-            onClick={toggleTheme}
-            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDarkMode ? "Dark" : "Light"}
-          </GradientButton>
-        </div>
-      </section>
-
-      <section className="settings-section dopamine-section">
-        <h3>Dopamine Effects</h3>
-        <div className="dopamine-row">
-          <div className="dopamine-controls">
-            <div className="dopamine-toggle-row">
-              <span className="dopamine-label">Enable Dopamine Mode</span>
-              <GradientButton
-                variant={isDopamineMode ? "primary" : "secondary"}
-                onClick={toggleDopamineMode}
-              >
-                {isDopamineMode ? "On" : "Off"}
-              </GradientButton>
-            </div>
-
-            <div className="dopamine-field dopamine-with-preview">
-              <div className="dopamine-field-main">
-                <CustomSlider
-                  min={0}
-                  max={300}
-                  value={confettiCount}
-                  onChange={(e) => updateConfettiCount(e.target.value)}
-                  label="Confetti amount"
-                />
-                <div className="confetti-slider-info">
-                  <span className="confetti-slider-value">{confettiCount}</span>
-                  <span className="confetti-slider-desc">
-                    - Number of confetti particles per burst
-                  </span>
-                </div>
-              </div>
-              <div className="dopamine-preview">
-                <canvas ref={confettiCanvasRef} className="preview-canvas" />
+        <section className="settings-section dopamine-section settings-card">
+          <div className="settings-header-row">
+            <MdCelebration className="settings-section-icon" />
+            <div>
+              <h3>Dopamine Effects</h3>
+              <div className="settings-section-desc">
+                Fun effects and video for extra motivation.
               </div>
             </div>
+          </div>
+          <div className="dopamine-row">
+            <div className="dopamine-controls">
+              <div className="dopamine-toggle-row">
+                <span className="dopamine-label">Enable Dopamine Mode</span>
+                <GradientButton
+                  variant={isDopamineMode ? "primary" : "secondary"}
+                  onClick={toggleDopamineMode}
+                >
+                  {isDopamineMode ? "On" : "Off"}
+                </GradientButton>
+              </div>
 
-            <div className="dopamine-field dopamine-with-preview">
-              <div className="dopamine-field-main">
-                <span className="dopamine-label">Animation speed</span>
-                <div className="speed-toggle-row">
-                  <GradientButton
-                    variant={
-                      animationSpeed === "fast" ? "primary" : "secondary"
-                    }
-                    onClick={() => updateAnimationSpeed("fast")}
-                    size="sm"
-                  >
-                    Fast
-                  </GradientButton>
-                  <GradientButton
-                    variant={
-                      animationSpeed === "slow" ? "primary" : "secondary"
-                    }
-                    onClick={() => updateAnimationSpeed("slow")}
-                    size="sm"
-                  >
-                    Slow
-                  </GradientButton>
+              <div className="dopamine-field dopamine-with-preview">
+                <div className="dopamine-field-main">
+                  <CustomSlider
+                    min={0}
+                    max={100}
+                    step={10}
+                    value={confettiCount}
+                    onChange={(e) => updateConfettiCount(e.target.value)}
+                    label="Confetti amount"
+                  />
+                  <div className="confetti-slider-info">
+                    <span className="confetti-slider-value">
+                      {confettiCount}
+                    </span>
+                    <span className="confetti-slider-desc">
+                      - Number of confetti particles per burst
+                    </span>
+                  </div>
+                </div>
+                <div className="dopamine-preview">
+                  <canvas ref={confettiCanvasRef} className="preview-canvas" />
                 </div>
               </div>
-              <div className="dopamine-preview">
-                <div className={`speed-preview-bar ${animationSpeed}`}></div>
-              </div>
-            </div>
 
-            <div className="dopamine-field dopamine-video-row">
-              <div className="dopamine-video-group">
-                <div className="dopamine-video-toggle-row">
-                  <span className="dopamine-label">Dopamine video</span>
-                  <GradientButton
-                    variant={videoEnabled ? "primary" : "secondary"}
-                    onClick={toggleVideoEnabled}
-                    size="sm"
-                  >
-                    {videoEnabled ? "On" : "Off"}
-                  </GradientButton>
-                </div>
-                <div className="dopamine-video-size-row">
-                  <span className="dopamine-label">Size</span>
-                  <GradientButton
-                    variant={videoSize === "small" ? "primary" : "secondary"}
-                    onClick={() => updateVideoSize("small")}
-                    size="sm"
-                    onMouseEnter={() => setVideoPreviewSize("small")}
-                    onMouseLeave={() => setVideoPreviewSize(null)}
-                  >
-                    Small
-                  </GradientButton>
-                  <GradientButton
-                    variant={videoSize === "medium" ? "primary" : "secondary"}
-                    onClick={() => updateVideoSize("medium")}
-                    size="sm"
-                    style={{ marginLeft: "0.5rem" }}
-                    onMouseEnter={() => setVideoPreviewSize("medium")}
-                    onMouseLeave={() => setVideoPreviewSize(null)}
-                  >
-                    Medium
-                  </GradientButton>
-                  <GradientButton
-                    variant={videoSize === "large" ? "primary" : "secondary"}
-                    onClick={() => updateVideoSize("large")}
-                    size="sm"
-                    style={{ marginLeft: "0.5rem" }}
-                    onMouseEnter={() => setVideoPreviewSize("large")}
-                    onMouseLeave={() => setVideoPreviewSize(null)}
-                  >
-                    Large
-                  </GradientButton>
-                  {/* Video preview box in video position */}
-                  {videoPreviewSize && (
-                    <div
-                      className={`video-size-preview video-size-preview--${videoPreviewSize}`}
-                      data-label={
-                        videoPreviewSize === "small"
-                          ? "Small"
-                          : videoPreviewSize === "medium"
-                            ? "Medium"
-                            : "Large"
+              <div className="dopamine-field dopamine-with-preview">
+                <div className="dopamine-field-main">
+                  <span className="dopamine-label">Animation speed</span>
+                  <div className="speed-toggle-row">
+                    <GradientButton
+                      variant={
+                        animationSpeed === "fast" ? "primary" : "secondary"
                       }
-                    ></div>
-                  )}
+                      onClick={() => updateAnimationSpeed("fast")}
+                      size="sm"
+                    >
+                      Fast
+                    </GradientButton>
+                    <GradientButton
+                      variant={
+                        animationSpeed === "slow" ? "primary" : "secondary"
+                      }
+                      onClick={() => updateAnimationSpeed("slow")}
+                      size="sm"
+                    >
+                      Slow
+                    </GradientButton>
+                  </div>
+                </div>
+                <div className="dopamine-preview">
+                  <div className={`speed-preview-bar ${animationSpeed}`}></div>
+                </div>
+              </div>
+
+              <div className="dopamine-field dopamine-video-row">
+                <div className="dopamine-video-group">
+                  <div className="dopamine-video-toggle-row">
+                    <span className="dopamine-label">Dopamine video</span>
+                    <GradientButton
+                      variant={videoEnabled ? "primary" : "secondary"}
+                      onClick={toggleVideoEnabled}
+                      size="sm"
+                    >
+                      {videoEnabled ? "On" : "Off"}
+                    </GradientButton>
+                  </div>
+                  <div className="dopamine-video-size-row">
+                    <span className="dopamine-label">Size</span>
+                    <GradientButton
+                      variant={videoSize === "small" ? "primary" : "secondary"}
+                      onClick={() => updateVideoSize("small")}
+                      size="sm"
+                      onMouseEnter={() => setVideoPreviewSize("small")}
+                      onMouseLeave={() => setVideoPreviewSize(null)}
+                    >
+                      Small
+                    </GradientButton>
+                    <GradientButton
+                      variant={videoSize === "medium" ? "primary" : "secondary"}
+                      onClick={() => updateVideoSize("medium")}
+                      size="sm"
+                      style={{ marginLeft: "0.5rem" }}
+                      onMouseEnter={() => setVideoPreviewSize("medium")}
+                      onMouseLeave={() => setVideoPreviewSize(null)}
+                    >
+                      Medium
+                    </GradientButton>
+                    <GradientButton
+                      variant={videoSize === "large" ? "primary" : "secondary"}
+                      onClick={() => updateVideoSize("large")}
+                      size="sm"
+                      style={{ marginLeft: "0.5rem" }}
+                      onMouseEnter={() => setVideoPreviewSize("large")}
+                      onMouseLeave={() => setVideoPreviewSize(null)}
+                    >
+                      Large
+                    </GradientButton>
+                    {/* Video preview box in video position */}
+                    {videoPreviewSize && (
+                      <div
+                        className={`video-size-preview video-size-preview--${videoPreviewSize}`}
+                        data-label={
+                          videoPreviewSize === "small"
+                            ? "Small"
+                            : videoPreviewSize === "medium"
+                              ? "Medium"
+                              : "Large"
+                        }
+                      ></div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      <section className="settings-section about-section">
-        <h3>About</h3>
-        <div className="about-content">
-          <div className="about-row">
-            <span className="about-label">App version:</span>
-            <span className="about-value">2.0.0</span>
+        </section>
+        <section className="settings-section about-section settings-card">
+          <div className="settings-header-row">
+            <MdInfo className="settings-section-icon" />
+            <div>
+              <h3>About</h3>
+              <div className="settings-section-desc">
+                App info, repository and contact details.
+              </div>
+            </div>
           </div>
-          <div className="about-row">
-            <span className="about-label">Repository:</span>
-            <a
-              className="about-link"
-              href="https://github.com/kcpru/todo2"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              github.com/kcpru/todo2
-            </a>
+          <div className="about-content">
+            <div className="about-row">
+              <span className="about-label">App version:</span>
+              <span className="about-value">2.0.0</span>
+            </div>
+            <div className="about-row">
+              <span className="about-label">Repository:</span>
+              <a
+                className="about-link"
+                href="https://github.com/kcpru/todo2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github.com/kcpru/todo2
+              </a>
+            </div>
+            <div className="about-row">
+              <span className="about-label">Contact:</span>
+              <a className="about-link" href="mailto:support@todo2.app">
+                support@todo2.app
+              </a>
+            </div>
           </div>
-          <div className="about-row">
-            <span className="about-label">Contact:</span>
-            <a className="about-link" href="mailto:support@todo2.app">
-              support@todo2.app
-            </a>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }
