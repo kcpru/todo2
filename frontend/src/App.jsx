@@ -8,7 +8,8 @@ import { DopamineVideo } from "./components/DopamineVideo";
 import { SharePostModal } from "./components/SharePostModal";
 import { Input } from "./components/Input";
 import { FilterSelect } from "./components/FilterSelect";
-import { useAuth } from "./AuthContext";
+import { usePostsAPI } from "./hooks/usePostsAPI";
+import { useNotifications } from "./NotificationsContext";
 import { ANIMATION_CONFIG } from "./constants/animations";
 import {
   MdFormatListBulleted,
@@ -42,8 +43,8 @@ function App() {
     setEditingDescription,
     registerCheckboxPosition,
   } = useTodo();
-
-  const { createPost } = useAuth();
+  const { createPost } = usePostsAPI();
+  const { notify } = useNotifications();
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [isCreatingPost, setIsCreatingPost] = useState(false);
 
@@ -58,19 +59,24 @@ function App() {
 
   const handleSharePost = useCallback(
     async (content) => {
-      if (!selectedList) return;
+      if (!selectedList) {
+        notify({ message: "No list selected", type: "error" });
+        return;
+      }
 
       try {
         setIsCreatingPost(true);
         await createPost(selectedList.id, content);
+        notify({ message: "Post shared!", type: "success" });
         setShareModalOpen(false);
       } catch (err) {
         console.error("Failed to share post:", err);
+        notify({ message: "Failed to share post", type: "error" });
       } finally {
         setIsCreatingPost(false);
       }
     },
-    [selectedList, createPost]
+    [selectedList, createPost, notify]
   );
 
   const filters = [

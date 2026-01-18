@@ -189,10 +189,6 @@
   opacity: 1;
 }
 
-.add-btn {
-  margin: 1rem auto;
-}
-
 /* Keep ripple wrapper scoped; global ripple styles live in index.scss */
 .search-container .input-with-ripple {
   flex: 1; /* Ensure wrapper expands so .search-input can be 100% width */
@@ -201,8 +197,7 @@
 .button-group {
   display: flex;
   gap: 1rem;
-  padding: 1.5rem 1rem;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;

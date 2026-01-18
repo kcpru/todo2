@@ -6,8 +6,8 @@
   gap: 0.9rem;
   height: 100%;
   overflow: hidden;
-  background: var(--bg-secondary);
-  border: 2px solid rgba(var(--md-outline), 0.12);
+  background: rgba(var(--md-primary-rgb), 0.03);
+  border: 2px solid rgba(var(--md-primary-rgb), 0.12);
   border-radius: 14px;
   margin: 1.5rem;
   box-sizing: border-box;
@@ -109,6 +109,7 @@
 .list-item-container {
   display: flex;
   gap: 0.25rem;
+  backdrop-filter: blur(10px);
   align-items: center;
 }
 
@@ -119,7 +120,7 @@
   padding: 0.7rem 0.9rem 0.7rem 1rem;
   border: 2px solid rgba(var(--md-primary-rgb), 0.12);
   border-radius: 12px;
-  background: var(--bg-primary);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--text-primary);
   font-weight: 600;
   font-size: 0.92rem;
@@ -160,15 +161,15 @@
 }
 
 .list-item:hover {
-  background-color: var(--bg-secondary);
-  border-color: rgba(var(--md-outline), 0.18);
+  background-color: rgba(var(--md-primary-rgb), 0.08);
+  border-color: rgba(var(--md-primary-rgb), 0.25);
   box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
 }
 
 .list-item.active {
-  background: linear-gradient(90deg, rgba(var(--md-primary-rgb), 0.06), var(--bg-primary));
-  border-color: rgba(var(--md-outline), 0.22);
-  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.08);
+  background: rgba(var(--md-primary-rgb), 0.1);
+  border-color: rgba(var(--md-primary-rgb), 0.35);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.1);
 }
 
 .list-active-bar {
@@ -178,7 +179,11 @@
   bottom: 0.6rem;
   width: 3px;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--accent-primary), var(--accent-variant));
+  background: linear-gradient(
+    180deg,
+    var(--accent-primary),
+    rgba(var(--md-primary-rgb), 0.65)
+  );
   pointer-events: none;
   z-index: 1;
 }

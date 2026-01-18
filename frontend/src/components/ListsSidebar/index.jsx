@@ -7,6 +7,7 @@ import {
   MdSearch,
 } from "react-icons/md";
 import { motion, AnimatePresence, Reorder } from "motion/react";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
@@ -162,10 +163,6 @@ export function ListsSidebar({
     setOrder([...ordered, ...remaining]);
   }, [lists, savedOrderIds]);
 
-  useEffect(() => {
-    setOrder(lists);
-  }, [lists]);
-
   const filteredLists = lists.filter((list) =>
     list.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -181,9 +178,6 @@ export function ListsSidebar({
     <div className="lists-sidebar">
       <div className="search-container">
         <Input
-            const ids = newOrder.map((l) => l.id);
-            setSavedOrderIds(ids);
-            if (onReorderLists) onReorderLists(ids);
           type="text"
           placeholder="Search lists..."
           value={searchQuery}
@@ -214,7 +208,9 @@ export function ListsSidebar({
           values={order}
           onReorder={(newOrder) => {
             setOrder(newOrder);
-            if (onReorderLists) onReorderLists(newOrder);
+            const ids = newOrder.map((l) => l.id);
+            setSavedOrderIds(ids);
+            if (onReorderLists) onReorderLists(ids);
           }}
           as="div"
           className="lists-container"

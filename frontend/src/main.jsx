@@ -11,6 +11,7 @@ import { TodoProvider } from "./TodoContext.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Home } from "./pages/Home.jsx";
+import { Settings } from "./pages/Settings";
 import { Layout } from "./components/Layout/index.jsx";
 import { MyTodoLayout } from "./components/MyTodoLayout/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -25,6 +26,7 @@ function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
         <Route element={<MyTodoLayout />}>
           <Route path="/my-todo" element={<App />} />

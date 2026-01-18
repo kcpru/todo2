@@ -23,6 +23,27 @@
   color: var(--text-secondary);
 }
 
+.progress-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.progress-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.9rem;
+  min-height: 0.9rem;
+  flex-shrink: 0;
+}
+
+.progress-icon {
+  display: inline-flex;
+  font-size: 0.95rem;
+  color: var(--accent-primary);
+}
+
 .progress-bar {
   height: 6px;
   background: rgba(var(--md-primary-rgb), 0.2);
