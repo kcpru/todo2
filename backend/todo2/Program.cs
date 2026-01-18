@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Text;
 using todo2.Auth;
 using todo2.Database;
 using todo2.Files;
 using todo2.Models.Db;
+using todo2.Services;
 
 namespace todo2;
 
@@ -26,6 +28,24 @@ public class Program
         });
         builder.Services.AddProblemDetails();
 
+        builder.Services.AddMemoryCache();
+
+        builder.Services.AddHttpClient(MotivationMessagesProvider.HttpClientConfigurationName, client =>
+        {
+            var baseUrl = builder.Configuration["Groq:BaseUrl"]!;
+            var apiKey = builder.Configuration["Groq:ApiKey"]!;
+
+            client.BaseAddress = new Uri(baseUrl);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+        });
+
+        builder.Services.AddHttpClient(RandomAvatarsProvider.HttpClientConfigurationName, client =>
+        {
+            client.BaseAddress = new Uri(builder.Configuration["RandomAvatars:BaseUrl"]!);
+        });
+
+        builder.Services.AddScoped<MotivationMessagesProvider>();
+        builder.Services.AddScoped<RandomAvatarsProvider>();
         builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
         builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
