@@ -36,6 +36,29 @@ export function DopamineProvider({ children }) {
     localStorage.setItem("dopamine_animationSpeed", value);
   };
 
+  const [videoEnabled, setVideoEnabled] = useState(() => {
+    const saved = localStorage.getItem("dopamine_videoEnabled");
+    return saved ? JSON.parse(saved) : true;
+  });
+  const [videoSize, setVideoSize] = useState(() => {
+    const saved = localStorage.getItem("dopamine_videoSize");
+    if (saved === "large" || saved === "medium" || saved === "small")
+      return saved;
+    return "small";
+  });
+
+  const toggleVideoEnabled = () => {
+    const newValue = !videoEnabled;
+    setVideoEnabled(newValue);
+    localStorage.setItem("dopamine_videoEnabled", JSON.stringify(newValue));
+  };
+  const updateVideoSize = (size) => {
+    let value = "small";
+    if (size === "large" || size === "medium") value = size;
+    setVideoSize(value);
+    localStorage.setItem("dopamine_videoSize", value);
+  };
+
   return (
     <DopamineContext.Provider
       value={{
@@ -45,6 +68,10 @@ export function DopamineProvider({ children }) {
         animationSpeed,
         updateConfettiCount,
         updateAnimationSpeed,
+        videoEnabled,
+        toggleVideoEnabled,
+        videoSize,
+        updateVideoSize,
       }}
     >
       {children}

@@ -11,6 +11,7 @@ import { uploadAvatar, getAvatarUrl } from "../api/avatar";
 import "./Settings.scss";
 
 export function Settings() {
+  const [videoPreviewSize, setVideoPreviewSize] = useState(null);
   const { isDarkMode, toggleTheme } = useTheme();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -25,6 +26,10 @@ export function Settings() {
     animationSpeed,
     updateConfettiCount,
     updateAnimationSpeed,
+    videoEnabled,
+    toggleVideoEnabled,
+    videoSize,
+    updateVideoSize,
   } = useDopamine();
   const [username, setUsername] = useState(user?.username || "");
   const [usernameWarning, setUsernameWarning] = useState("");
@@ -182,7 +187,7 @@ export function Settings() {
       dr: (Math.random() - 0.5) * 0.2,
     }));
 
-    const speedScale = Math.max(0.1, Number(animationSpeed) || 1);
+    const speedScale = animationSpeed === "slow" ? 0.4 : 1;
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
@@ -301,42 +306,18 @@ export function Settings() {
       <section className="settings-section security-section">
         <h3>Security</h3>
         <div className="security-row">
-          <div style={{ position: "relative" }}>
-            <Input
-              type={showCurrentPassword ? "text" : "password"}
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              placeholder="Current password"
-            />
-            <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={() => setShowCurrentPassword((v) => !v)}
-              tabIndex={-1}
-              aria-label={
-                showCurrentPassword ? "Hide password" : "Show password"
-              }
-            >
-              {showCurrentPassword ? <MdVisibilityOff /> : <MdVisibility />}
-            </button>
-          </div>
-          <div style={{ position: "relative" }}>
-            <Input
-              type={showNewPassword ? "text" : "password"}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="New password"
-            />
-            <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={() => setShowNewPassword((v) => !v)}
-              tabIndex={-1}
-              aria-label={showNewPassword ? "Hide password" : "Show password"}
-            >
-              {showNewPassword ? <MdVisibilityOff /> : <MdVisibility />}
-            </button>
-          </div>
+          <Input
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            placeholder="Current password"
+          />
+          <Input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="New password"
+          />
           <div className="profile-actions">
             <GradientButton
               onClick={handleChangePassword}
@@ -423,6 +404,66 @@ export function Settings() {
               </div>
               <div className="dopamine-preview">
                 <div className={`speed-preview-bar ${animationSpeed}`}></div>
+              </div>
+            </div>
+
+            <div className="dopamine-field dopamine-video-row">
+              <div className="dopamine-video-group">
+                <div className="dopamine-video-toggle-row">
+                  <span className="dopamine-label">Dopamine video</span>
+                  <GradientButton
+                    variant={videoEnabled ? "primary" : "secondary"}
+                    onClick={toggleVideoEnabled}
+                    size="sm"
+                  >
+                    {videoEnabled ? "On" : "Off"}
+                  </GradientButton>
+                </div>
+                <div className="dopamine-video-size-row">
+                  <span className="dopamine-label">Size</span>
+                  <GradientButton
+                    variant={videoSize === "small" ? "primary" : "secondary"}
+                    onClick={() => updateVideoSize("small")}
+                    size="sm"
+                    onMouseEnter={() => setVideoPreviewSize("small")}
+                    onMouseLeave={() => setVideoPreviewSize(null)}
+                  >
+                    Small
+                  </GradientButton>
+                  <GradientButton
+                    variant={videoSize === "medium" ? "primary" : "secondary"}
+                    onClick={() => updateVideoSize("medium")}
+                    size="sm"
+                    style={{ marginLeft: "0.5rem" }}
+                    onMouseEnter={() => setVideoPreviewSize("medium")}
+                    onMouseLeave={() => setVideoPreviewSize(null)}
+                  >
+                    Medium
+                  </GradientButton>
+                  <GradientButton
+                    variant={videoSize === "large" ? "primary" : "secondary"}
+                    onClick={() => updateVideoSize("large")}
+                    size="sm"
+                    style={{ marginLeft: "0.5rem" }}
+                    onMouseEnter={() => setVideoPreviewSize("large")}
+                    onMouseLeave={() => setVideoPreviewSize(null)}
+                  >
+                    Large
+                  </GradientButton>
+                  {/* Video preview box in video position */}
+                  {videoPreviewSize && (
+                    <div
+                      className={`video-size-preview video-size-preview--${videoPreviewSize}`}
+                      data-label={
+                        videoPreviewSize === "small"
+                          ? "Small"
+                          : videoPreviewSize === "medium"
+                            ? "Medium"
+                            : "Large"
+                      }
+                    ></div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
