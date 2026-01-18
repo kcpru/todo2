@@ -5,6 +5,7 @@ using System.Data.Common;
 using todo2.Auth;
 using todo2.Controllers;
 using todo2.Database;
+using todo2.Files;
 using todo2.Models.Db;
 using todo2.Models.Dto;
 using todo2.UnitTests.TestInfrastructure;
@@ -16,6 +17,13 @@ public class UserControllerTests
 {
     private AppDbContext _db = default!;
     private DbConnection _conn = default!;
+
+    private sealed class StubFilesManager : IFilesManager
+    {
+        public Task SaveAsync(string relativePath, Stream content, CancellationToken ct) => Task.CompletedTask;
+        public Task<Stream?> OpenReadAsync(string relativePath, CancellationToken ct) => Task.FromResult<Stream?>(null);
+        public Task<bool> ExistsAsync(string relativePath, CancellationToken ct) => Task.FromResult(false);
+    }
 
     private sealed class StubJwtTokenService : IJwtTokenService
     {
@@ -40,7 +48,7 @@ public class UserControllerTests
     [TestMethod]
     public async Task GivenInvalidRegisterRequest_WhenRegister_ThenReturnsBadRequest()
     {
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager());
 
         var result = await sut.Register(new RegisterRequest(" ", " ", ""), CancellationToken.None);
 
@@ -53,7 +61,7 @@ public class UserControllerTests
         _db.Users.Add(new User { Id = Guid.NewGuid(), Username = "john", Email = "john@ex.com", PasswordHash = "x" });
         await _db.SaveChangesAsync();
 
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager());
 
         var result = await sut.Register(new RegisterRequest("john", "new@ex.com", "Pass123!"), CancellationToken.None);
 
@@ -66,7 +74,7 @@ public class UserControllerTests
         _db.Users.Add(new User { Id = Guid.NewGuid(), Username = "john", Email = "john@ex.com", PasswordHash = "x" });
         await _db.SaveChangesAsync();
 
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager());
 
         var result = await sut.Register(new RegisterRequest("newuser", "john@ex.com", "Pass123!"), CancellationToken.None);
 
@@ -76,7 +84,7 @@ public class UserControllerTests
     [TestMethod]
     public async Task GivenValidRegisterRequest_WhenRegister_ThenCreatesUserAndReturnsToken()
     {
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager());
 
         var result = await sut.Register(new RegisterRequest("  john ", "  john@ex.com ", "Pass123!"), CancellationToken.None);
 
@@ -98,7 +106,7 @@ public class UserControllerTests
     [TestMethod]
     public async Task GivenInvalidLoginRequest_WhenLogin_ThenReturnsBadRequest()
     {
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager());
 
         var result = await sut.Login(new LoginRequest(" ", ""), CancellationToken.None);
 
@@ -108,7 +116,7 @@ public class UserControllerTests
     [TestMethod]
     public async Task GivenUnknownUser_WhenLogin_ThenReturnsUnauthorized()
     {
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager());
 
         var result = await sut.Login(new LoginRequest("john", "Pass123!"), CancellationToken.None);
 
@@ -124,7 +132,7 @@ public class UserControllerTests
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        var sut = new UserController(_db, new StubJwtTokenService(), hasher);
+        var sut = new UserController(_db, new StubJwtTokenService(), hasher, new StubFilesManager());
 
         var result = await sut.Login(new LoginRequest("john", "WrongPass"), CancellationToken.None);
 
@@ -140,7 +148,7 @@ public class UserControllerTests
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        var sut = new UserController(_db, new StubJwtTokenService(), hasher);
+        var sut = new UserController(_db, new StubJwtTokenService(), hasher, new StubFilesManager());
 
         var result = await sut.Login(new LoginRequest("  john ", "Pass123!"), CancellationToken.None);
 
@@ -160,7 +168,7 @@ public class UserControllerTests
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        var sut = new UserController(_db, new StubJwtTokenService(), hasher);
+        var sut = new UserController(_db, new StubJwtTokenService(), hasher, new StubFilesManager());
 
         var result = await sut.Login(new LoginRequest(" john@ex.com ", "Pass123!"), CancellationToken.None);
 
@@ -174,7 +182,7 @@ public class UserControllerTests
     [TestMethod]
     public async Task GivenNoSubClaim_WhenMe_ThenReturnsUnauthorized()
     {
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>())
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager())
         {
             ControllerContext = ControllerContextFactory.CreateWithUserId(userId: null)
         };
@@ -187,7 +195,7 @@ public class UserControllerTests
     [TestMethod]
     public async Task GivenUnknownUserId_WhenMe_ThenReturnsUnauthorized()
     {
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>())
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager())
         {
             ControllerContext = ControllerContextFactory.CreateWithUserId(Guid.NewGuid())
         };
@@ -204,7 +212,7 @@ public class UserControllerTests
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>())
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager())
         {
             ControllerContext = ControllerContextFactory.CreateWithUserId(user.Id)
         };
@@ -228,7 +236,7 @@ public class UserControllerTests
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>())
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager())
         {
             ControllerContext = ControllerContextFactory.CreateWithUserId(Guid.NewGuid())
         };
@@ -246,7 +254,7 @@ public class UserControllerTests
     [TestMethod]
     public async Task GivenNonExistingUserId_WhenGetUser_ThenReturnsNotFound()
     {
-        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>());
+        var sut = new UserController(_db, new StubJwtTokenService(), new PasswordHasher<User>(), new StubFilesManager());
         var nonExistingUserId = Guid.NewGuid();
 
         var result = await sut.GetUser(nonExistingUserId, CancellationToken.None);
