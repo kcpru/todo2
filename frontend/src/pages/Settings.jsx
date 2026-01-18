@@ -8,8 +8,6 @@ import { Input } from "../components/Input";
 import { CustomSlider } from "../components/CustomSlider";
 import {
   MdPhotoCamera,
-  MdVisibility,
-  MdVisibilityOff,
   MdPerson,
   MdLock,
   MdPalette,
@@ -22,8 +20,6 @@ import "./Settings.scss";
 export function Settings() {
   const [videoPreviewSize, setVideoPreviewSize] = useState(null);
   const { isDarkMode, toggleTheme } = useTheme();
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
   const { notify } = useNotifications();
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarDataUrl, setAvatarDataUrl] = useState("");
@@ -48,28 +44,6 @@ export function Settings() {
   const [changingPassword, setChangingPassword] = useState(false);
   const confettiCanvasRef = useRef(null);
   const animationBoxRef = useRef(null);
-
-  const handleAvatarReset = async () => {
-    setAvatarFile(null);
-    setAvatarDataUrl("");
-    try {
-      // Send a blank avatar (or call a delete endpoint if backend supports)
-      // Here, we simulate by uploading an empty 1x1 transparent PNG
-      const emptyPng = new Uint8Array([
-        137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0,
-        1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 13, 73, 68, 65,
-        84, 120, 156, 99, 0, 1, 0, 0, 5, 0, 1, 13, 10, 26, 10, 0, 0, 0, 0, 73,
-        69, 78, 68, 174, 66, 96, 130,
-      ]);
-      const blob = new Blob([emptyPng], { type: "image/png" });
-      const file = new File([blob], "avatar.png", { type: "image/png" });
-      await uploadAvatar(file);
-      setAvatarDataUrl("");
-      notify({ message: "Avatar reset to default.", type: "success" });
-    } catch (err) {
-      notify({ message: "Failed to reset avatar", type: "error" });
-    }
-  };
 
   useEffect(() => {
     setUsername(user?.username || "");
@@ -238,7 +212,6 @@ export function Settings() {
 
   return (
     <div className="settings-page">
-      <h2 className="settings-header">Settings</h2>
       <div className="settings-cards">
         <section className="settings-section profile-section settings-card">
           <div className="settings-header-row">
@@ -250,68 +223,82 @@ export function Settings() {
               </div>
             </div>
           </div>
-          <div className="profile-row">
-            <div className="avatar-preview">
-              {avatarDataUrl ? (
-                <img
-                  src={avatarDataUrl}
-                  alt="Avatar"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "";
-                  }}
+          <div className="profile-row profile-row-modern">
+            <div className="profile-avatar-card">
+              <div className="avatar-preview avatar-preview-large">
+                {avatarDataUrl ? (
+                  <img
+                    src={avatarDataUrl}
+                    alt="Avatar"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "";
+                    }}
+                  />
+                ) : (
+                  <div className="avatar-placeholder avatar-placeholder-large">
+                    {(username || "U").charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarPick}
+                  style={{ display: "none" }}
                 />
-              ) : (
-                <div className="avatar-placeholder">
-                  {(username || "U").charAt(0).toUpperCase()}
+                <div className="avatar-actions">
+                  <GradientButton
+                    size="sm"
+                    icon={<MdPhotoCamera />}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    Change
+                  </GradientButton>
                 </div>
-              )}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarPick}
-                style={{ display: "none" }}
-              />
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <GradientButton
-                  size="sm"
-                  icon={<MdPhotoCamera />}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  Change Avatar
-                </GradientButton>
-                <GradientButton
-                  size="sm"
-                  variant="danger"
-                  onClick={handleAvatarReset}
-                  title="Reset to default avatar"
-                >
-                  Reset
-                </GradientButton>
               </div>
             </div>
-
-            <div className="profile-fields">
-              <Input
-                value={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                  setUsernameWarning("");
-                }}
-                placeholder="Display name"
-              />
-              {usernameWarning && (
-                <div className="input-warning">{usernameWarning}</div>
-              )}
-              <div className="profile-actions">
-                <GradientButton
-                  onClick={handleSaveProfile}
-                  disabled={savingProfile}
-                  title="Save display name"
-                >
-                  {savingProfile ? "Saving..." : "Save Name"}
-                </GradientButton>
+            <div className="profile-fields-card">
+              <div className="profile-fields">
+                <div className="profile-user-row">
+                  <span className="profile-username-large">
+                    {user?.username}
+                  </span>
+                  <span className="profile-email-large">{user?.email}</span>
+                </div>
+                <Input
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setUsernameWarning("");
+                  }}
+                  placeholder="Display name"
+                />
+                {usernameWarning && (
+                  <div className="input-warning">{usernameWarning}</div>
+                )}
+                <div className="profile-actions profile-actions-row">
+                  <GradientButton
+                    size="sm"
+                    onClick={handleSaveProfile}
+                    disabled={savingProfile}
+                    title="Save display name"
+                  >
+                    {savingProfile ? "Saving..." : "Save Name"}
+                  </GradientButton>
+                  <GradientButton
+                    size="sm"
+                    variant="danger"
+                    onClick={() => {
+                      if (window.confirm("Are you sure you want to log out?")) {
+                        window.localStorage.removeItem("token");
+                        window.location.href = "/login";
+                      }
+                    }}
+                  >
+                    Logout
+                  </GradientButton>
+                </div>
               </div>
             </div>
           </div>
