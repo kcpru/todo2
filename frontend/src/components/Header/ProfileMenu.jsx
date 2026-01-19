@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../../ThemeContext";
-import { useDopamine } from "../../DopamineContext";
-import { useAuth } from "../../AuthContext";
+import { useTheme } from "../../context/ThemeContext";
+import { useDopamine } from "../../context/DopamineContext";
+import { useAuth } from "../../context/AuthContext";
 import {
   MdLightMode,
   MdDarkMode,

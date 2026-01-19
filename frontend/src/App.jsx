@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState, useCallback } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { useTodo } from "./TodoContext";
+import { useTodo } from "./context/TodoContext";
 import { TodoList } from "./components/TodoList";
 import { EditModal } from "./components/EditModal";
 import { DopamineVideo } from "./components/DopamineVideo";
@@ -10,7 +10,7 @@ import { SharePostModal } from "./components/SharePostModal";
 import { Input } from "./components/Input";
 import { FilterSelect } from "./components/FilterSelect";
 import { usePostsAPI } from "./hooks/usePostsAPI";
-import { useNotifications } from "./NotificationsContext";
+import { useNotifications } from "./context/NotificationsContext";
 import { ANIMATION_CONFIG } from "./constants/animations";
 import {
   MdFormatListBulleted,

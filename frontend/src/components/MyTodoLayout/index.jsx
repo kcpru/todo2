@@ -5,8 +5,8 @@ import { MdMenu, MdClose } from "react-icons/md";
 import { Header } from "../Header";
 import { ListsSidebar } from "../ListsSidebar";
 import { motion } from "motion/react";
-import { useTodo } from "../../TodoContext";
-import { useAuth } from "../../AuthContext";
+import { useTodo } from "../../context/TodoContext";
+import { useAuth } from "../../context/AuthContext";
 import "./MyTodoLayout.scss";
 
 export function MyTodoLayout() {

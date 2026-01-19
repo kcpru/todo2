@@ -7,7 +7,7 @@ import { Comment } from "../Comment";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { PostContent } from "../PostContent";
-import { useDopamine } from "../../DopamineContext";
+import { useDopamine } from "../../context/DopamineContext";
 import { usePostsAPI } from "../../hooks/usePostsAPI";
 import "./PostDetailModal.scss";
 

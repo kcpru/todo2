@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
 

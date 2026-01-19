@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { LayoutGroup } from "motion/react";
-import { useAuth } from "../AuthContext";
-import { usePostsAPI } from "../hooks/usePostsAPI";
-import { PostCard } from "../components/PostCard";
-import { PostDetailModal } from "../components/PostDetailModal";
+import { useAuth } from "../../context/AuthContext";
+import { usePostsAPI } from "../../hooks/usePostsAPI";
+import { PostCard } from "../../components/PostCard";
+import { PostDetailModal } from "../../components/PostDetailModal";
 import "./Home.scss";
 
 export function Home() {

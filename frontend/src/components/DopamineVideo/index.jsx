@@ -1,4 +1,4 @@
-import { useDopamine } from "../../DopamineContext";
+import { useDopamine } from "../../context/DopamineContext";
 import demoVideo from "../../assets/video.mp4";
 import "./DopamineVideo.scss";
 

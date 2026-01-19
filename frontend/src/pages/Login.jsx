@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { z } from "zod";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { MdLogin, MdMailOutline, MdLockOutline } from "react-icons/md";
@@ -8,7 +8,7 @@ import "../styles/Auth.scss";
 import { Input } from "../components/Input";
 import { GradientButton } from "../components/GradientButton";
 import { ANIMATION_CONFIG } from "../constants/animations";
-import { useNotifications } from "../NotificationsContext";
+import { useNotifications } from "../context/NotificationsContext";
 
 export function Login() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");

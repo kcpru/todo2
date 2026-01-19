@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
-import { useAuth } from "../AuthContext";
-import { useDopamine } from "../DopamineContext";
+import { useAuth } from "../context/AuthContext";
+import { useDopamine } from "../context/DopamineContext";
 import confetti from "canvas-confetti";
 
 export function useTodoLogic() {
