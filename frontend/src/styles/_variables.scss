@@ -1,0 +1,89 @@
+// Color and theme variables
+:root {
+  font-family: "Poppins", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  /* Light mode variables (Material Design 3) */
+  --md-primary: #4355b9;
+  --md-primary-rgb: 67, 85, 185;
+  --md-primary-variant: #5a6cc3;
+  --md-primary-container: #dde1ff;
+  --md-on-primary: #ffffff;
+  --md-on-primary-container: #00105c;
+  --md-surface: #f5f6ff;
+  --md-surface-variant: #e3e1ec;
+  --md-on-surface: #1c1b1f;
+  --md-on-surface-variant: #46464f;
+  --md-outline: #777680;
+  --md-outline-variant: #c7c5d0;
+  --md-error: #c62828;
+  --md-error-rgb: 198, 40, 40;
+  --md-warning: #e65100;
+  --md-warning-rgb: 230, 81, 0;
+  --md-success: #2e7d32;
+  --md-success-rgb: 46, 125, 50;
+  --md-info: #0277bd;
+  --md-info-rgb: 2, 119, 189;
+
+  /* App variables mapped to Material Design */
+  --bg-primary: var(--md-surface);
+  --bg-secondary: var(--md-surface-variant);
+  --text-primary: var(--md-on-surface);
+  --text-secondary: var(--md-on-surface-variant);
+  --border-color: var(--md-primary);
+  --button-bg: var(--md-surface-variant);
+  --link-color: var(--md-primary);
+  --link-hover: var(--md-primary-variant);
+  --accent-primary: var(--md-primary);
+  --accent-variant: var(--md-primary-variant);
+  --accent-error: var(--md-error);
+  --accent-warning: var(--md-warning);
+
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  --md-primary: #b8c3ff;
+  --md-primary-rgb: 184, 195, 255;
+  --md-primary-variant: #c7d0ff;
+  --md-primary-container: #2a3f8f;
+  --md-on-primary: #002881;
+  --md-on-primary-container: #dde1ff;
+  --md-surface: #13151f;
+  --md-surface-variant: #46464f;
+  --md-on-surface: #e5e1e6;
+  --md-on-surface-variant: #c7c5d0;
+  --md-outline: #918f9a;
+  --md-outline-variant: #46464f;
+  --md-error: #ef5350;
+  --md-error-rgb: 239, 83, 80;
+  --md-warning: #ff9800;
+  --md-warning-rgb: 255, 152, 0;
+  --md-success: #66bb6a;
+  --md-success-rgb: 102, 187, 106;
+  --md-info: #29b6f6;
+  --md-info-rgb: 41, 182, 246;
+
+  /* App variables mapped to Material Design */
+  --bg-primary: var(--md-surface);
+  --bg-secondary: var(--md-surface-variant);
+  --text-primary: var(--md-on-surface);
+  --text-secondary: var(--md-on-surface-variant);
+  --border-color: var(--md-primary);
+  --button-bg: var(--md-surface-variant);
+  --link-color: var(--md-primary);
+  --link-hover: var(--md-primary-variant);
+  --accent-primary: #8b9fe3;
+  --accent-variant: #9db1f0;
+  --accent-error: var(--md-error);
+  --accent-warning: var(--md-warning);
+}

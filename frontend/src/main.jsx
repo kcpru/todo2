@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import "./index.scss";
-import App from "./App.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { DopamineProvider } from "./context/DopamineContext.jsx";
@@ -16,6 +15,7 @@ import Stats from "./pages/Stats";
 import { Layout } from "./components/Layout/index.jsx";
 import { MyTodoLayout } from "./components/MyTodoLayout/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import MyTodo from "./pages/MyTodo/index.jsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -31,7 +31,7 @@ function AppRoutes() {
           <Route path="/stats" element={<Stats />} />
         </Route>
         <Route element={<MyTodoLayout />}>
-          <Route path="/my-todo" element={<App />} />
+          <Route path="/my-todo" element={<MyTodo />} />
         </Route>
       </Route>
     </Routes>

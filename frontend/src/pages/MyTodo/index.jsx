@@ -166,11 +166,6 @@ function MyTodo() {
       />
 
       <DopamineVideo />
-
-      <Routes>
-        <Route path="/stats" element={<Stats />} />
-        {/* Add other routes here if needed */}
-      </Routes>
     </div>
   );
 }
