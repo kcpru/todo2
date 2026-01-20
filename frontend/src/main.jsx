@@ -8,6 +8,7 @@ import { DopamineProvider } from "./context/DopamineContext.jsx";
 import { NotificationsProvider } from "./context/NotificationsContext.jsx";
 import { TodoProvider } from "./context/TodoContext.jsx";
 import App from "./App.jsx";
+import { PageTransitionProvider } from "./context/PageTransitionContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,9 +17,11 @@ createRoot(document.getElementById("root")).render(
         <DopamineProvider>
           <NotificationsProvider>
             <TodoProvider>
-              <BrowserRouter>
-                <App />
-              </BrowserRouter>
+              <PageTransitionProvider>
+                <BrowserRouter>
+                  <App />
+                </BrowserRouter>
+              </PageTransitionProvider>
             </TodoProvider>
           </NotificationsProvider>
         </DopamineProvider>
