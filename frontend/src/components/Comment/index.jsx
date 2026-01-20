@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useRipple } from "@hooks/useRipple";
 import "./Comment.scss";
+import { GoHeartFill } from "react-icons/go";
 
 export function Comment({ comment, onDoubleTap }) {
   const lastTapRef = useRef(0);
@@ -28,7 +29,10 @@ export function Comment({ comment, onDoubleTap }) {
     <div className="comment input-with-ripple" onClick={handleTap}>
       <div className="comment-header">
         <span className="comment-user">User {comment.userId.slice(0, 8)}</span>
-        <span className="comment-likes">{comment.likesCount || 0} ❤</span>
+        <span className="comment-likes">
+          {comment.likesCount || 0}
+          <GoHeartFill />
+        </span>
       </div>
       <p className="comment-text">{comment.commentText || comment.text}</p>
     </div>

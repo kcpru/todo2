@@ -1,12 +1,6 @@
-import React from "react";
 import { useRipple } from "@hooks/useRipple.jsx";
 import "./ToggleRow.scss";
 
-/**
- * A full-width row with a label on the left and a toggle (switch) on the right.
- * The toggle can be clicked anywhere in the right area to change its value.
- * Includes a ripple effect on toggle click.
- */
 export default function ToggleRow({
   label,
   value,
@@ -23,12 +17,19 @@ export default function ToggleRow({
     }
   };
 
-  // Make the whole row clickable
   const handleRowClick = (e) => {
     if (!disabled) {
       handleToggle(e);
     }
   };
+
+  const onKeyDown = (e) => {
+    if (!disabled && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      handleToggle(e);
+    }
+  };
+
   return (
     <div
       className={`toggle-row input-with-ripple ${className} ${disabled ? "disabled" : ""}`.trim()}
@@ -37,13 +38,7 @@ export default function ToggleRow({
       tabIndex={disabled ? -1 : 0}
       aria-disabled={disabled}
       aria-pressed={value}
-      onKeyDown={(e) => {
-        if ((e.key === "Enter" || e.key === " ") && !disabled) {
-          e.preventDefault();
-          handleToggle(e);
-        }
-      }}
-      style={{ position: "relative" }}
+      onKeyDown={onKeyDown}
     >
       <RippleContainer />
       <span className="toggle-row-label">{label}</span>
