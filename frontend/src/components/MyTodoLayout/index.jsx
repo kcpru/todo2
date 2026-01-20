@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { Outlet, useLocation } from "react-router-dom";
+import { usePageTransition } from "../../context/PageTransitionContext";
 import { MdMenu, MdClose } from "react-icons/md";
 import { ListsSidebar } from "../ListsSidebar";
 import { motion } from "motion/react";
@@ -75,15 +76,30 @@ export function MyTodoLayout() {
   }, [isResizing]);
 
   const location = useLocation();
+  const { directionRef } = usePageTransition();
+
+  // Ustal animację na podstawie kierunku (lewo/prawo)
+  let initial, animate, exit;
+  if (directionRef.current === "down") {
+    // Przejście w prawo
+    initial = { opacity: 0, x: 60 };
+    animate = { opacity: 1, x: 0 };
+    exit = { opacity: 0, x: -60 };
+  } else {
+    // "up" lub domyślnie: przejście w lewo
+    initial = { opacity: 0, x: -60 };
+    animate = { opacity: 1, x: 0 };
+    exit = { opacity: 0, x: 60 };
+  }
 
   return (
     <div className="app">
       <motion.div
         key={location.pathname}
         className="main-content"
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: 30 }}
+        initial={initial}
+        animate={animate}
+        exit={exit}
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
         {/* Sidebar Toggle Button */}
