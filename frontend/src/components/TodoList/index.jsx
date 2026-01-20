@@ -1,4 +1,6 @@
 import { useState } from "react";
+// import MotivationMessage from "../MotivationMessage";
+// import { getMotivationMessage } from "../../api/motivation";
 import { motion, AnimatePresence } from "motion/react";
 import { Input } from "../Input";
 import { useDopamine } from "../../context/DopamineContext";
@@ -30,6 +32,16 @@ export function TodoList({
 }) {
   const { isDopamineMode } = useDopamine();
   const [confirmDeleteTodoId, setConfirmDeleteTodoId] = useState(null);
+  // Motywacja obsługiwana przez rodzica (MyTodo)
+
+  const handleToggleTodo = async (todoId, checkboxElement) => {
+    onToggleTodo(todoId, checkboxElement);
+    if (typeof window !== "undefined" && window.onAllTodosCompleted) {
+      setTimeout(() => {
+        window.onAllTodosCompleted(todoId, filteredTodos);
+      }, 0);
+    }
+  };
 
   return (
     <>
@@ -37,6 +49,7 @@ export function TodoList({
         <div className="loading-todos">Loading tasks...</div>
       ) : (
         <>
+          {/* Motywacja obsługiwana przez rodzica (MyTodo) */}
           <div className="todo-list">
             <AnimatePresence mode="popLayout">
               {filteredTodos.length === 0 ? (
@@ -68,7 +81,7 @@ export function TodoList({
                         checked={todo.isCompleted}
                         onChange={(e) => {
                           const checkboxElement = e.currentTarget.parentElement;
-                          onToggleTodo(todo.id, checkboxElement);
+                          handleToggleTodo(todo.id, checkboxElement);
                           if (registerCheckboxPosition) {
                             registerCheckboxPosition(
                               todo.id,

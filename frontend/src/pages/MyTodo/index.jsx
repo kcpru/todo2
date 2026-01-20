@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { useTodo } from "../../context/TodoContext";
 import { TodoList } from "../../components/TodoList";
+import { getMotivationMessage } from "../../api/motivation";
 import { EditModal } from "../../components/EditModal";
 import { DopamineVideo } from "../../components/DopamineVideo";
 import { SharePostModal } from "../../components/SharePostModal";
@@ -86,6 +87,23 @@ function MyTodo() {
     { value: "ACTIVE", label: "Active", icon: <MdRadioButtonUnchecked /> },
     { value: "COMPLETED", label: "Done", icon: <MdCheckCircle /> },
   ];
+
+  // Motywacyjne powiadomienie po ukończeniu wszystkich zadań
+  function handleAllTodosCompleted(todoId, filteredTodos) {
+    const todo = filteredTodos.find((t) => t.id === todoId);
+    const allCompleted = filteredTodos.every((t) =>
+      t.id === todoId ? !todo.isCompleted : t.isCompleted
+    );
+    if (allCompleted && filteredTodos.length > 0) {
+      getMotivationMessage(todo?.title || "").then((msg) => {
+        if (msg) notify({ message: msg, type: "success", duration: 6000 });
+      });
+    }
+  }
+
+  if (typeof window !== "undefined") {
+    window.onAllTodosCompleted = handleAllTodosCompleted;
+  }
 
   return (
     <div className="app-todo-wrapper">
