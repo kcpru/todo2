@@ -1,66 +1,6 @@
 // Fixed: removed unclosed nested selector
-.stats-card.stats-activity {
-  background: rgba(var(--md-primary-rgb), 0.01);
-  border: 2px solid rgba(var(--md-primary-rgb), 0.09);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(9, 12, 20, 0.06);
-  margin-bottom: 0;
-  max-width: 340px;
-  min-width: 260px;
-  transition:
-    box-shadow 0.18s,
-    border-color 0.18s;
-  position: relative;
-}
-.stats-activity-list {
-  margin-top: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-}
 
-.stats-activity-list .stats-summary-row {
-  border-bottom: 1px solid rgba(77, 150, 255, 0.08);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.stats-activity-list .stats-summary-row:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-.stats-activity-list .stats-summary-label {
-  color: #7a859a;
-  font-weight: 500;
-}
-.stats-summary-modern .stats-summary-label {
-  color: var(--text-secondary);
-  font-size: 0.97rem;
-  font-weight: 500;
-  margin-bottom: 0.1rem;
-}
-.stats-summary-modern .stats-summary-value {
-  color: var(--text-primary);
-  font-size: 1.18rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-.stats-summary-modern .stats-summary-value.completed {
-  color: var(--accent-primary);
-}
-.stats-summary-modern .stats-summary-value.streak {
-  color: var(--accent-success, #6bcb77);
-}
-.stats-summary-modern .stats-summary-value.likes {
-  color: #4d96ff;
-}
-.stats-summary-modern .stats-summary-value.comments {
-  color: #ffd93d;
-}
-.stats-summary-modern .stats-summary-value.shares {
-  color: #aa6bff;
-}
+// Main stats page container
 .stats-page {
   max-width: 600px;
   margin: 0 auto;
@@ -75,71 +15,91 @@
   align-items: stretch;
 }
 
-.stats-card,
-.stats-card.stats-activity,
-.stats-card.stats-productivity {
-  width: 100% !important;
-  max-width: none !important;
-  min-width: 0 !important;
-  box-sizing: border-box;
-}
-
 .stats-card {
-  background: var(--md-surface);
+  background: rgba(var(--md-primary-rgb), 0.01);
   border: 2px solid rgba(var(--md-primary-rgb), 0.09);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(9, 12, 20, 0.06);
-  background: rgba(var(--md-primary-rgb), 0.01);
   padding: 1.2rem;
   margin-bottom: 0;
   transition:
     box-shadow 0.18s,
     border-color 0.18s;
   position: relative;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+
+  &.stats-activity {
+    max-width: 340px;
+    min-width: 260px;
+  }
+
+  &.stats-productivity {
+    max-width: 340px;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 }
 
-.stats-summary {
+// Activity Card
+.stats-activity-list {
+  margin-top: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  justify-content: center;
-  align-items: flex-start;
+  gap: 0.7rem;
+
+  .stats-summary-row {
+    border-bottom: 1px solid rgba(77, 150, 255, 0.08);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+  }
+
+  .stats-summary-label {
+    color: #7a859a;
+    font-weight: 500;
+  }
 }
-.stats-summary-row {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
-.stats-summary-label {
-  color: var(--text-secondary);
-}
-.stats-summary-value {
-  color: var(--text-primary);
-  font-size: 1.13rem;
-  font-weight: 600;
-}
-.stats-summary-value.completed {
-  color: var(--accent-primary);
-}
-.stats-summary-value.streak {
-  color: var(--accent-success, #6bcb77);
-  font-weight: 700;
-}
-.stats-card.stats-productivity {
-  background: rgba(var(--md-primary-rgb), 0.01);
-  border: 2px solid rgba(var(--md-primary-rgb), 0.09);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(9, 12, 20, 0.06);
-  margin-bottom: 0;
-  max-width: 340px;
-  min-width: 260px;
-  transition:
-    box-shadow 0.18s,
-    border-color 0.18s;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+
+.stats-summary-modern {
+  .stats-summary-label {
+    color: var(--text-secondary);
+    font-size: 0.97rem;
+    font-weight: 500;
+    margin-bottom: 0.1rem;
+  }
+  .stats-summary-value {
+    color: var(--text-primary);
+    font-size: 1.18rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    &.completed {
+      color: var(--accent-primary);
+    }
+    &.streak {
+      color: var(--accent-success, #6bcb77);
+    }
+    &.likes {
+      color: #4d96ff;
+    }
+    &.comments {
+      color: #ffd93d;
+    }
+    &.shares {
+      color: #aa6bff;
+    }
+  }
 }
 
 @media (max-width: 1200px) {
