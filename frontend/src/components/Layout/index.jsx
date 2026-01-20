@@ -8,17 +8,18 @@ export function Layout() {
   const location = useLocation();
   const { directionRef } = usePageTransition();
 
-  // Ustal animację na podstawie kierunku
+  // Ustal animację na podstawie kierunku (lewo/prawo)
   let initial, animate, exit;
   if (directionRef.current === "down") {
-    initial = { opacity: 0, y: -30 };
-    animate = { opacity: 1, y: 0 };
-    exit = { opacity: 0, y: 30 };
+    // Przejście w prawo
+    initial = { opacity: 0, x: 60 };
+    animate = { opacity: 1, x: 0 };
+    exit = { opacity: 0, x: -60 };
   } else {
-    // "up" lub domyślnie
-    initial = { opacity: 0, y: 30 };
-    animate = { opacity: 1, y: 0 };
-    exit = { opacity: 0, y: -30 };
+    // "up" lub domyślnie: przejście w lewo
+    initial = { opacity: 0, x: -60 };
+    animate = { opacity: 1, x: 0 };
+    exit = { opacity: 0, x: 60 };
   }
 
   return (
