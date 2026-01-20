@@ -1,4 +1,3 @@
-
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 import { usePageTransition } from "../../context/PageTransitionContext";

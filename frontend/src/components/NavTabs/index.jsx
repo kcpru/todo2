@@ -22,7 +22,7 @@ export function NavTabs() {
   const { setTransition, lastTabIndexRef } = usePageTransition();
 
   // Find current tab index
-  const currentIdx = TABS.findIndex(tab => tab.path === location.pathname);
+  const currentIdx = TABS.findIndex((tab) => tab.path === location.pathname);
 
   return (
     <div className="nav-tabs-header">

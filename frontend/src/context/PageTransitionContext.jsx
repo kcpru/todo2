@@ -21,11 +21,13 @@ export function PageTransitionProvider({ children }) {
   };
 
   return (
-    <PageTransitionContext.Provider value={{
-      lastTabIndexRef,
-      directionRef,
-      setTransition
-    }}>
+    <PageTransitionContext.Provider
+      value={{
+        lastTabIndexRef,
+        directionRef,
+        setTransition,
+      }}
+    >
       {children}
     </PageTransitionContext.Provider>
   );
