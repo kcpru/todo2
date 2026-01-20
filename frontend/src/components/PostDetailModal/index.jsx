@@ -18,6 +18,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
   const [commentLikes, setCommentLikes] = useState({});
   const [rippleEffects, setRippleEffects] = useState([]);
   const [likesCount, setLikesCount] = useState(post?.likesCount || 0);
+  const [isLiked, setIsLiked] = useState(!!post?.isLiked);
   const likeButtonRef = useRef(null);
   const confettiInstanceRef = useRef(null);
   const confettiCanvasRef = useRef(null);
@@ -109,6 +110,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
 
   useEffect(() => {
     setLikesCount(post?.likesCount || 0);
+    setIsLiked(!!post?.isLiked);
   }, [post?.id]);
 
   const handleLike = async () => {
@@ -138,6 +140,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
 
       // Optimistically update UI
       setLikesCount((c) => c + 1);
+      setIsLiked(true);
 
       // Persist to backend (backend supports repeated likes)
       await likePost(post.id);
@@ -185,7 +188,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
           transition={{ duration: 0.3, delay: 0.15, ease: [0.4, 0, 0.2, 1] }}
         >
           <PostContent
-            post={{ ...post, likesCount }}
+            post={{ ...post, likesCount, isLiked }}
             onLike={handleLike}
             showCommentButton={false}
             mode="modal"

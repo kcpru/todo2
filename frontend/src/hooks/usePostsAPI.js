@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
 
 export function usePostsAPI() {
   const { token } = useAuth();
@@ -73,7 +73,9 @@ export function usePostsAPI() {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify({ LikesCount: 1 }), // ASP.NET wymaga LikesCount
         });
         if (!response.ok) throw new Error("Failed to like post");
         return await response.json();

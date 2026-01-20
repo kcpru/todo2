@@ -3,15 +3,16 @@ import { useAuth } from "../../context/AuthContext";
 import { useNotifications } from "../../context/NotificationsContext";
 import { GradientButton } from "../../components/GradientButton";
 import { Input } from "../../components/Input";
-import { MdPhotoCamera, MdPerson } from "react-icons/md";
+import { MdPhotoCamera, MdPerson, MdShuffle } from "react-icons/md";
 import { uploadAvatar, getAvatarUrl } from "../../api/avatar";
+import { RandomAvatarModal } from "./RandomAvatarModal";
 import "./Settings.scss";
 
 export default function ProfileSection() {
   const { user, updateProfile } = useAuth();
   const { notify } = useNotifications();
-  const [avatarFile, setAvatarFile] = useState(null);
   const [avatarDataUrl, setAvatarDataUrl] = useState("");
+  const [isRandomModalOpen, setIsRandomModalOpen] = useState(false);
   const [username, setUsername] = useState(user?.username || "");
   const [usernameWarning, setUsernameWarning] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
@@ -44,16 +45,15 @@ export default function ProfileSection() {
     }
   }, [user?.username, user?.id]);
 
+  // --- Handlers ---
   const handleAvatarPick = async (e) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    setAvatarFile(f);
     const reader = new FileReader();
     reader.onload = async () => {
       setAvatarDataUrl(reader.result);
       try {
         await uploadAvatar(f);
-        setAvatarFile(null);
         setAvatarDataUrl(getAvatarUrl("me") + `?t=${Date.now()}`);
         notify({ message: "Avatar updated!", type: "success" });
       } catch (err) {
@@ -87,6 +87,36 @@ export default function ProfileSection() {
       notify({ message: "Failed to update profile", type: "error" });
     } finally {
       setSavingProfile(false);
+    }
+  };
+
+  const handleAvatarFileClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleRandomAvatar = () => {
+    setIsRandomModalOpen(true);
+  };
+
+  const handleSetRandomAvatar = async (svgUrl) => {
+    try {
+      // Pobierz blob z URL, wyślij jako plik do uploadAvatar
+      const res = await fetch(svgUrl);
+      const blob = await res.blob();
+      const file = new File([blob], "avatar.svg", { type: "image/svg+xml" });
+      await uploadAvatar(file);
+      setAvatarDataUrl(getAvatarUrl("me") + `?t=${Date.now()}`);
+      notify({ message: "Random avatar set as profile!", type: "success" });
+      setIsRandomModalOpen(false);
+    } catch (err) {
+      notify({ message: err.message || "Failed to set avatar", type: "error" });
+    }
+  };
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      window.localStorage.removeItem("token");
+      window.location.href = "/login";
     }
   };
 
@@ -125,15 +155,28 @@ export default function ProfileSection() {
               onChange={handleAvatarPick}
               style={{ display: "none" }}
             />
-            <div className="avatar-actions">
+            <div className="avatar-actions" style={{ display: "flex", gap: 8 }}>
               <GradientButton
                 size="sm"
                 icon={<MdPhotoCamera />}
-                onClick={() => fileInputRef.current?.click()}
+                onClick={handleAvatarFileClick}
               >
                 Change
               </GradientButton>
+              <GradientButton
+                size="sm"
+                variant="primary"
+                icon={<MdShuffle />}
+                onClick={handleRandomAvatar}
+              >
+                Random
+              </GradientButton>
             </div>
+            <RandomAvatarModal
+              isOpen={isRandomModalOpen}
+              onClose={() => setIsRandomModalOpen(false)}
+              onSave={handleSetRandomAvatar}
+            />
           </div>
         </div>
         <div className="profile-fields-card">
@@ -162,16 +205,7 @@ export default function ProfileSection() {
               >
                 {savingProfile ? "Saving..." : "Save Name"}
               </GradientButton>
-              <GradientButton
-                size="sm"
-                variant="danger"
-                onClick={() => {
-                  if (window.confirm("Are you sure you want to log out?")) {
-                    window.localStorage.removeItem("token");
-                    window.location.href = "/login";
-                  }
-                }}
-              >
+              <GradientButton size="sm" variant="danger" onClick={handleLogout}>
                 Logout
               </GradientButton>
             </div>

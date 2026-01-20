@@ -18,9 +18,43 @@ import "./ProfileMenu.scss";
 export function ProfileMenu() {
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(null);
   const { user, logout } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isDopamineMode, toggleDopamineMode } = useDopamine();
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchAvatar() {
+      if (user?.id) {
+        const url = getAvatarUrl("me");
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setAvatarUrl(null);
+          return;
+        }
+        try {
+          const res = await fetch(url, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (res.status === 200) {
+            const blob = await res.blob();
+            if (isMounted) setAvatarUrl(URL.createObjectURL(blob));
+          } else {
+            if (isMounted) setAvatarUrl(null);
+          }
+        } catch {
+          if (isMounted) setAvatarUrl(null);
+        }
+      } else {
+        setAvatarUrl(null);
+      }
+    }
+    fetchAvatar();
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.id]);
 
   return (
     <div className="profile-container">
@@ -30,57 +64,21 @@ export function ProfileMenu() {
         title={user?.username}
         type="button"
       >
-        {(() => {
-          const [avatarUrl, setAvatarUrl] = useState(null);
-          useEffect(() => {
-            let isMounted = true;
-            if (user?.id) {
-              const url = getAvatarUrl("me");
-              const token = localStorage.getItem("token");
-              if (!token) {
-                setAvatarUrl(null);
-                return;
-              }
-              fetch(url, { headers: { Authorization: `Bearer ${token}` } })
-                .then((res) => {
-                  if (res.status === 200) return res.blob();
-                  return null;
-                })
-                .then((blob) => {
-                  if (isMounted) {
-                    if (blob) {
-                      setAvatarUrl(URL.createObjectURL(blob));
-                    } else {
-                      setAvatarUrl(null);
-                    }
-                  }
-                });
-            } else {
-              setAvatarUrl(null);
-            }
-            return () => {
-              isMounted = false;
-            };
-          }, [user?.id]);
-          if (avatarUrl) {
-            return (
-              <img
-                className="profile-avatar"
-                src={avatarUrl}
-                alt="avatar"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "";
-                }}
-              />
-            );
-          }
-          return (
-            <span className="profile-avatar-fallback">
-              {user?.username?.charAt(0).toUpperCase() || "U"}
-            </span>
-          );
-        })()}
+        {avatarUrl ? (
+          <img
+            className="profile-avatar"
+            src={avatarUrl}
+            alt="avatar"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "";
+            }}
+          />
+        ) : (
+          <span className="profile-avatar-fallback">
+            {user?.username?.charAt(0).toUpperCase() || "U"}
+          </span>
+        )}
       </button>
 
       <DropdownMenu

@@ -1,7 +1,6 @@
 // Modern card layout for settings
 .settings-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
 }
 .settings-card {
   background: var(--md-surface);
