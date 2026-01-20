@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../../context/ThemeContext";
-import { useDopamine } from "../../context/DopamineContext";
-import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "@context/ThemeContext";
+import { useDopamine } from "@context/DopamineContext";
+import { useAuth } from "@context/AuthContext";
 import {
   MdLightMode,
   MdDarkMode,
@@ -12,7 +12,7 @@ import {
 } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { DropdownMenu } from "../DropdownMenu";
-import { getAvatarUrl } from "../../api/avatar";
+import { getAvatarUrl } from "@api/avatar";
 import "./ProfileMenu.scss";
 
 export function ProfileMenu() {

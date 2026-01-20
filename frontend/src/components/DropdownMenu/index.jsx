@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 
-import { ANIMATION_CONFIG } from "../../constants/animations";
+import { ANIMATION_CONFIG } from "@constants/animations";
 
 export function DropdownMenu({
   isOpen,

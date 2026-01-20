@@ -1,4 +1,4 @@
-import { useRipple } from "../../hooks/useRipple.jsx";
+import { useRipple } from "@hooks/useRipple.jsx";
 import { useState } from "react";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 

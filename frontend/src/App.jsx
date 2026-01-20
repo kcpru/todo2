@@ -1,14 +1,14 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { Login } from "./pages/Login.jsx";
-import { Register } from "./pages/Register.jsx";
-import { Home } from "./pages/Home/index.jsx";
-import { Settings } from "./pages/Settings";
-import Stats from "./pages/Stats";
-import { Layout } from "./components/Layout/index.jsx";
-import { MyTodoLayout } from "./components/MyTodoLayout/index.jsx";
-import { MainLayout } from "./components/MainLayout/index.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import MyTodo from "./pages/MyTodo/index.jsx";
+import { Login } from "@pages/Login.jsx";
+import { Register } from "@pages/Register.jsx";
+import { Home } from "@pages/Home/index.jsx";
+import { Settings } from "@pages/Settings";
+import Stats from "@pages/Stats";
+import { Layout } from "@components/Layout/index.jsx";
+import { MyTodoLayout } from "@components/MyTodoLayout/index.jsx";
+import { MainLayout } from "@components/MainLayout/index.jsx";
+import ProtectedRoute from "@components/ProtectedRoute.jsx";
+import MyTodo from "@pages/MyTodo/index.jsx";
 
 export default function App() {
   const location = useLocation();

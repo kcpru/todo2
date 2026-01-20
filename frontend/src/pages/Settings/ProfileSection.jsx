@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { useNotifications } from "../../context/NotificationsContext";
-import { GradientButton } from "../../components/GradientButton";
-import { Input } from "../../components/Input";
+import { useAuth } from "@context/AuthContext";
+import { useNotifications } from "@context/NotificationsContext";
+import { GradientButton } from "@components/GradientButton";
+import { Input } from "@components/Input";
 import { MdPhotoCamera, MdPerson, MdShuffle } from "react-icons/md";
-import { uploadAvatar, getAvatarUrl } from "../../api/avatar";
+import { uploadAvatar, getAvatarUrl } from "@api/avatar";
 import { RandomAvatarModal } from "./RandomAvatarModal";
 import "./Settings.scss";
 

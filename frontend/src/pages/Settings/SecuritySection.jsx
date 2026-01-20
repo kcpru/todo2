@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { useNotifications } from "../../context/NotificationsContext";
-import { GradientButton } from "../../components/GradientButton";
-import { Input } from "../../components/Input";
+import { useAuth } from "@context/AuthContext";
+import { useNotifications } from "@context/NotificationsContext";
+import { GradientButton } from "@components/GradientButton";
+import { Input } from "@components/Input";
 import { MdLock } from "react-icons/md";
 import "./Settings.scss";
 

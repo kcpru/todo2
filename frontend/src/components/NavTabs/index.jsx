@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { usePageTransition } from "../../context/PageTransitionContext";
+import { usePageTransition } from "@context/PageTransitionContext";
 import { motion } from "motion/react";
 import {
   MdLeaderboard,

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { useDopamine } from "../../context/DopamineContext";
-import { GradientButton } from "../../components/GradientButton";
-import { CustomSlider } from "../../components/CustomSlider";
+import { useDopamine } from "@context/DopamineContext";
+import { GradientButton } from "@components/GradientButton";
+import { CustomSlider } from "@components/CustomSlider";
 import { MdCelebration } from "react-icons/md";
 import "./Settings.scss";
 

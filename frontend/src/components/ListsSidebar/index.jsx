@@ -7,13 +7,13 @@ import {
   MdSearch,
 } from "react-icons/md";
 import { motion, AnimatePresence, Reorder } from "motion/react";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useLocalStorage } from "@hooks/useLocalStorage";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { CreateListModal } from "../CreateListModal";
 import { ActionMenu } from "../ActionMenu";
-import { useRipple } from "../../hooks/useRipple.jsx";
+import { useRipple } from "@hooks/useRipple.jsx";
 import "./ListsSidebar.scss";
 
 function ListItem({ list, isActive, onSelect, onDelete }) {

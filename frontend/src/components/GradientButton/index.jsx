@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { motion } from "motion/react";
-import { useRipple } from "../../hooks/useRipple.jsx";
+import { useRipple } from "@hooks/useRipple.jsx";
 import "./GradientButton.scss";
 
 export const GradientButton = forwardRef(

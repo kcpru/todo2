@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
-import { ModalForm } from "../../../components/ModalForm";
-import { GradientButton } from "../../../components/GradientButton";
+import { ModalForm } from "@components/ModalForm";
+import { GradientButton } from "@components/GradientButton";
 import { MdShuffle } from "react-icons/md";
-import { generateRandomAvatar } from "../../../api/avatar.random";
-import { Spinner } from "../../../components/Spinner";
+import { generateRandomAvatar } from "@api/avatar.random";
+import { Spinner } from "@components/Spinner";
 import "./RandomAvatarModal.scss";
 
 export function RandomAvatarModal({ isOpen, onClose, onSave }) {

@@ -1,10 +1,10 @@
 import { useState } from "react";
 // import MotivationMessage from "../MotivationMessage";
-// import { getMotivationMessage } from "../../api/motivation";
+// import { getMotivationMessage } from "@api/motivation";
 import { motion, AnimatePresence } from "motion/react";
 import { Input } from "../Input";
-import { useDopamine } from "../../context/DopamineContext";
-import { ANIMATION_CONFIG } from "../../constants/animations";
+import { useDopamine } from "@context/DopamineContext";
+import { ANIMATION_CONFIG } from "@constants/animations";
 import {
   MdEdit,
   MdDelete,

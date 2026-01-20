@@ -1,5 +1,5 @@
-import { useTheme } from "../../context/ThemeContext";
-import { useDopamine } from "../../context/DopamineContext";
+import { useTheme } from "@context/ThemeContext";
+import { useDopamine } from "@context/DopamineContext";
 import { NavTabs } from "../NavTabs";
 import ProfileMenu from "./ProfileMenu";
 import { MdCheckCircle } from "react-icons/md";

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useLocalStorage } from "@hooks/useLocalStorage";
 import { Outlet, useLocation } from "react-router-dom";
-import { usePageTransition } from "../../context/PageTransitionContext";
+import { usePageTransition } from "@context/PageTransitionContext";
 import { MdMenu, MdClose } from "react-icons/md";
-import { ListsSidebar } from "../ListsSidebar";
+import { ListsSidebar } from "@components/ListsSidebar";
 import { motion } from "motion/react";
-import { useTodo } from "../../context/TodoContext";
-import { useAuth } from "../../context/AuthContext";
+import { useTodo } from "@context/TodoContext";
+import { useAuth } from "@context/AuthContext";
 import "./MyTodoLayout.scss";
 
 export function MyTodoLayout() {

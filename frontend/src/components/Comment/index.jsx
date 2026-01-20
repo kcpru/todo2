@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useRipple } from "../../hooks/useRipple";
+import { useRipple } from "@hooks/useRipple";
 import "./Comment.scss";
 
 export function Comment({ comment, onDoubleTap }) {

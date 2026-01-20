@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { MdFavorite } from "react-icons/md";
-import { useDopamine } from "../../context/DopamineContext";
+import { useDopamine } from "@context/DopamineContext";
 import "./ConfettiPop.scss";
 
 export function ConfettiPop({ x, y }) {

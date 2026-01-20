@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useScrollLock } from "../../hooks/useScrollLock";
+import { useScrollLock } from "@hooks/useScrollLock";
 
 export function ModalBase({
   isOpen,

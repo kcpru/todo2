@@ -5,7 +5,7 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
-import { useRipple } from "../../hooks/useRipple.jsx";
+import { useRipple } from "@hooks/useRipple.jsx";
 import "./ListSelector.scss";
 
 function ListItem({ list, isActive, onSelect, onDelete }) {

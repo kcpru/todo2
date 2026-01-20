@@ -1,5 +1,5 @@
-import { useTheme } from "../../context/ThemeContext";
-import { GradientButton } from "../../components/GradientButton";
+import { useTheme } from "@context/ThemeContext";
+import { GradientButton } from "@components/GradientButton";
 import { MdPalette } from "react-icons/md";
 import "./Settings.scss";
 
