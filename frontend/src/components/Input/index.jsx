@@ -17,7 +17,6 @@ export function Input({
   const mergedClassName = `search-input ${className}`.trim();
   const { createRipple, RippleContainer } = useRipple();
 
-  // Password visibility toggle state
   const [showPassword, setShowPassword] = useState(false);
 
   const handleMouseDown = (e) => {
@@ -51,15 +50,11 @@ export function Input({
     />
   );
 
-  // Password icon logic
   const showPasswordIcon = type === "password" && !isTextarea;
 
   if (withRipple) {
     return (
-      <div
-        className={`input-with-ripple ${containerClassName}`.trim()}
-        style={{ position: "relative" }}
-      >
+      <div className={`input-with-ripple ${containerClassName}`.trim()}>
         <RippleContainer />
         {inputElement}
         {showPasswordIcon && (
@@ -69,18 +64,6 @@ export function Input({
             tabIndex={-1}
             aria-label={showPassword ? "Hide password" : "Show password"}
             onClick={() => setShowPassword((v) => !v)}
-            style={{
-              position: "absolute",
-              right: "0.7rem",
-              top: "50%",
-              transform: "translateY(-50%)",
-              background: "none",
-              border: 0,
-              padding: 0,
-              cursor: "pointer",
-              zIndex: 3,
-              color: "var(--text-secondary)",
-            }}
           >
             {showPassword ? (
               <MdVisibilityOff size={22} />

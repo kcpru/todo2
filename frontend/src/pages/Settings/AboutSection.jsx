@@ -1,17 +1,16 @@
 import { MdInfo } from "react-icons/md";
+import HeaderRow from "@components/HeaderRow";
 import "./Settings.scss";
 
 export default function AboutSection() {
   return (
     <section className="settings-section about-section settings-card">
       <div className="settings-header-row">
-        <MdInfo className="settings-section-icon" />
-        <div>
-          <h3>About</h3>
-          <div className="settings-section-desc">
-            App info, repository and contact details.
-          </div>
-        </div>
+        <HeaderRow
+          icon={<MdInfo className="settings-section-icon" />}
+          title="About"
+          subtitle="App info, repository and contact details."
+        />
       </div>
       <div className="about-content">
         <div className="about-row">

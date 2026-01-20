@@ -18,7 +18,10 @@
     position: relative;
     border: none;
     color: var(--text-secondary);
-    font-weight: 600;
+    font-weight: 700;
+    transition:
+      color 0.18s,
+      background 0.18s;
     font-size: 0.95rem;
     cursor: pointer;
     transition:
@@ -32,6 +35,7 @@
 
     &.active {
       color: var(--text-primary);
+
       .nav-tab-icon {
         color: var(--md-primary);
         transform: scale(1.2);
@@ -50,10 +54,12 @@
 
     .nav-tab-label-main {
       font-size: 1.01rem;
-      font-weight: 700;
+      font-weight: inherit;
+      font-variation-settings: inherit;
       color: var(--text-primary);
       margin-top: 0.1rem;
       letter-spacing: 0.01em;
+      transition: font-variation-settings 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .tab-bg {

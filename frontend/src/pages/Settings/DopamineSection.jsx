@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import ToggleRow from "@components/ToggleRow";
+import HeaderRow from "@components/HeaderRow";
 import { useDopamine } from "@context/DopamineContext";
 import { GradientButton } from "@components/GradientButton";
 import { CustomSlider } from "@components/CustomSlider";
+import { FilterSelect } from "@components/FilterSelect";
 import { MdCelebration } from "react-icons/md";
 import "./Settings.scss";
 
@@ -89,25 +92,20 @@ export default function DopamineSection() {
   return (
     <section className="settings-section dopamine-section settings-card">
       <div className="settings-header-row">
-        <MdCelebration className="settings-section-icon" />
-        <div>
-          <h3>Dopamine Effects</h3>
-          <div className="settings-section-desc">
-            Fun effects and video for extra motivation.
-          </div>
-        </div>
+        <HeaderRow
+          icon={<MdCelebration className="settings-section-icon" />}
+          title="Dopamine Effects"
+          subtitle="Fun effects and video for extra motivation."
+        />
       </div>
       <div className="dopamine-row">
         <div className="dopamine-controls">
-          <div className="dopamine-toggle-row">
-            <span className="dopamine-label">Enable Dopamine Mode</span>
-            <GradientButton
-              variant={isDopamineMode ? "primary" : "secondary"}
-              onClick={toggleDopamineMode}
-            >
-              {isDopamineMode ? "On" : "Off"}
-            </GradientButton>
-          </div>
+          <ToggleRow
+            label="Dopamine mode"
+            value={isDopamineMode}
+            onChange={toggleDopamineMode}
+            className="dopamine-toggle-row"
+          />
 
           <div className="dopamine-field dopamine-with-preview">
             <div className="dopamine-field-main">
@@ -162,46 +160,28 @@ export default function DopamineSection() {
           <div className="dopamine-field dopamine-video-row">
             <div className="dopamine-video-group">
               <div className="dopamine-video-toggle-row">
-                <span className="dopamine-label">Dopamine video</span>
-                <GradientButton
-                  variant={videoEnabled ? "primary" : "secondary"}
-                  onClick={toggleVideoEnabled}
-                  size="sm"
-                >
-                  {videoEnabled ? "On" : "Off"}
-                </GradientButton>
+                <ToggleRow
+                  label="Dopamine video"
+                  value={videoEnabled}
+                  onChange={toggleVideoEnabled}
+                  className="dopamine-video-toggle-row"
+                />
               </div>
               <div className="dopamine-video-size-row">
                 <span className="dopamine-label">Size</span>
-                <GradientButton
-                  variant={videoSize === "small" ? "primary" : "secondary"}
-                  onClick={() => updateVideoSize("small")}
+                <FilterSelect
+                  options={[
+                    { value: "small", label: "Small" },
+                    { value: "medium", label: "Medium" },
+                    { value: "large", label: "Large" },
+                  ]}
+                  value={videoSize}
+                  onChange={updateVideoSize}
+                  ariaLabel="Dopamine video size"
                   size="sm"
-                  onMouseEnter={() => setVideoPreviewSize("small")}
+                  onMouseEnter={() => setVideoPreviewSize(videoSize)}
                   onMouseLeave={() => setVideoPreviewSize(null)}
-                >
-                  Small
-                </GradientButton>
-                <GradientButton
-                  variant={videoSize === "medium" ? "primary" : "secondary"}
-                  onClick={() => updateVideoSize("medium")}
-                  size="sm"
-                  style={{ marginLeft: "0.5rem" }}
-                  onMouseEnter={() => setVideoPreviewSize("medium")}
-                  onMouseLeave={() => setVideoPreviewSize(null)}
-                >
-                  Medium
-                </GradientButton>
-                <GradientButton
-                  variant={videoSize === "large" ? "primary" : "secondary"}
-                  onClick={() => updateVideoSize("large")}
-                  size="sm"
-                  style={{ marginLeft: "0.5rem" }}
-                  onMouseEnter={() => setVideoPreviewSize("large")}
-                  onMouseLeave={() => setVideoPreviewSize(null)}
-                >
-                  Large
-                </GradientButton>
+                />
                 {videoPreviewSize && (
                   <div
                     className={`video-size-preview video-size-preview--${videoPreviewSize}`}

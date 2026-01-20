@@ -1,0 +1,76 @@
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  user-select: none;
+  flex: 1;
+  transition: background 0.2s;
+  border-radius: 8px;
+  border: 2px solid rgba(var(--md-primary-rgb), 0.1);
+  &:hover {
+    background: rgba(var(--md-primary-rgb), 0.06);
+  }
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+.toggle-row-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.toggle-row-switch {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-width: 42px;
+  min-height: 28px;
+  padding: 0 6px;
+  border-radius: 16px;
+  background: rgba(var(--md-primary-rgb), 0.12); // secondary button bg
+  color: var(--text-primary);
+  border: 2px solid rgba(var(--md-primary-rgb), 0.2);
+  box-shadow: none;
+  cursor: default; // Changed to default to indicate no interaction
+  outline: none;
+  transition: none; // No transition effects
+  &:hover {
+    background: rgba(var(--md-primary-rgb), 0.12); // No hover effect
+    border-color: rgba(var(--md-primary-rgb), 0.2); // No hover effect
+  }
+  &:hover .toggle-slider {
+    box-shadow: none; // No hover shadow effect
+  }
+  &.checked {
+    background: var(--md-primary-container, #dde1ff);
+    border-color: var(--md-primary-container, #dde1ff);
+    .toggle-slider {
+      left: 28px;
+      background: var(--md-primary, #4355b9);
+    }
+  }
+}
+.toggle-slider {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  box-shadow: none;
+  transition:
+    left 0.2s,
+    background 0.2s;
+}
+.toggle-value {
+  margin-left: 36px;
+  font-size: 0.95em;
+  color: var(--text-secondary);
+  min-width: 32px;
+  text-align: right;
+}

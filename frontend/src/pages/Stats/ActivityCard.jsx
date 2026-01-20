@@ -1,16 +1,15 @@
 import { MdAnalytics } from "react-icons/md";
+import HeaderRow from "@components/HeaderRow";
 import "./Stats.scss";
 
 export default function ActivityCard({ stats }) {
   return (
     <div className="stats-card stats-activity">
-      <div className="stats-card-header">
-        <MdAnalytics className="stats-card-icon" />
-        <div>
-          <div className="stats-card-title">Your Activity</div>
-          <div className="stats-card-desc">Posts, likes, and comments</div>
-        </div>
-      </div>
+      <HeaderRow
+        icon={<MdAnalytics />}
+        title="Your Activity"
+        subtitle="Posts, likes, and comments"
+      />
       <div className="stats-activity-list">
         <div className="stats-summary-row">
           <div className="stats-summary-label">Likes given</div>

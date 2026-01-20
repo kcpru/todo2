@@ -1,0 +1,37 @@
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.4rem;
+  min-height: 36px;
+
+  .header-row-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    background: rgba(var(--md-primary-rgb), 0.09);
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 2px 8px rgba(77, 150, 255, 0.08);
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+  }
+
+  .header-row-title {
+    font-size: 1.13rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-row-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    opacity: 0.8;
+  }
+}

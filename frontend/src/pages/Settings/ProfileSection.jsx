@@ -6,6 +6,7 @@ import { Input } from "@components/Input";
 import { MdPhotoCamera, MdPerson, MdShuffle } from "react-icons/md";
 import { uploadAvatar, getAvatarUrl } from "@api/avatar";
 import { RandomAvatarModal } from "./RandomAvatarModal";
+import HeaderRow from "@components/HeaderRow";
 import "./Settings.scss";
 
 export default function ProfileSection() {
@@ -123,13 +124,11 @@ export default function ProfileSection() {
   return (
     <section className="settings-section profile-section settings-card">
       <div className="settings-header-row">
-        <MdPerson className="settings-section-icon" />
-        <div>
-          <h3>Profile</h3>
-          <div className="settings-section-desc">
-            Manage your display name and avatar.
-          </div>
-        </div>
+        <HeaderRow
+          icon={<MdPerson className="settings-section-icon" />}
+          title="Profile"
+          subtitle="Manage your display name and avatar."
+        />
       </div>
       <div className="profile-row profile-row-modern">
         <div className="profile-avatar-card">

@@ -1,18 +1,17 @@
-import "./chartjs-setup";
+import React from "react";
 import { Bar } from "react-chartjs-2";
 import { MdAssignmentTurnedIn, MdCalendarToday } from "react-icons/md";
+import HeaderRow from "@components/HeaderRow";
 import "./Stats.scss";
 
 export default function TasksWeekCard({ stats }) {
   return (
     <div className="stats-card">
-      <div className="stats-card-header">
-        <MdAssignmentTurnedIn className="stats-card-icon" />
-        <div>
-          <div className="stats-card-title">Tasks This Week</div>
-          <div className="stats-card-desc">Your activity by day</div>
-        </div>
-      </div>
+      <HeaderRow
+        icon={<MdAssignmentTurnedIn />}
+        title="Tasks This Week"
+        subtitle="Your activity by day"
+      />
       <Bar
         data={{
           labels: stats.weekLabels,

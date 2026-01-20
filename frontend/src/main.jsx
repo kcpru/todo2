@@ -1,4 +1,5 @@
 import { StrictMode } from "react";
+import "@fontsource/montserrat/latin.css";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.scss";

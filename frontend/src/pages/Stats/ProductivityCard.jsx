@@ -1,18 +1,17 @@
 import "./chartjs-setup";
 import { Line } from "react-chartjs-2";
 import { MdTimeline } from "react-icons/md";
+import HeaderRow from "@components/HeaderRow";
 import "./Stats.scss";
 
 export default function ProductivityCard({ stats }) {
   return (
     <div className="stats-card stats-productivity">
-      <div className="stats-card-header">
-        <MdTimeline className="stats-card-icon" />
-        <div>
-          <div className="stats-card-title">Productivity by Hour</div>
-          <div className="stats-card-desc">When you get the most done</div>
-        </div>
-      </div>
+      <HeaderRow
+        icon={<MdTimeline />}
+        title="Productivity by Hour"
+        subtitle="When you get the most done"
+      />
       <Line
         data={{
           labels: stats.hourlyLabels,

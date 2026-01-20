@@ -4,6 +4,7 @@ import { useNotifications } from "@context/NotificationsContext";
 import { GradientButton } from "@components/GradientButton";
 import { Input } from "@components/Input";
 import { MdLock } from "react-icons/md";
+import HeaderRow from "@components/HeaderRow";
 import "./Settings.scss";
 
 export default function SecuritySection() {
@@ -36,13 +37,11 @@ export default function SecuritySection() {
   return (
     <section className="settings-section security-section settings-card">
       <div className="settings-header-row">
-        <MdLock className="settings-section-icon" />
-        <div>
-          <h3>Security</h3>
-          <div className="settings-section-desc">
-            Change your password for better account safety.
-          </div>
-        </div>
+        <HeaderRow
+          icon={<MdLock className="settings-section-icon" />}
+          title="Security"
+          subtitle="Change your password for better account safety."
+        />
       </div>
       <div className="security-row">
         <Input

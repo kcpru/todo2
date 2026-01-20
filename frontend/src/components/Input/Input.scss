@@ -6,11 +6,7 @@
   box-sizing: border-box;
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
   border-radius: 12px;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--md-primary-rgb), 0.05) 0%,
-    rgba(var(--md-primary-rgb), 0.03) 100%
-  );
+  background: rgba(var(--md-primary-rgb), 0.05);
   color: var(--text-primary);
   font-family: inherit;
   font-size: 1rem;
@@ -49,6 +45,23 @@ textarea.search-input {
     position: relative;
     z-index: 2;
   }
+}
+
+// Password toggle button styles
+.password-toggle-btn {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  z-index: 3;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .character-counter {
