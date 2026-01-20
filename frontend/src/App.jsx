@@ -13,7 +13,7 @@ import MyTodo from "./pages/MyTodo/index.jsx";
 export default function App() {
   const location = useLocation();
   return (
-    <Routes location={location} key={location.pathname}>
+    <Routes location={location}>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route element={<ProtectedRoute />}>
