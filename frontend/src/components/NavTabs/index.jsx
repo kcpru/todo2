@@ -8,49 +8,34 @@ import {
 } from "react-icons/md";
 import "./NavTabs.scss";
 
+const TABS = [
+  { label: "Home", icon: MdHome, path: "/" },
+  { label: "Todo", icon: MdCheckCircle, path: "/todo" },
+  { label: "Stats", icon: MdLeaderboard, path: "/stats" },
+  { label: "Settings", icon: MdSettings, path: "/settings" },
+];
+
 export function NavTabs() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isHome = location.pathname === "/";
-  const isTodo = location.pathname === "/my-todo";
-  const isStats = location.pathname === "/stats";
-  const isSettings = location.pathname === "/settings";
-
   return (
-    <div className="nav-tabs-header modern">
-      <button
-        className={`nav-tab-header modern ${isHome ? "active" : ""}`}
-        onClick={() => navigate("/")}
-      >
-        {isHome && <motion.div className="tab-bg" layoutId="tab-bg" />}
-        <MdHome className="nav-tab-icon" />
-        <span className="nav-tab-label-main">Home</span>
-      </button>
-      <button
-        className={`nav-tab-header modern ${isTodo ? "active" : ""}`}
-        onClick={() => navigate("/my-todo")}
-      >
-        {isTodo && <motion.div className="tab-bg" layoutId="tab-bg" />}
-        <MdCheckCircle className="nav-tab-icon" />
-        <span className="nav-tab-label-main">My Todo</span>
-      </button>
-      <button
-        className={`nav-tab-header modern ${isStats ? "active" : ""}`}
-        onClick={() => navigate("/stats")}
-      >
-        {isStats && <motion.div className="tab-bg" layoutId="tab-bg" />}
-        <MdLeaderboard className="nav-tab-icon" />
-        <span className="nav-tab-label-main">Stats</span>
-      </button>
-      <button
-        className={`nav-tab-header modern ${isSettings ? "active" : ""}`}
-        onClick={() => navigate("/settings")}
-      >
-        {isSettings && <motion.div className="tab-bg" layoutId="tab-bg" />}
-        <MdSettings className="nav-tab-icon" />
-        <span className="nav-tab-label-main">Settings</span>
-      </button>
+    <div className="nav-tabs-header">
+      {TABS.map((tab) => {
+        const isActive = location.pathname === tab.path;
+        const Icon = tab.icon;
+        return (
+          <button
+            key={tab.path}
+            className={`nav-tab-header${isActive ? " active" : ""}`}
+            onClick={() => navigate(tab.path)}
+          >
+            {isActive && <motion.div className="tab-bg" layoutId="tab-bg" />}
+            <Icon className="nav-tab-icon" />
+            <span className="nav-tab-label-main">{tab.label}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }

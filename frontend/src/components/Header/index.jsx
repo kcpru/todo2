@@ -4,13 +4,15 @@ import { NavTabs } from "../NavTabs";
 import ProfileMenu from "./ProfileMenu";
 import { MdCheckCircle } from "react-icons/md";
 import "./Header.scss";
+import { useEffect } from "react";
 
 export function Header() {
-  // Theme and dopamine mode are used implicitly through CSS variables
   useTheme();
   useDopamine();
 
-  // Coins system removed
+  useEffect(() => {
+    console.log("Header mounted");
+  }, []);
 
   return (
     <header className="app-header">

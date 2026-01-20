@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { Outlet, useLocation } from "react-router-dom";
 import { MdMenu, MdClose } from "react-icons/md";
-import { Header } from "../Header";
 import { ListsSidebar } from "../ListsSidebar";
 import { motion } from "motion/react";
 import { useTodo } from "../../context/TodoContext";
@@ -79,8 +78,6 @@ export function MyTodoLayout() {
 
   return (
     <div className="app">
-      <Header />
-
       <motion.div
         key={location.pathname}
         className="main-content"
