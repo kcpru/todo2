@@ -94,19 +94,23 @@ public class Program
             });
         });
 
-        var spaOrigin = builder.Configuration["Cors:SpaOrigin"] ?? string.Empty;
-        var origins = spaOrigin.Split(",").Select(o => o.Trim()).ToArray();
+        var spaOrigin = builder.Configuration["Cors:SpaOrigin"];
 
-        builder.Services.AddCors(options =>
+        if (spaOrigin != null)
         {
-            options.AddPolicy("spa", policy =>
+            var origins = spaOrigin.Split(",").Select(o => o.Trim()).ToArray();
+
+            builder.Services.AddCors(options =>
             {
-                policy.WithOrigins(origins)
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+                options.AddPolicy("spa", policy =>
+                {
+                    policy.WithOrigins(origins)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
             });
-        });
+        }
 
         var app = builder.Build();
 
@@ -118,7 +122,9 @@ public class Program
             return Results.Json(new { error = "Internal Server Error" });
         });
 
-        app.UseCors("spa");
+        if (spaOrigin != null)
+            app.UseCors("spa");
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
