@@ -59,14 +59,17 @@ public class PostController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreatePost([FromBody] CreatePostRequest request, CancellationToken ct)
     {
+        if (!User.TryGetUserId(out var userId))
+            return Unauthorized();
+
         var todoList = await _db.TodoLists
             .AsNoTracking()
             .Include(t => t.Items)
-            .Where(l => l.Id == request.TodoListId)
+            .Where(l => l.Id == request.TodoListId && l.UserId == userId)
             .SingleOrDefaultAsync(ct);
 
         if (todoList is null)
-            return NotFound("Todo list not found or is not public.");
+            return NotFound("Todo list not found.");
 
         var post = new Post
         {
