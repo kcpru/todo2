@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
@@ -17,7 +18,9 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args); builder.Logging.ClearProviders();
+        var builder = WebApplication.CreateBuilder(args); 
+        
+        builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
 
         builder.Services.AddControllers();
@@ -135,8 +138,12 @@ public class Program
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
-            db.Database.Migrate();
-            await DataSeeder.SeedAsync(db, passwordHasher);
+            var databaseCreator = db.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>();
+            if (!databaseCreator.Exists())
+            {
+                db.Database.Migrate();
+                await DataSeeder.SeedAsync(db, passwordHasher);
+            }
         }
 
         app.Run();
