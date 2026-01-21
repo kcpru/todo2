@@ -8,14 +8,16 @@ public class MotivationMessagesProvider
 {
     private static readonly string[] Fallbacks =
     {
-        "Dobra robota — zadanie zrobione.",
-        "Super, kolejny krok odhaczony.",
-        "Świetnie! Małe zwycięstwa robią różnicę."
+        "Well done, job done.",
+        "Great, another task checked off.",
+        "Great! Small victories make all the difference."
     };
 
     private readonly HttpClient _http;
     private readonly IMemoryCache _cache;
     private static readonly JsonSerializerOptions jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
+    private const int SecondsCooldown = 5;
 
     public static string HttpClientConfigurationName => "Groq";
 
@@ -39,11 +41,11 @@ public class MotivationMessagesProvider
             max_tokens = 60,
             messages = new()
             {
-                new ChatMessage("system", "Generuj krótką motywującą pochwałę po polsku. Po prostu 1 zdanie, do 20 słów. Bez moralizowania."),
+                new ChatMessage("system", "Generate a short, motivating eulogy in English. Simply 1 sentence, up to 20 words. No moralizing."),
                 new ChatMessage("user",
                     taskTitle is { Length: > 0 }
-                        ? $"Użytkownik wykonał zadanie: \"{taskTitle}\". Napisz pochwałę, która nawiązuje do tego wykonanego zadania."
-                        : "Użytkownik wykonał zadanie. Napisz pochwałę.")
+                        ? $"User completed the task: \"{taskTitle}\". Write a praise that relates to this completed task."
+                        : "User completed the task. Write a compliment.")
             }
         };
 
@@ -59,7 +61,7 @@ public class MotivationMessagesProvider
             if (string.IsNullOrWhiteSpace(text))
                 text = PickFallback();
 
-            _cache.Set(cooldownKey, text, TimeSpan.FromSeconds(10));
+            _cache.Set(cooldownKey, text, TimeSpan.FromSeconds(SecondsCooldown));
             return text;
         }
         catch
