@@ -29,12 +29,16 @@ public class MotivationController : ControllerBase
         return Ok(msg);
     }
 
-    [HttpGet("random-avatar/{type:int}")]
-    public async Task<ActionResult<byte[]>> GetRandomAvatar(int type, CancellationToken ct)
+    [HttpGet("random-avatar/{type}")]
+    public async Task<ActionResult<byte[]>> GetRandomAvatar(string type, CancellationToken ct)
     {
-        var avatarType = type == 0 ? RandomAvatarsProvider.MiniAvsTypeUrl : RandomAvatarsProvider.BottsTypeUrl;
+        if (type is not RandomAvatarsProvider.MiniAvsTypeUrl and not RandomAvatarsProvider.BottsTypeUrl)
+        {
+            ModelState.AddModelError(nameof(type), "Invalid avatar type.");
+            return ValidationProblem(ModelState);
+        }
 
-        var svgBytes = await _randomAvatarsProvider.GetAvatarAsync(avatarType, ct);
+        var svgBytes = await _randomAvatarsProvider.GetAvatarAsync(type, ct);
 
         if (svgBytes is null || svgBytes.Length == 0)
             return NotFound();
