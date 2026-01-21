@@ -1,4 +1,5 @@
 import { GradientButton } from "../GradientButton";
+import { motion } from "framer-motion";
 import "./TourPopover.scss";
 
 export function TourPopover({
@@ -19,7 +20,11 @@ export function TourPopover({
   const renderContent = () => stepContent || "No description for this step.";
 
   return (
-    <div className="tour-popover-modal">
+    <motion.div
+      className="tour-popover-modal"
+      layout
+      transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+    >
       <div className="tour-popover-content">{renderContent()}</div>
       <div className="tour-popover-footer">
         <GradientButton
@@ -49,6 +54,6 @@ export function TourPopover({
           </GradientButton>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
