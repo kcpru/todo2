@@ -130,6 +130,12 @@ public class PostController : ControllerBase
         if (post == null)
             return NotFound("Post not found.");
 
+        if (request.LikesCount < 0)
+        {
+            ModelState.AddModelError(nameof(request.LikesCount), "LikesCount must be non-negative.");
+            return ValidationProblem(ModelState);
+        }
+
         post.LikesCount += request.LikesCount;
         long likesCount = post.LikesCount;
         await _db.SaveChangesAsync(ct);
