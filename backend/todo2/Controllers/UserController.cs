@@ -34,7 +34,7 @@ public class UserController : ControllerBase
             return false;
 
         extension = extension.TrimStart('.').ToLowerInvariant();
-        return extension is "jpg" or "jpeg" or "png";
+        return extension is "jpg" or "jpeg" or "png" or "svg";
     }
 
     [HttpPost("register")]
@@ -140,7 +140,7 @@ public class UserController : ControllerBase
             return BadRequest(new { error = "Max file size is 5MB." });
 
         if (!TryGetAvatarExtension(file.FileName, out var ext))
-            return BadRequest(new { error = "Invalid file extension. Allowed: jpg, jpeg, png." });
+            return BadRequest(new { error = "Invalid file extension. Allowed: jpg, jpeg, png, svg." });
 
         var relativePath = $"user_avatars/{userId}.{ext}";
 
@@ -157,14 +157,19 @@ public class UserController : ControllerBase
         if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
-        foreach (var ext in new[] { "jpg", "jpeg", "png" })
+        foreach (var ext in new[] { "jpg", "jpeg", "png", "svg" })
         {
             var relativePath = $"user_avatars/{userId}.{ext}";
             var stream = await _files.OpenReadAsync(relativePath, ct);
             if (stream is null)
                 continue;
 
-            return File(stream, ext is "png" ? "image/png" : "image/jpeg");
+            return File(stream, ext switch
+            {
+                "png" => "image/png",
+                "svg" => "image/svg+xml",
+                _ => "image/jpeg"
+            });
         }
 
         return NoContent();
