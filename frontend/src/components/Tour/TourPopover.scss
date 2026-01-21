@@ -1,0 +1,35 @@
+.tour-popover-modal {
+  background: var(--modal-bg, #181c24) !important;
+  color: var(--modal-fg, #fff) !important;
+  border-radius: 1.2rem !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+  padding: 2rem 2rem 1.5rem 2rem !important;
+  min-width: 320px;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border: none !important;
+}
+.custom-tour-popover {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.tour-popover-content {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.tour-popover-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.tour-popover-close {
+  min-width: 80px;
+}
+.tour-popover-controls {
+  display: flex;
+  gap: 0.5rem;
+}

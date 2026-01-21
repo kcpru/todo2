@@ -1,16 +1,6 @@
-import { TourProvider, useTour } from "@reactour/tour";
+import { TourProvider } from "@reactour/tour";
+import { TourPopover } from "./TourPopover";
 
-// Przykładowy komponent do testowania integracji
-export function TourExampleButton() {
-  const { setIsOpen } = useTour();
-  return (
-    <button onClick={() => setIsOpen(true)} style={{ margin: 16 }}>
-      Start Tour
-    </button>
-  );
-}
-
-// Tour steps for the todo page (in English)
 export const todoTourSteps = [
   {
     selector: ".lists-sidebar",
@@ -46,10 +36,19 @@ export const todoTourSteps = [
     selector: ".controls",
     content: "Search and filter your tasks by status.",
   },
-  // Add a step for home navigation if needed
 ];
 
-// Provider do opakowania aplikacji (np. w App.jsx)
 export function TourProviderWrapper({ children, steps = todoTourSteps }) {
-  return <TourProvider steps={steps}>{children}</TourProvider>;
+  return (
+    <TourProvider
+      steps={steps}
+      ContentComponent={(props) => <TourPopover {...props} steps={steps} />}
+      className="custom-tour-popover"
+      showBadge={false}
+      showCloseButton={false}
+      showNavigation={false}
+    >
+      {children}
+    </TourProvider>
+  );
 }
