@@ -82,8 +82,9 @@ public class Program
 
         builder.Services.AddAuthorization();
 
-        var connectionString = builder.Configuration.GetConnectionString("Default")
-            ?? throw new InvalidOperationException("Missing connection string 'ConnectionStrings:Default'.");
+        var connectionString = builder.Configuration.GetConnectionString("Default");
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new InvalidOperationException("Missing connection string 'ConnectionStrings:Default'. Set env var 'ConnectionStrings__Default' or configure it in appsettings.json.");
 
         builder.Services.AddDbContext<AppDbContext>(opt =>
         {
