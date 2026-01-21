@@ -6,15 +6,18 @@ public class RandomAvatarsProvider
 
     private readonly HttpClient _http;
 
+    public const string MiniAvsTypeUrl = "miniavs";
+    public const string BottsTypeUrl = "bottts";
+
     public RandomAvatarsProvider(IHttpClientFactory factory)
     {
         _http = factory.CreateClient(HttpClientConfigurationName);
     }
 
-    public async Task<byte[]?> GetAvatarAsync(CancellationToken ct = default)
+    public async Task<byte[]?> GetAvatarAsync(string avatarTypeUrl, CancellationToken ct)
     {
         var seed = Guid.NewGuid().ToString();
-        var url = $"svg?seed={Uri.EscapeDataString(seed)}";
+        var url = $"{avatarTypeUrl}/svg?seed={Uri.EscapeDataString(seed)}";
         using var resp = await _http.GetAsync(url, ct);
 
         if (!resp.IsSuccessStatusCode)

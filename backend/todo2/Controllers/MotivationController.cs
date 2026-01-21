@@ -29,10 +29,12 @@ public class MotivationController : ControllerBase
         return Ok(msg);
     }
 
-    [HttpGet("random-avatar")]
-    public async Task<ActionResult<byte[]>> GetRandomAvatar(CancellationToken ct)
+    [HttpGet("random-avatar/{type:int}")]
+    public async Task<ActionResult<byte[]>> GetRandomAvatar(int type, CancellationToken ct)
     {
-        var svgBytes = await _randomAvatarsProvider.GetAvatarAsync(ct);
+        var avatarType = type == 0 ? RandomAvatarsProvider.MiniAvsTypeUrl : RandomAvatarsProvider.BottsTypeUrl;
+
+        var svgBytes = await _randomAvatarsProvider.GetAvatarAsync(avatarType, ct);
 
         if (svgBytes is null || svgBytes.Length == 0)
             return NotFound();
