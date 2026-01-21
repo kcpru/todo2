@@ -122,7 +122,7 @@ public class PostControllerTests
 
         await _db.SaveChangesAsync();
 
-        var sut = CreateSut(_db, userId: null);
+        var sut = CreateSut(_db, ownerId);
 
         var result = await sut.CreatePost(new CreatePostRequest(list.Id, "content"), CancellationToken.None);
 
