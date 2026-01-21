@@ -1,0 +1,1 @@
+docker compose -f docker-compose.itests.yml up --build --abort-on-container-exit --exit-code-from itests
