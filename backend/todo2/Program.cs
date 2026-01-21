@@ -96,10 +96,11 @@ public class Program
 
         var spaOrigin = builder.Configuration["Cors:SpaOrigin"];
 
-        if (spaOrigin != null)
-        {
-            var origins = spaOrigin.Split(",").Select(o => o.Trim()).ToArray();
+        var origins = (spaOrigin ?? string.Empty)
+            .Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
+        if (origins.Length > 0)
+        {
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("spa", policy =>
@@ -122,7 +123,7 @@ public class Program
             return Results.Json(new { error = "Internal Server Error" });
         });
 
-        if (spaOrigin != null)
+        if (origins.Length > 0)
             app.UseCors("spa");
 
         app.UseAuthentication();
