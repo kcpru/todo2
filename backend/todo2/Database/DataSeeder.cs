@@ -57,7 +57,6 @@ public static class DataSeeder
             CreatedAt = DateTime.UtcNow.AddDays(-30),
             UpdatedAt = DateTime.UtcNow.AddDays(-5),
             UserId = adminUser.Id,
-            IsPublic = true,
             Items = []
         };
 
@@ -68,7 +67,6 @@ public static class DataSeeder
             CreatedAt = DateTime.UtcNow.AddDays(-20),
             UpdatedAt = DateTime.UtcNow,
             UserId = adminUser.Id,
-            IsPublic = true,
             Items = []
         };
 

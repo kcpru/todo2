@@ -10,7 +10,6 @@ public class TodoList
     public string Name { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public bool IsPublic { get; set; } = false;
 
     [ForeignKey(nameof(User))]
     public Guid UserId { get; set; }

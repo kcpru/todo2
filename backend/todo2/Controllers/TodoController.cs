@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
+using todo2.Auth;
 using todo2.Database;
 using todo2.Models.Db;
 using todo2.Models.Dto;
@@ -20,18 +20,12 @@ public class TodoController : ControllerBase
         _db = db;
     }
 
-    private bool TryGetUserId(out Guid userId)
-    {
-        var sub = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        return Guid.TryParse(sub, out userId);
-    }
-
     // Lists
 
     [HttpGet("lists")]
     public async Task<ActionResult<IReadOnlyList<TodoListResponse>>> GetLists(CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var lists = await _db.TodoLists
@@ -47,7 +41,7 @@ public class TodoController : ControllerBase
     [HttpGet("lists/{listId:guid}")]
     public async Task<ActionResult<TodoListResponse>> GetList(Guid listId, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var list = await _db.TodoLists
@@ -65,7 +59,7 @@ public class TodoController : ControllerBase
     [HttpPost("lists")]
     public async Task<ActionResult<TodoListResponse>> CreateList([FromBody] TodoListCreateRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var name = request.Name.Trim();
@@ -90,7 +84,7 @@ public class TodoController : ControllerBase
     [HttpPut("lists/{listId:guid}")]
     public async Task<ActionResult<TodoListResponse>> UpdateList(Guid listId, [FromBody] TodoListUpdateRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var list = await _db.TodoLists
@@ -114,7 +108,7 @@ public class TodoController : ControllerBase
     [HttpDelete("lists/{listId:guid}")]
     public async Task<IActionResult> DeleteList(Guid listId, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var list = await _db.TodoLists
@@ -137,7 +131,7 @@ public class TodoController : ControllerBase
     [HttpGet("lists/{listId:guid}/tasks")]
     public async Task<ActionResult<IReadOnlyList<TodoTaskResponse>>> GetTasks(Guid listId, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var listExists = await _db.TodoLists.AnyAsync(l => l.Id == listId && l.UserId == userId, ct);
@@ -156,7 +150,7 @@ public class TodoController : ControllerBase
     [HttpPost("lists/{listId:guid}/tasks")]
     public async Task<ActionResult<TodoTaskResponse>> CreateTask(Guid listId, [FromBody] TodoTaskCreateRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var listExists = await _db.TodoLists.AnyAsync(l => l.Id == listId && l.UserId == userId, ct);
@@ -185,7 +179,7 @@ public class TodoController : ControllerBase
     [HttpPut("tasks/{taskId:guid}")]
     public async Task<ActionResult<TodoTaskResponse>> UpdateTask(Guid taskId, [FromBody] TodoTaskUpdateRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var task = await _db.TodoTasks
@@ -214,7 +208,7 @@ public class TodoController : ControllerBase
     [HttpPatch("tasks/{taskId:guid}")]
     public async Task<ActionResult<TodoTaskResponse>> PatchTask(Guid taskId, [FromBody] TodoTaskPatchRequest request, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var task = await _db.TodoTasks
@@ -238,7 +232,7 @@ public class TodoController : ControllerBase
     [HttpDelete("tasks/{taskId:guid}")]
     public async Task<IActionResult> DeleteTask(Guid taskId, CancellationToken ct)
     {
-        if (!TryGetUserId(out var userId))
+        if (!User.TryGetUserId(out var userId))
             return Unauthorized();
 
         var task = await _db.TodoTasks
