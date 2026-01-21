@@ -1,0 +1,6 @@
+# dotenv
+.env
+**/.env
+
+# local docker env
+/docker/.env
