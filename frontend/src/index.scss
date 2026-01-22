@@ -2,6 +2,7 @@
 @use "./styles/base" as *;
 @use "./styles/scrollbar" as *;
 @use "./styles/ripple" as *;
+@use "./styles/background" as *;
 
 @forward "./components/GradientButton/GradientButton.scss";
 @forward "./components/ActionMenu/ActionMenu.scss";

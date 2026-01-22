@@ -10,31 +10,35 @@ import { MainLayout } from "@components/MainLayout/index.jsx";
 import GlobalWelcomeProvider from "@components/GlobalWelcomeProvider.jsx";
 import ProtectedRoute from "@components/ProtectedRoute.jsx";
 import MyTodo from "@pages/MyTodo/index.jsx";
+import "./index.scss";
 
 export default function App() {
   const location = useLocation();
   return (
-    <Routes location={location}>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route element={<ProtectedRoute />}>
-        <Route
-          element={
-            <GlobalWelcomeProvider>
-              <MainLayout />
-            </GlobalWelcomeProvider>
-          }
-        >
-          <Route element={<Layout />}>
-            <Route path="/" element={<HomeWithWelcome />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/stats" element={<Stats />} />
-          </Route>
-          <Route element={<MyTodoLayout />}>
-            <Route path="/todo" element={<MyTodo />} />
+    <>
+      <img src="/image.webp" alt="" className="background" />
+      <Routes location={location}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route element={<ProtectedRoute />}>
+          <Route
+            element={
+              <GlobalWelcomeProvider>
+                <MainLayout />
+              </GlobalWelcomeProvider>
+            }
+          >
+            <Route element={<Layout />}>
+              <Route path="/" element={<HomeWithWelcome />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/stats" element={<Stats />} />
+            </Route>
+            <Route element={<MyTodoLayout />}>
+              <Route path="/todo" element={<MyTodo />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </>
   );
 }
