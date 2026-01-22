@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "e2e:install": "playwright install --with-deps",
+    "test:e2e": "playwright test e2e --config=e2e/playwright.config.js",
+    "test:e2e:headed": "playwright test e2e --config=e2e/playwright.config.js --headed",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
     "lint-staged": "lint-staged",
@@ -50,6 +53,8 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.0",
     "sass": "^1.97.2",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "playwright": "^1.44.0",
+    "@playwright/test": "^1.44.0"
   }
 }
