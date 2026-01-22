@@ -19,6 +19,9 @@ export function TourPopover({
 
   const renderContent = () => stepContent || "No description for this step.";
 
+  const progress =
+    safeSteps.length > 1 ? (currentStep + 1) / safeSteps.length : 1;
+
   return (
     <motion.div
       className="tour-popover-modal"
@@ -26,6 +29,14 @@ export function TourPopover({
       transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
     >
       <div className="tour-popover-content">{renderContent()}</div>
+      <div className="tour-popover-progress-bar-wrapper">
+        <div className="tour-popover-progress-bar-bg">
+          <div
+            className="tour-popover-progress-bar-fill"
+            style={{ width: `${progress * 100}%` }}
+          />
+        </div>
+      </div>
       <div className="tour-popover-footer">
         <GradientButton
           size="sm"

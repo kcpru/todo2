@@ -36,6 +36,10 @@ export const todoTourSteps = [
     selector: ".controls",
     content: "Search and filter your tasks by status.",
   },
+  {
+    selector: ".nav-tab-header[data-tab='Home']",
+    content: "Here you can see other users' shared lists and get inspired.",
+  },
 ];
 
 export function TourProviderWrapper({ children, steps = todoTourSteps }) {

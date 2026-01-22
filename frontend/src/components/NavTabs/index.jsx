@@ -21,9 +21,6 @@ export function NavTabs() {
   const navigate = useNavigate();
   const { setTransition, lastTabIndexRef } = usePageTransition();
 
-  // Find current tab index
-  const currentIdx = TABS.findIndex((tab) => tab.path === location.pathname);
-
   return (
     <div className="nav-tabs-header">
       {TABS.map((tab, idx) => {
@@ -33,6 +30,7 @@ export function NavTabs() {
           <button
             key={tab.path}
             className={`nav-tab-header${isActive ? " active" : ""}`}
+            data-tab={tab.label}
             onClick={() => {
               setTransition(lastTabIndexRef.current, idx);
               navigate(tab.path);

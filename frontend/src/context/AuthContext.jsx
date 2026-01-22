@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
       // Verify token is still valid
       fetchMe(savedToken);
     } else {
+      sessionStorage.removeItem("todo2_welcome_modal_hide_session");
       setLoading(false);
     }
   }, []);
@@ -77,6 +78,7 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (usernameOrEmail, password) => {
+    sessionStorage.removeItem("todo2_welcome_modal_hide_session");
     setError(null);
     try {
       const response = await fetch(`${API_URL}/user/login`, {

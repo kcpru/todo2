@@ -1,0 +1,32 @@
+.welcome-modal-content {
+  margin-bottom: 16px;
+}
+
+.welcome-modal-title {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.welcome-modal-intro {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.08rem;
+}
+
+.welcome-modal-list {
+  margin: 0 0 10px 1.2em;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  list-style: disc inside;
+}
+
+.welcome-modal-tour-invite {
+  margin-bottom: 1rem;
+  font-size: 1.08rem;
+}
