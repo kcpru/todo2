@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useTour } from "@reactour/tour";
 import { Route, Routes } from "react-router-dom";
 
 import { useTodo } from "@context/TodoContext";
@@ -23,6 +24,16 @@ import Stats from "../Stats";
 import "./MyTodo.scss";
 
 function MyTodo() {
+  const { setIsOpen } = useTour();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const seenTour = localStorage.getItem("todo2_seen_tour");
+      if (!seenTour) {
+        setTimeout(() => setIsOpen(true), 600); // slight delay for UI mount
+        localStorage.setItem("todo2_seen_tour", "1");
+      }
+    }
+  }, [setIsOpen]);
   const {
     lists,
     selectedListId,

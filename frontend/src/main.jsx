@@ -9,6 +9,7 @@ import { DopamineProvider } from "@context/DopamineContext.jsx";
 import { NotificationsProvider } from "@context/NotificationsContext.jsx";
 import { TodoProvider } from "@context/TodoContext.jsx";
 import App from "./App.jsx";
+import { TourProviderWrapper } from "@components/Tour/TourSetup.jsx";
 import { PageTransitionProvider } from "@context/PageTransitionContext.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -20,7 +21,9 @@ createRoot(document.getElementById("root")).render(
             <TodoProvider>
               <PageTransitionProvider>
                 <BrowserRouter>
-                  <App />
+                  <TourProviderWrapper>
+                    <App />
+                  </TourProviderWrapper>
                 </BrowserRouter>
               </PageTransitionProvider>
             </TodoProvider>
