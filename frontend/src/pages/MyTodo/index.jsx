@@ -25,7 +25,6 @@ import "./MyTodo.scss";
 
 function MyTodo() {
   const { setIsOpen } = useTour();
-  // Show tour on first login (localStorage)
   useEffect(() => {
     if (typeof window !== "undefined") {
       const seenTour = localStorage.getItem("todo2_seen_tour");
