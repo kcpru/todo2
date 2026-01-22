@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNotifications } from "@context/NotificationsContext";
 import { ModalForm } from "@components/ModalForm";
 import { GradientButton } from "@components/GradientButton";
 import { MdShuffle } from "react-icons/md";
@@ -9,19 +10,38 @@ import "./RandomAvatarModal.scss";
 export function RandomAvatarModal({ isOpen, onClose, onSave }) {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [imgLoaded, setImgLoaded] = useState(false);
   const imgRef = useRef(null);
+  const { notify } = useNotifications();
+
+  useEffect(() => {
+    if (isOpen) {
+      setAvatarUrl("");
+      setImgLoaded(false);
+      setLoading(true);
+      generateRandomAvatar()
+        .then((url) => setAvatarUrl(url))
+        .catch((err) => {
+          notify({
+            message: err.message || "Failed to generate avatar",
+            type: "error",
+          });
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [isOpen]);
 
   const handleGenerate = async () => {
     setLoading(true);
-    setError("");
     setImgLoaded(false);
     try {
       const url = await generateRandomAvatar();
       setAvatarUrl(url);
     } catch (err) {
-      setError(err.message || "Failed to generate avatar");
+      notify({
+        message: err.message || "Failed to generate avatar",
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -82,7 +102,7 @@ export function RandomAvatarModal({ isOpen, onClose, onSave }) {
             Generate
           </GradientButton>
         </div>
-        {error && <div className="random-avatar-modal-error">{error}</div>}
+        {/* error notification is now global */}
       </div>
     </ModalForm>
   );
