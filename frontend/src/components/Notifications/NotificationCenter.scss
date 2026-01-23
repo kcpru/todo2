@@ -1,10 +1,13 @@
 .notification-viewport {
   position: fixed;
-  left: 50%;
+  right: 24px;
   bottom: 24px;
-  transform: translateX(-50%);
+  left: auto;
+  top: auto;
+  transform: none;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 12px;
   z-index: 1200;
   pointer-events: none;
