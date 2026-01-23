@@ -4,15 +4,14 @@ import { useNotifications } from "@context/NotificationsContext";
 import { GradientButton } from "@components/GradientButton";
 import { Input } from "@components/Input";
 import { MdPhotoCamera, MdPerson, MdShuffle } from "react-icons/md";
-import { uploadAvatar, getAvatarUrl } from "@api/avatar";
+import { uploadAvatar } from "@api/avatar";
 import { RandomAvatarModal } from "./RandomAvatarModal";
 import HeaderRow from "@components/HeaderRow";
 import "./Settings.scss";
 
 export default function ProfileSection() {
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, avatarUrl, fetchAvatarUrl } = useAuth();
   const { notify } = useNotifications();
-  const [avatarDataUrl, setAvatarDataUrl] = useState("");
   const [isRandomModalOpen, setIsRandomModalOpen] = useState(false);
   const [username, setUsername] = useState(user?.username || "");
   const [usernameWarning, setUsernameWarning] = useState("");
@@ -21,47 +20,22 @@ export default function ProfileSection() {
 
   useEffect(() => {
     setUsername(user?.username || "");
-    if (user?.id) {
-      const url = getAvatarUrl("me");
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setAvatarDataUrl("");
-        return;
-      }
-      fetch(url, { headers: { Authorization: `Bearer ${token}` } })
-        .then((res) => {
-          if (res.status === 200) return res.blob();
-          return null;
-        })
-        .then((blob) => {
-          if (blob) {
-            setAvatarDataUrl(URL.createObjectURL(blob));
-          } else {
-            setAvatarDataUrl("");
-          }
-        })
-        .catch(() => setAvatarDataUrl(""));
-    } else {
-      setAvatarDataUrl("");
-    }
-  }, [user?.username, user?.id]);
+  }, [user?.username]);
 
-  // --- Handlers ---
+  useEffect(() => {
+    if (user?.id) fetchAvatarUrl();
+  }, [user?.id]);
+
   const handleAvatarPick = async (e) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    const reader = new FileReader();
-    reader.onload = async () => {
-      setAvatarDataUrl(reader.result);
-      try {
-        await uploadAvatar(f);
-        setAvatarDataUrl(getAvatarUrl("me") + `?t=${Date.now()}`);
-        notify({ message: "Avatar updated!", type: "success" });
-      } catch (err) {
-        notify({ message: "Failed to update avatar", type: "error" });
-      }
-    };
-    reader.readAsDataURL(f);
+    try {
+      await uploadAvatar(f);
+      await fetchAvatarUrl();
+      notify({ message: "Avatar updated!", type: "success" });
+    } catch {
+      notify({ message: "Failed to update avatar", type: "error" });
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -84,7 +58,7 @@ export default function ProfileSection() {
       } else {
         notify({ message: res.error || "Updated locally", type: "warning" });
       }
-    } catch (err) {
+    } catch {
       notify({ message: "Failed to update profile", type: "error" });
     } finally {
       setSavingProfile(false);
@@ -101,12 +75,11 @@ export default function ProfileSection() {
 
   const handleSetRandomAvatar = async (svgUrl) => {
     try {
-      // Pobierz blob z URL, wyślij jako plik do uploadAvatar
       const res = await fetch(svgUrl);
       const blob = await res.blob();
       const file = new File([blob], "avatar.svg", { type: "image/svg+xml" });
       await uploadAvatar(file);
-      setAvatarDataUrl(getAvatarUrl("me") + `?t=${Date.now()}`);
+      await fetchAvatarUrl();
       notify({ message: "Random avatar set as profile!", type: "success" });
       setIsRandomModalOpen(false);
     } catch (err) {
@@ -133,9 +106,9 @@ export default function ProfileSection() {
       <div className="profile-row profile-row-modern">
         <div className="profile-avatar-card">
           <div className="avatar-preview avatar-preview-large">
-            {avatarDataUrl ? (
+            {avatarUrl ? (
               <img
-                src={avatarDataUrl}
+                src={avatarUrl}
                 alt="Avatar"
                 onError={(e) => {
                   e.target.onerror = null;

@@ -142,8 +142,16 @@ public class UserController : ControllerBase
         if (!TryGetAvatarExtension(file.FileName, out var ext))
             return BadRequest(new { error = "Invalid file extension. Allowed: jpg, jpeg, png, svg." });
 
-        var relativePath = $"user_avatars/{userId}.{ext}";
+        foreach (var oldExt in new[] { "jpg", "jpeg", "png", "svg" })
+        {
+            var oldPath = $"user_avatars/{userId}.{oldExt}";
+            if (await _files.ExistsAsync(oldPath, ct))
+            {
+                try { System.IO.File.Delete(Path.Combine(AppContext.BaseDirectory, oldPath)); } catch { /* ignore */ }
+            }
+        }
 
+        var relativePath = $"user_avatars/{userId}.{ext}";
         await using var stream = file.OpenReadStream();
         await _files.SaveAsync(relativePath, stream, ct);
 

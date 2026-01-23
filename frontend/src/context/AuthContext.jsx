@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   // Load token from localStorage on mount
   useEffect(() => {
@@ -32,19 +33,44 @@ export function AuthProvider({ children }) {
       if (response.ok) {
         const data = await response.json();
         setUser(data);
+        // Fetch avatar
+        fetchAvatarUrl(authToken);
       } else {
         // Token is invalid
         localStorage.removeItem("token");
         setToken(null);
         setUser(null);
+        setAvatarUrl("");
       }
     } catch (err) {
       console.error("Failed to fetch user:", err);
       localStorage.removeItem("token");
       setToken(null);
       setUser(null);
+      setAvatarUrl("");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAvatarUrl = async (authToken = token) => {
+    if (!authToken && !token) {
+      setAvatarUrl("");
+      return;
+    }
+    try {
+      const url = `${API_URL}/user/me/avatar`;
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken || token}` },
+      });
+      if (res.status === 200) {
+        const blob = await res.blob();
+        setAvatarUrl(URL.createObjectURL(blob));
+      } else {
+        setAvatarUrl("");
+      }
+    } catch {
+      setAvatarUrl("");
     }
   };
 
@@ -111,6 +137,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
+    setAvatarUrl("");
     setError(null);
   };
 
@@ -134,11 +161,13 @@ export function AuthProvider({ children }) {
 
       const data = await response.json();
       setUser(data);
+      fetchAvatarUrl();
       return { ok: true, data };
     } catch (err) {
       console.error("updateProfile failed:", err);
       // fallback: update locally
       setUser((u) => ({ ...(u || {}), ...updates }));
+      fetchAvatarUrl();
       return { ok: false, error: err.message };
     }
   };
@@ -356,6 +385,9 @@ export function AuthProvider({ children }) {
         patchTask,
         deleteTask,
         // coins system removed
+        avatarUrl,
+        setAvatarUrl,
+        fetchAvatarUrl,
       }}
     >
       {children}
