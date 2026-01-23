@@ -51,9 +51,11 @@
   border-radius: 4px;
   vertical-align: middle;
   transition:
-    background 0.1s ease,
-    border-color 0.1s ease;
+    background 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  background: rgba(var(--md-primary-rgb), 0.1);
+  box-shadow: 0 2px 8px rgba(var(--md-primary-rgb), 0.04);
 }
 
 .checkbox-wrapper .cbx:after {
@@ -65,15 +67,16 @@
   height: 11px;
   opacity: 0;
   transform: rotate(45deg) scale(0);
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  transition: all 0.3s ease;
+  border-right: 2px solid var(--md-on-primary);
+  border-bottom: 2px solid var(--md-on-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transition-delay: 0.15s;
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked ~ .cbx {
   border-color: transparent;
   background: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(var(--md-primary-rgb), 0.1);
 }
 
 .checkbox-wrapper.dopamine input[type="checkbox"]:checked ~ .cbx {
