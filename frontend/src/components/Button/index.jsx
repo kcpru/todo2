@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
 import { motion } from "motion/react";
 import { useRipple } from "@hooks/useRipple.jsx";
-import "./GradientButton.scss";
+import "./Button.scss";
 
-export const GradientButton = forwardRef(
+export const Button = forwardRef(
   (
     {
       children,
@@ -55,4 +55,4 @@ export const GradientButton = forwardRef(
   }
 );
 
-GradientButton.displayName = "GradientButton";
+Button.displayName = "Button";

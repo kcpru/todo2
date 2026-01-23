@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@context/AuthContext";
 import { useNotifications } from "@context/NotificationsContext";
-import { GradientButton } from "@components/GradientButton";
+import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { MdPhotoCamera, MdPerson, MdShuffle } from "react-icons/md";
 import { uploadAvatar } from "@api/avatar";
@@ -128,21 +128,21 @@ export default function ProfileSection() {
               style={{ display: "none" }}
             />
             <div className="avatar-actions" style={{ display: "flex", gap: 8 }}>
-              <GradientButton
+              <Button
                 size="sm"
                 icon={<MdPhotoCamera />}
                 onClick={handleAvatarFileClick}
               >
                 Change
-              </GradientButton>
-              <GradientButton
+              </Button>
+              <Button
                 size="sm"
                 variant="primary"
                 icon={<MdShuffle />}
                 onClick={handleRandomAvatar}
               >
                 Random
-              </GradientButton>
+              </Button>
             </div>
             <RandomAvatarModal
               isOpen={isRandomModalOpen}
@@ -169,17 +169,17 @@ export default function ProfileSection() {
               <div className="input-warning">{usernameWarning}</div>
             )}
             <div className="profile-actions profile-actions-row">
-              <GradientButton
+              <Button
                 size="sm"
                 onClick={handleSaveProfile}
                 disabled={savingProfile}
                 title="Save display name"
               >
                 {savingProfile ? "Saving..." : "Save Name"}
-              </GradientButton>
-              <GradientButton size="sm" variant="danger" onClick={handleLogout}>
+              </Button>
+              <Button size="sm" variant="danger" onClick={handleLogout}>
                 Logout
-              </GradientButton>
+              </Button>
             </div>
           </div>
         </div>

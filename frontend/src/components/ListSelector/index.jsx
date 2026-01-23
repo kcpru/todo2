@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { motion } from "motion/react";
 import { MdAdd, MdDelete } from "react-icons/md";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { useRipple } from "@hooks/useRipple.jsx";
@@ -24,7 +24,7 @@ function ListItem({ list, isActive, onSelect, onDelete }) {
       <span className="list-count-badge">{list.items?.length || 0}</span>
       <span className="list-name">{list.name}</span>
       <div className="list-actions">
-        <GradientButton
+        <Button
           variant="danger"
           size="sm"
           iconOnly={true}
@@ -105,7 +105,7 @@ export function ListSelector({
               onChange={(e) => setNewListName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAddList()}
             />
-            <GradientButton
+            <Button
               size="md"
               iconOnly={false}
               onClick={handleAddList}
@@ -114,7 +114,7 @@ export function ListSelector({
               icon={<MdAdd />}
             >
               Create
-            </GradientButton>
+            </Button>
           </div>
         </>
       )}

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import { MdMoreVert } from "react-icons/md";
 import { AnimatePresence, motion } from "motion/react";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import "./ActionMenu.scss";
 
 export function ActionMenu({ items = [], size = "sm", className = "" }) {
@@ -70,7 +70,7 @@ export function ActionMenu({ items = [], size = "sm", className = "" }) {
           }}
         >
           {items.map((item, idx) => (
-            <GradientButton
+            <Button
               key={idx}
               size="sm"
               iconOnly={false}
@@ -84,7 +84,7 @@ export function ActionMenu({ items = [], size = "sm", className = "" }) {
               icon={<span className="action-menu__icon">{item.icon}</span>}
             >
               <span className="action-menu__label">{item.label}</span>
-            </GradientButton>
+            </Button>
           ))}
         </motion.div>
       )}
@@ -97,7 +97,7 @@ export function ActionMenu({ items = [], size = "sm", className = "" }) {
       ref={wrapperRef}
       onClick={(e) => e.stopPropagation()}
     >
-      <GradientButton
+      <Button
         ref={triggerRef}
         size={size}
         iconOnly

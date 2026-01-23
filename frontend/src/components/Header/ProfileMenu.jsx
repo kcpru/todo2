@@ -10,7 +10,7 @@ import {
   MdLogout,
   MdSettings,
 } from "react-icons/md";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { DropdownMenu } from "../DropdownMenu";
 import "./ProfileMenu.scss";
 
@@ -63,7 +63,7 @@ export function ProfileMenu() {
           <div className="profile-email">{user?.email}</div>
         </div>
         <div className="profile-buttons">
-          <GradientButton
+          <Button
             variant="secondary"
             size="md"
             onClick={toggleTheme}
@@ -71,8 +71,8 @@ export function ProfileMenu() {
             icon={isDarkMode ? <MdLightMode /> : <MdDarkMode />}
           >
             {isDarkMode ? "Light" : "Dark"}
-          </GradientButton>
-          <GradientButton
+          </Button>
+          <Button
             variant="info"
             size="md"
             onClick={toggleDopamineMode}
@@ -84,16 +84,16 @@ export function ProfileMenu() {
             icon={<MdPsychology />}
           >
             {isDopamineMode ? "Focus Mode" : "Dopamine Mode"}
-          </GradientButton>
-          <GradientButton
+          </Button>
+          <Button
             variant="secondary"
             size="md"
             onClick={() => navigate("/settings")}
             icon={<MdSettings />}
           >
             Settings
-          </GradientButton>
-          <GradientButton
+          </Button>
+          <Button
             variant="danger"
             size="md"
             onClick={() => {
@@ -103,7 +103,7 @@ export function ProfileMenu() {
             icon={<MdLogout />}
           >
             Logout
-          </GradientButton>
+          </Button>
         </div>
       </DropdownMenu>
     </div>

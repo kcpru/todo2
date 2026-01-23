@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalForm } from "@components/ModalForm";
-import { GradientButton } from "@components/GradientButton";
+import { Button } from "@components/Button";
 import ToggleRow from "@components/ToggleRow";
 import "./WelcomeModal.scss";
 

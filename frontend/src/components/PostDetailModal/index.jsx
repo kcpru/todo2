@@ -4,7 +4,7 @@ import { motion, useAnimationControls } from "motion/react";
 import confetti from "canvas-confetti";
 import { ModalForm } from "../ModalForm";
 import { Comment } from "../Comment";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { Input } from "../Input";
 import { PostContent } from "../PostContent";
 import { useDopamine } from "@context/DopamineContext";
@@ -218,7 +218,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
             rows={3}
             disabled={submitting}
           >
-            <GradientButton
+            <Button
               size="sm"
               icon={<MdSend />}
               onClick={handleSubmitComment}
@@ -226,7 +226,7 @@ export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {
               className="comment-submit-btn"
             >
               {submitting ? "..." : ""}
-            </GradientButton>
+            </Button>
           </Input>
 
           <div className="post-detail-comments">

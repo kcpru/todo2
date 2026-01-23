@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@context/AuthContext";
 import { useNotifications } from "@context/NotificationsContext";
-import { GradientButton } from "@components/GradientButton";
+import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { MdLock } from "react-icons/md";
 import HeaderRow from "@components/HeaderRow";
@@ -57,12 +57,9 @@ export default function SecuritySection() {
           placeholder="New password"
         />
         <div className="profile-actions">
-          <GradientButton
-            onClick={handleChangePassword}
-            disabled={changingPassword}
-          >
+          <Button onClick={handleChangePassword} disabled={changingPassword}>
             {changingPassword ? "..." : "Change Password"}
-          </GradientButton>
+          </Button>
         </div>
       </div>
     </section>

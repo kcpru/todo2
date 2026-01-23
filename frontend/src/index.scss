@@ -4,7 +4,7 @@
 @use "./styles/ripple" as *;
 @use "./styles/background" as *;
 
-@forward "./components/GradientButton/GradientButton.scss";
+@forward "./components/Button/Button.scss";
 @forward "./components/ActionMenu/ActionMenu.scss";
 @forward "./components/Header/Header.scss";
 @forward "./components/Header/ProfileMenu.scss";

@@ -2,7 +2,7 @@ import { useTheme } from "@context/ThemeContext";
 import { useDopamine } from "@context/DopamineContext";
 import { NavTabs } from "../NavTabs";
 import ProfileMenu from "./ProfileMenu";
-import { MdCheckCircle } from "react-icons/md";
+import { AppLogoLottie } from "./AppLogoLottie";
 import "./Header.scss";
 
 export function Header() {
@@ -13,7 +13,7 @@ export function Header() {
     <header className="app-header">
       <div className="header-left">
         <div className="app-logo-title">
-          <MdCheckCircle className="app-logo" />
+          <AppLogoLottie />
           <div className="app-title-group">
             <span className="app-title">todo2</span>
             <span className="app-slogan">get sh*t done</span>

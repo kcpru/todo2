@@ -12,7 +12,7 @@ import {
   MdAssignmentLate,
   MdShare,
 } from "react-icons/md";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { ActionMenu } from "../ActionMenu";
 import { ConfirmDialog } from "../ConfirmDialog";
 import "./TodoList.scss";
@@ -130,7 +130,7 @@ export function TodoList({
           </div>
 
           <div className="button-group">
-            <GradientButton
+            <Button
               size="md"
               className="add-btn"
               onClick={onAddTodo}
@@ -138,10 +138,10 @@ export function TodoList({
               icon={<MdAdd />}
             >
               Add task
-            </GradientButton>
+            </Button>
 
             {onShare && (
-              <GradientButton
+              <Button
                 size="md"
                 className="share-btn"
                 onClick={onShare}
@@ -149,7 +149,7 @@ export function TodoList({
                 icon={<MdShare />}
               >
                 Share
-              </GradientButton>
+              </Button>
             )}
           </div>
 

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNotifications } from "@context/NotificationsContext";
 import { ModalForm } from "@components/ModalForm";
-import { GradientButton } from "@components/GradientButton";
+import { Button } from "@components/Button";
 import { MdShuffle } from "react-icons/md";
 import { generateRandomAvatar } from "@api/avatar.random";
 import { Spinner } from "@components/Spinner";
@@ -92,7 +92,7 @@ export function RandomAvatarModal({ isOpen, onClose, onSave }) {
           )}
         </div>
         <div style={{ marginTop: 16 }}>
-          <GradientButton
+          <Button
             size="sm"
             variant="primary"
             icon={<MdShuffle />}
@@ -100,7 +100,7 @@ export function RandomAvatarModal({ isOpen, onClose, onSave }) {
             disabled={loading}
           >
             Generate
-          </GradientButton>
+          </Button>
         </div>
         {/* error notification is now global */}
       </div>

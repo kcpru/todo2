@@ -1,4 +1,4 @@
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { motion } from "framer-motion";
 import "./TourPopover.scss";
 
@@ -38,31 +38,31 @@ export function TourPopover({
         </div>
       </div>
       <div className="tour-popover-footer">
-        <GradientButton
+        <Button
           size="sm"
           variant="secondary"
           onClick={handleClose}
           className="tour-popover-close"
         >
           Close
-        </GradientButton>
+        </Button>
         <div className="tour-popover-controls">
-          <GradientButton
+          <Button
             size="sm"
             variant="primary"
             onClick={handlePrev}
             disabled={currentStep === 0}
           >
             Previous
-          </GradientButton>
-          <GradientButton
+          </Button>
+          <Button
             size="sm"
             variant="primary"
             onClick={handleNext}
             disabled={currentStep === safeSteps.length - 1}
           >
             Next
-          </GradientButton>
+          </Button>
         </div>
       </div>
     </motion.div>

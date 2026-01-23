@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { MdLogin, MdMailOutline, MdLockOutline } from "react-icons/md";
 import "../styles/Auth.scss";
 import { Input } from "@components/Input";
-import { GradientButton } from "@components/GradientButton";
+import { Button } from "@components/Button";
 import { ANIMATION_CONFIG } from "@constants/animations";
 import { useNotifications } from "@context/NotificationsContext";
 
@@ -167,7 +167,7 @@ export function Login() {
           {/* Removed inline auth-error; errors are now shown via NotificationCenter */}
 
           <motion.div {...ANIMATION_CONFIG.authButton(0.4)}>
-            <GradientButton
+            <Button
               type="submit"
               className="auth-button"
               disabled={isLoading}
@@ -175,7 +175,7 @@ export function Login() {
               icon={<MdLogin />}
             >
               {isLoading ? "Logging in..." : "Sign In"}
-            </GradientButton>
+            </Button>
           </motion.div>
         </form>
 

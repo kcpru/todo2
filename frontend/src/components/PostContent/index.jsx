@@ -1,6 +1,6 @@
 import { MdThumbUp, MdComment } from "react-icons/md";
 import { motion } from "motion/react";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { TodoListPreview } from "../TodoListPreview";
 import "./PostContent.scss";
 
@@ -54,7 +54,7 @@ export function PostContent({
         </div>
       ) : (
         <div className="post-actions">
-          <GradientButton
+          <Button
             ref={likeButtonRef}
             variant={post.isLiked ? "primary" : "secondary"}
             size="sm"
@@ -67,11 +67,11 @@ export function PostContent({
             onClick={onLike}
           >
             {post.likesCount || 0} Likes
-          </GradientButton>
+          </Button>
           {showCommentButton && (
-            <GradientButton variant="secondary" size="sm" icon={<MdComment />}>
+            <Button variant="secondary" size="sm" icon={<MdComment />}>
               {post.comments?.length || 0} Comments
-            </GradientButton>
+            </Button>
           )}
         </div>
       )}

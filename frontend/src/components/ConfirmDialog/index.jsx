@@ -1,4 +1,4 @@
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { ModalBase } from "../ModalBase";
 import "./ConfirmDialog.scss";
 
@@ -27,15 +27,15 @@ export function ConfirmDialog({
       <div className="confirm-title">{title}</div>
       {message && <div className="confirm-message">{message}</div>}
       <div className="confirm-buttons">
-        <GradientButton
+        <Button
           variant="secondary"
           size="md"
           className="confirm-btn cancel-btn"
           onClick={onCancel}
         >
           {cancelText}
-        </GradientButton>
-        <GradientButton
+        </Button>
+        <Button
           variant={confirmVariant}
           size="md"
           className="confirm-btn apply-btn"
@@ -43,7 +43,7 @@ export function ConfirmDialog({
           title={confirmText}
         >
           {confirmText}
-        </GradientButton>
+        </Button>
       </div>
     </ModalBase>
   );

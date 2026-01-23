@@ -1,6 +1,6 @@
 import { MdClose } from "react-icons/md";
 import { ModalBase } from "../ModalBase";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import "./ModalForm.scss";
 
 export function ModalForm({
@@ -50,17 +50,17 @@ export function ModalForm({
 
       {showFooter && (
         <div className="modal-footer">
-          <GradientButton variant="secondary" size="md" onClick={onCancel}>
+          <Button variant="secondary" size="md" onClick={onCancel}>
             {cancelLabel}
-          </GradientButton>
-          <GradientButton
+          </Button>
+          <Button
             variant="primary"
             size="md"
             onClick={onSave}
             disabled={isSaveDisabled}
           >
             {saveLabel}
-          </GradientButton>
+          </Button>
         </div>
       )}
     </ModalBase>

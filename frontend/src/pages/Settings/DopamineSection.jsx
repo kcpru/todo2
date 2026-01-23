@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import ToggleRow from "@components/ToggleRow";
 import HeaderRow from "@components/HeaderRow";
 import { useDopamine } from "@context/DopamineContext";
-import { GradientButton } from "@components/GradientButton";
+import { Button } from "@components/Button";
 import { CustomSlider } from "@components/CustomSlider";
 import { FilterSelect } from "@components/FilterSelect";
 import { MdCelebration } from "react-icons/md";
@@ -133,20 +133,20 @@ export default function DopamineSection() {
             <div className="dopamine-field-main">
               <span className="dopamine-label">Animation speed</span>
               <div className="speed-toggle-row">
-                <GradientButton
+                <Button
                   variant={animationSpeed === "fast" ? "primary" : "secondary"}
                   onClick={() => updateAnimationSpeed("fast")}
                   size="sm"
                 >
                   Fast
-                </GradientButton>
-                <GradientButton
+                </Button>
+                <Button
                   variant={animationSpeed === "slow" ? "primary" : "secondary"}
                   onClick={() => updateAnimationSpeed("slow")}
                   size="sm"
                 >
                   Slow
-                </GradientButton>
+                </Button>
               </div>
             </div>
             <div className="dopamine-preview">

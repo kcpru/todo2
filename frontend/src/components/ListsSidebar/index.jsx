@@ -8,7 +8,7 @@ import {
 } from "react-icons/md";
 import { motion, AnimatePresence, Reorder } from "motion/react";
 import { useLocalStorage } from "@hooks/useLocalStorage";
-import { GradientButton } from "../GradientButton";
+import { Button } from "../Button";
 import { Input } from "../Input";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { CreateListModal } from "../CreateListModal";
@@ -260,7 +260,7 @@ export function ListsSidebar({
         }}
       />
 
-      <GradientButton
+      <Button
         size="sm"
         iconOnly={false}
         onClick={() => setIsCreateListModalOpen(true)}
@@ -268,7 +268,7 @@ export function ListsSidebar({
         icon={<MdAdd />}
       >
         New list
-      </GradientButton>
+      </Button>
     </div>
   );
 }
