@@ -59,11 +59,12 @@
   align-items: center;
   gap: 0.4rem;
   flex: 1;
-}
 
-.modal-title svg {
-  font-size: 1.2em;
-  flex-shrink: 0;
+  svg {
+    font-size: 1.2em;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+  }
 }
 
 .modal-close-btn {

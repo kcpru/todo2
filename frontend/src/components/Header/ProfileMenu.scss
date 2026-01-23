@@ -39,28 +39,43 @@
   height: 74px;
   width: 74px;
   padding: 0;
-  border: none;
-  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   border-radius: 12px;
   box-shadow: none;
-  transition: background 0.18s;
+  padding: none;
+  overflow: hidden;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+  background: rgba(var(--md-primary-rgb), 0.05);
+  border: 2.5px solid rgba(var(--md-primary-rgb), 0.1);
+
+  &:hover {
+    border: 2.5px solid rgba(var(--md-primary-rgb), 0.2);
+  }
 }
 .profile-avatar {
-  width: 66px;
-  height: 66px;
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   background: transparent;
   border: none;
   display: block;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-drag: none;
 }
 .profile-avatar-fallback {
-  width: 66px;
-  height: 66px;
+  width: 100%;
+  height: 100%;
   border-radius: 12px;
   background: transparent;
   color: var(--accent-primary);
@@ -71,4 +86,11 @@
   justify-content: center;
   border: none;
   user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-drag: none;
 }
