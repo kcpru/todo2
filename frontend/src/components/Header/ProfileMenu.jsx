@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@context/ThemeContext";
 import { useDopamine } from "@context/DopamineContext";
@@ -12,48 +12,20 @@ import {
 } from "react-icons/md";
 import { GradientButton } from "../GradientButton";
 import { DropdownMenu } from "../DropdownMenu";
-import { getAvatarUrl } from "@api/avatar";
 import "./ProfileMenu.scss";
 
 export function ProfileMenu() {
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(null);
-  const { user, logout } = useAuth();
+  const { user, logout, avatarUrl, fetchAvatarUrl } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isDopamineMode, toggleDopamineMode } = useDopamine();
 
   useEffect(() => {
-    let isMounted = true;
-    async function fetchAvatar() {
-      if (user?.id) {
-        const url = getAvatarUrl("me");
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setAvatarUrl(null);
-          return;
-        }
-        try {
-          const res = await fetch(url, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (res.status === 200) {
-            const blob = await res.blob();
-            if (isMounted) setAvatarUrl(URL.createObjectURL(blob));
-          } else {
-            if (isMounted) setAvatarUrl(null);
-          }
-        } catch {
-          if (isMounted) setAvatarUrl(null);
-        }
-      } else {
-        setAvatarUrl(null);
-      }
+    if (user?.id) {
+      fetchAvatarUrl();
     }
-    fetchAvatar();
-    return () => {
-      isMounted = false;
-    };
+    // eslint-disable-next-line
   }, [user?.id]);
 
   return (

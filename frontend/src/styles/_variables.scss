@@ -1,5 +1,9 @@
 // Color and theme variables
+// Light mode
 :root {
+  // Niebieski pod --md-primary (light)
+  --nav-icon-filter: invert(30%) sepia(70%) saturate(600%) hue-rotate(205deg)
+    brightness(1.1);
   font-family: "Montserrat", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -51,7 +55,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+// Dark mode: pastelowy niebieski, mniej bieli, więcej koloru motywu
 [data-theme="dark"] {
+  --nav-icon-filter: invert(60%) sepia(60%) saturate(300%) hue-rotate(200deg)
+    brightness(1.1) contrast(1.1);
   --md-primary: #b8c3ff;
   --md-primary-rgb: 184, 195, 255;
   --md-primary-variant: #c7d0ff;

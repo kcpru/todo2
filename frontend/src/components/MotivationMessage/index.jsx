@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import "./MotivationMessage.scss";
 
@@ -42,7 +41,9 @@ export default function MotivationMessage({ message }) {
           style={{ minWidth: 36, minHeight: 36, borderRadius: "50%" }}
         />
       ) : (
-        <span role="img" aria-label="Motivation">💡</span>
+        <span role="img" aria-label="Motivation">
+          💡
+        </span>
       )}
       {message}
     </div>
