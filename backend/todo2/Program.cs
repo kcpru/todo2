@@ -138,12 +138,8 @@ public class Program
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
-            var databaseCreator = db.GetService<Microsoft.EntityFrameworkCore.Storage.IRelationalDatabaseCreator>();
-            if (!databaseCreator.Exists())
-            {
-                db.Database.Migrate();
-                await DataSeeder.SeedAsync(db, passwordHasher);
-            }
+            db.Database.Migrate();
+            await DataSeeder.SeedAsync(db, passwordHasher);
         }
 
         app.Run();
