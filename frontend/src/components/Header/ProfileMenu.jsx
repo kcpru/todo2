@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@context/ThemeContext";
 import { useDopamine } from "@context/DopamineContext";
@@ -10,8 +11,9 @@ import {
   MdLogout,
   MdSettings,
 } from "react-icons/md";
+import { AnimatePresence, motion } from "motion/react";
+import { ANIMATION_CONFIG } from "@constants/animations";
 import { Button } from "../Button";
-import { DropdownMenu } from "../DropdownMenu";
 import "./ProfileMenu.scss";
 import { useClickOutside } from "@hooks/useClickOutside";
 
@@ -22,9 +24,11 @@ export function ProfileMenu() {
   const { isDarkMode, toggleTheme } = useTheme();
   const { isDopamineMode, toggleDopamineMode } = useDopamine();
   const profileRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   useClickOutside(profileRef, () => setShowProfile(false), {
     ignoreSelf: true,
+    ignoreRefs: [dropdownRef],
   });
 
   useEffect(() => {
@@ -59,59 +63,66 @@ export function ProfileMenu() {
         )}
       </button>
 
-      <DropdownMenu
-        isOpen={showProfile}
-        onClose={() => setShowProfile(false)}
-        position="bottom-right"
-      >
-        <div className="profile-info">
-          <div className="profile-username">{user?.username}</div>
-          <div className="profile-email">{user?.email}</div>
-        </div>
-        <div className="profile-buttons">
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={toggleTheme}
-            title={isDarkMode ? "Light Mode" : "Dark Mode"}
-            icon={isDarkMode ? <MdLightMode /> : <MdDarkMode />}
-          >
-            {isDarkMode ? "Light" : "Dark"}
-          </Button>
-          <Button
-            variant="info"
-            size="md"
-            onClick={toggleDopamineMode}
-            title={
-              isDopamineMode
-                ? "Switch to Dopamine Mode"
-                : "Switch to Focus Mode"
-            }
-            icon={<MdPsychology />}
-          >
-            {isDopamineMode ? "Focus Mode" : "Dopamine Mode"}
-          </Button>
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => navigate("/settings")}
-            icon={<MdSettings />}
-          >
-            Settings
-          </Button>
-          <Button
-            variant="danger"
-            size="md"
-            onClick={() => {
-              logout();
-              navigate("/login");
-            }}
-            icon={<MdLogout />}
-          >
-            Logout
-          </Button>
-        </div>
-      </DropdownMenu>
+      {createPortal(
+        <AnimatePresence>
+          {showProfile && (
+            <motion.div
+              ref={dropdownRef}
+              className="dropdown-menu"
+              {...ANIMATION_CONFIG.dropdown}
+            >
+              <div className="profile-info">
+                <div className="profile-username">{user?.username}</div>
+                <div className="profile-email">{user?.email}</div>
+              </div>
+              <div className="profile-buttons">
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={toggleTheme}
+                  title={isDarkMode ? "Light Mode" : "Dark Mode"}
+                  icon={isDarkMode ? <MdLightMode /> : <MdDarkMode />}
+                >
+                  {isDarkMode ? "Light" : "Dark"}
+                </Button>
+                <Button
+                  variant="info"
+                  size="md"
+                  onClick={toggleDopamineMode}
+                  title={
+                    isDopamineMode
+                      ? "Switch to Dopamine Mode"
+                      : "Switch to Focus Mode"
+                  }
+                  icon={<MdPsychology />}
+                >
+                  {isDopamineMode ? "Focus Mode" : "Dopamine Mode"}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={() => navigate("/settings")}
+                  icon={<MdSettings />}
+                >
+                  Settings
+                </Button>
+                <Button
+                  variant="danger"
+                  size="md"
+                  onClick={() => {
+                    logout();
+                    navigate("/login");
+                  }}
+                  icon={<MdLogout />}
+                >
+                  Logout
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }

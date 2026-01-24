@@ -22,7 +22,6 @@ export function PostContent({
     <div className="post-content-wrapper">
       <div className="post-header">
         <div className="post-info">
-          <div className="post-title">Todo: {post.id.slice(0, 8)}</div>
           <div className="post-time">
             {new Date(post.createdAt).toLocaleDateString()}
           </div>
