@@ -5,7 +5,7 @@ import HomeWithWelcome from "@pages/Home/WithWelcome.jsx";
 import { Settings } from "@pages/Settings";
 import Stats from "@pages/Stats";
 import { Layout } from "@components/Layout/index.jsx";
-import { MyTodoLayout } from "@components/MyTodoLayout/index.jsx";
+import { MyTodoLayout } from "@pages/MyTodo/layout/MyTodoLayout/index.jsx";
 import { MainLayout } from "@components/MainLayout/index.jsx";
 import GlobalWelcomeProvider from "@components/GlobalWelcomeProvider.jsx";
 import ProtectedRoute from "@components/ProtectedRoute.jsx";

@@ -8,11 +8,11 @@ import {
 } from "react-icons/md";
 import { motion, AnimatePresence, Reorder } from "motion/react";
 import { useLocalStorage } from "@hooks/useLocalStorage";
-import { Button } from "../Button";
-import { Input } from "../Input";
-import { ConfirmDialog } from "../ConfirmDialog";
+import { Button } from "@components/Button";
+import { Input } from "@components/Input";
+import { ConfirmDialog } from "@components/ConfirmDialog";
 import { CreateListModal } from "../CreateListModal";
-import { ActionMenu } from "../ActionMenu";
+import { ActionMenu } from "@components/ActionMenu";
 import { useRipple } from "@hooks/useRipple.jsx";
 import "./ListsSidebar.scss";
 

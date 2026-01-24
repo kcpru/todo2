@@ -4,11 +4,11 @@ import { useTour } from "@reactour/tour";
 import { Route, Routes } from "react-router-dom";
 
 import { useTodo } from "@context/TodoContext";
-import { TodoList } from "@components/TodoList";
+import { TodoList } from "./components/TodoList";
 import { getMotivationMessage } from "@api/motivation";
-import { EditModal } from "@components/EditModal";
-import { DopamineVideo } from "@components/DopamineVideo";
-import { SharePostModal } from "@components/SharePostModal";
+import { EditModal } from "./components/EditModal";
+import { DopamineVideo } from "./components/DopamineVideo";
+import { SharePostModal } from "./components/SharePostModal";
 import { Input } from "@components/Input";
 import { FilterSelect } from "@components/FilterSelect";
 import { usePostsAPI } from "@hooks/usePostsAPI";

@@ -1,7 +1,7 @@
 import { MdThumbUp, MdComment } from "react-icons/md";
 import { motion } from "motion/react";
-import { Button } from "../Button";
-import { TodoListPreview } from "../TodoListPreview";
+import { Button } from "@components/Button";
+import { TodoListPreview } from "@components/TodoListPreview";
 import "./PostContent.scss";
 
 const AnimatedThumbUp = motion(MdThumbUp);

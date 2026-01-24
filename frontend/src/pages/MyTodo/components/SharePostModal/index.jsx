@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { MdShare } from "react-icons/md";
-import { ModalForm } from "../ModalForm";
-import { Input } from "../Input";
-import { TodoListPreview } from "../TodoListPreview";
+import { ModalForm } from "@components/ModalForm";
+import { Input } from "@components/Input";
+import { TodoListPreview } from "@components/TodoListPreview";
 import "./SharePostModal.scss";
 
 export function SharePostModal({

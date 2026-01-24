@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { usePageTransition } from "@context/PageTransitionContext";
-import React, { useRef, useEffect, useId } from "react";
+import React, { useEffect, useId, useMemo } from "react";
 import { motion, LayoutGroup } from "motion/react";
 import { NavTab } from "./NavTab";
 import homeLottie from "@assets/lottie/system-solid-41-home-hover-pinch.json";
@@ -24,12 +24,12 @@ export function NavTabs() {
   const layoutId = useId();
 
   // Każdy tab ma własny obiekt ref
-  const lottieRefs = React.useRef(TABS.map(() => React.createRef()));
+  const lottieRefs = useMemo(() => TABS.map(() => React.createRef()), []);
 
   const handleTabClick = (idx, path) => {
     setTransition(lastTabIndexRef.current, idx);
     navigate(path);
-    const ref = lottieRefs.current[idx];
+    const ref = lottieRefs[idx];
     if (ref && ref.current) {
       ref.current.stop();
       ref.current.play();
@@ -38,12 +38,12 @@ export function NavTabs() {
 
   useEffect(() => {
     const activeIdx = TABS.findIndex((tab) => tab.path === location.pathname);
-    const ref = lottieRefs.current[activeIdx];
+    const ref = lottieRefs[activeIdx];
     if (activeIdx !== -1 && ref && ref.current) {
       ref.current.stop();
       ref.current.play();
     }
-  }, [location.pathname]);
+  }, [location.pathname, lottieRefs]);
 
   return (
     <LayoutGroup>
@@ -58,7 +58,7 @@ export function NavTabs() {
               tab={tab}
               isActive={isActive}
               onClick={() => handleTabClick(idx, tab.path)}
-              lottieRef={lottieRefs.current[idx]}
+              lottieRef={lottieRefs[idx]}
               layoutId={`${layoutId}-tab-bg`}
             />
           );

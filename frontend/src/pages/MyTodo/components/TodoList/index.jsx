@@ -2,7 +2,7 @@ import { useState } from "react";
 // import MotivationMessage from "../MotivationMessage";
 // import { getMotivationMessage } from "@api/motivation";
 import { motion, AnimatePresence } from "motion/react";
-import { Input } from "../Input";
+import { Input } from "@components/Input";
 import { useDopamine } from "@context/DopamineContext";
 import { ANIMATION_CONFIG } from "@constants/animations";
 import {
@@ -12,9 +12,9 @@ import {
   MdAssignmentLate,
   MdShare,
 } from "react-icons/md";
-import { Button } from "../Button";
-import { ActionMenu } from "../ActionMenu";
-import { ConfirmDialog } from "../ConfirmDialog";
+import { Button } from "@components/Button";
+import { ActionMenu } from "@components/ActionMenu";
+import { ConfirmDialog } from "@components/ConfirmDialog";
 import "./TodoList.scss";
 
 export function TodoList({

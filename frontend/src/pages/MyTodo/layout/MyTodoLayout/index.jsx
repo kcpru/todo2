@@ -3,7 +3,7 @@ import { useLocalStorage } from "@hooks/useLocalStorage";
 import { Outlet, useLocation } from "react-router-dom";
 import { usePageTransition } from "@context/PageTransitionContext";
 import { MdMenu, MdClose } from "react-icons/md";
-import { ListsSidebar } from "@components/ListsSidebar";
+import { ListsSidebar } from "../../components/ListsSidebar";
 import { Button } from "@components/Button";
 import { motion } from "motion/react";
 import { useTodo } from "@context/TodoContext";

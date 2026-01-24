@@ -1,6 +1,6 @@
 import { MdPlaylistAdd } from "react-icons/md";
-import { Input } from "../Input";
-import { ModalForm } from "../ModalForm";
+import { Input } from "@components/Input";
+import { ModalForm } from "@components/ModalForm";
 import "./CreateListModal.scss";
 
 export function CreateListModal({
