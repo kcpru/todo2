@@ -20,43 +20,42 @@
   max-width: 1200px;
   padding: 1.5rem 1.5rem;
   box-sizing: border-box;
-}
+  /* Controls and Search */
+  .controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
 
-/* Controls and Search */
-.app-todo-wrapper .controls {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  align-items: center;
-}
+  .search-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
 
-.app-todo-wrapper .search-container {
-  flex: 1;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+    .search-input {
+      padding-right: 2.5rem;
+    }
+  }
 
-.app-todo-wrapper .search-container .search-input {
-  padding-right: 2.5rem;
-}
+  .search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    z-index: 2;
+  }
 
-.app-todo-wrapper .search-icon {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-  pointer-events: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  z-index: 2;
-}
-
-.app-todo-wrapper .filter-select-wrapper {
-  flex-shrink: 0;
+  .filter-select-wrapper {
+    flex-shrink: 0;
+  }
 }
 
 .loading {
@@ -126,7 +125,10 @@
   .app-todo-wrapper {
     padding: 0;
     max-width: 100%;
-    width: calc(100% - 2rem);
+
+    .controls {
+      margin-bottom: 1rem;
+    }
   }
 
   .container {
