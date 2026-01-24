@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import Lottie from "lottie-react";
 import "./NavTab.scss";
 
-export function NavTab({ tab, idx, isActive, onClick, lottieRef }) {
+export function NavTab({ tab, idx, isActive, onClick, lottieRef, layoutId }) {
   return (
     <motion.button
       className={`nav-tab-header${isActive ? " active" : ""}`}
@@ -18,7 +18,7 @@ export function NavTab({ tab, idx, isActive, onClick, lottieRef }) {
         delay: 0.15 + idx * 0.05,
       }}
     >
-      {isActive && <motion.div className="tab-bg" layoutId="tab-bg" />}
+      {isActive && <motion.div className="tab-bg" layoutId={layoutId} layout />}
 
       <span className="nav-tab-icon lottie-color">
         <Lottie

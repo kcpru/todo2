@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { usePageTransition } from "@context/PageTransitionContext";
-import React, { useRef, useEffect } from "react";
-import { motion } from "motion/react";
+import React, { useRef, useEffect, useId } from "react";
+import { motion, LayoutGroup } from "motion/react";
 import { NavTab } from "./NavTab";
 import homeLottie from "@assets/lottie/system-solid-41-home-hover-pinch.json";
 import todoLottie from "@assets/lottie/system-solid-17-assignment-hover-assignment.json";
@@ -21,6 +21,7 @@ export function NavTabs() {
   const location = useLocation();
   const navigate = useNavigate();
   const { setTransition, lastTabIndexRef } = usePageTransition();
+  const layoutId = useId();
 
   // Każdy tab ma własny obiekt ref
   const lottieRefs = React.useRef(TABS.map(() => React.createRef()));
@@ -45,21 +46,24 @@ export function NavTabs() {
   }, [location.pathname]);
 
   return (
-    <div className="nav-tabs-header">
-      {TABS.map((tab, idx) => {
-        const isActive = location.pathname === tab.path;
+    <LayoutGroup>
+      <motion.div className="nav-tabs-header" layoutRoot layoutScroll>
+        {TABS.map((tab, idx) => {
+          const isActive = location.pathname === tab.path;
 
-        return (
-          <NavTab
-            key={tab.path}
-            idx={idx}
-            tab={tab}
-            isActive={isActive}
-            onClick={() => handleTabClick(idx, tab.path)}
-            lottieRef={lottieRefs.current[idx]}
-          />
-        );
-      })}
-    </div>
+          return (
+            <NavTab
+              key={tab.path}
+              idx={idx}
+              tab={tab}
+              isActive={isActive}
+              onClick={() => handleTabClick(idx, tab.path)}
+              lottieRef={lottieRefs.current[idx]}
+              layoutId={`${layoutId}-tab-bg`}
+            />
+          );
+        })}
+      </motion.div>
+    </LayoutGroup>
   );
 }
