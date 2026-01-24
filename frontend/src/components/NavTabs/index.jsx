@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { usePageTransition } from "@context/PageTransitionContext";
 import React, { useRef, useEffect } from "react";
+import { motion } from "motion/react";
 import { NavTab } from "./NavTab";
 import homeLottie from "@assets/lottie/system-solid-41-home-hover-pinch.json";
 import todoLottie from "@assets/lottie/system-solid-17-assignment-hover-assignment.json";
@@ -48,13 +49,25 @@ export function NavTabs() {
       {TABS.map((tab, idx) => {
         const isActive = location.pathname === tab.path;
         return (
-          <NavTab
+          <motion.div
             key={tab.path}
-            tab={tab}
-            isActive={isActive}
-            onClick={() => handleTabClick(idx, tab.path)}
-            lottieRef={lottieRefs.current[idx]}
-          />
+            initial={{ opacity: 0, y: 32, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 420,
+              damping: 32,
+              delay: 0.15 + idx * 0.05,
+            }}
+            style={{ display: "inline-block" }}
+          >
+            <NavTab
+              tab={tab}
+              isActive={isActive}
+              onClick={() => handleTabClick(idx, tab.path)}
+              lottieRef={lottieRefs.current[idx]}
+            />
+          </motion.div>
         );
       })}
     </div>

@@ -5,6 +5,7 @@
   left: 1.5rem;
   right: 1.5rem;
   width: calc(100% - 3rem);
+  overflow: hidden;
   background: linear-gradient(
     135deg,
     rgba(var(--md-primary-rgb), 0.08) 0%,
@@ -19,6 +20,20 @@
   z-index: 1000;
   border-radius: 16px;
   box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(-2rem);
+  animation: header-slide-in 0.5s cubic-bezier(0, 0.4, 0, 1) 0.1s forwards;
+}
+
+@keyframes header-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .header-left {
@@ -38,16 +53,6 @@
   flex-direction: column;
   align-items: flex-start;
   line-height: 1.1;
-}
-
-.app-logo {
-  width: 2.6rem;
-  height: 2.6rem;
-  display: block;
-  color: var(--accent-primary);
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  flex-shrink: 0;
 }
 
 .app-title {

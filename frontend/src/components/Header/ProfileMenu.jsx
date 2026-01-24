@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@context/ThemeContext";
 import { useDopamine } from "@context/DopamineContext";
@@ -13,6 +13,7 @@ import {
 import { Button } from "../Button";
 import { DropdownMenu } from "../DropdownMenu";
 import "./ProfileMenu.scss";
+import { useClickOutside } from "@hooks/useClickOutside";
 
 export function ProfileMenu() {
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ export function ProfileMenu() {
   const { user, logout, avatarUrl, fetchAvatarUrl } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const { isDopamineMode, toggleDopamineMode } = useDopamine();
+  const profileRef = useRef(null);
+
+  useClickOutside(profileRef, () => setShowProfile(false));
 
   useEffect(() => {
     if (user?.id) {
@@ -29,7 +33,7 @@ export function ProfileMenu() {
   }, [user?.id]);
 
   return (
-    <div className="profile-container">
+    <div className="profile-container" ref={profileRef}>
       <button
         className="profile-avatar-btn"
         onClick={() => setShowProfile(!showProfile)}

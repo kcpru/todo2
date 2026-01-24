@@ -5,7 +5,7 @@ export function ModalBase({
   isOpen,
   onClose,
   children,
-  size = "md", // sm, md, lg
+  size = "md",
   overlayClassName = "",
   panelClassName = "",
   overlayTransition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
@@ -25,7 +25,6 @@ export function ModalBase({
   layoutId,
 }) {
   const sizeClass = `modal-${size}`;
-  // Lock body scroll while modal is open
   useScrollLock(isOpen);
 
   return (

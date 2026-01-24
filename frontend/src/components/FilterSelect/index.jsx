@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { ANIMATION_CONFIG } from "@constants/animations";
 import { MdExpandMore } from "react-icons/md";
 import { useRipple } from "@hooks/useRipple";
 import "./FilterSelect.scss";
+import { useClickOutside } from "@hooks/useClickOutside";
 
 export function FilterSelect({
   options,
@@ -15,15 +17,7 @@ export function FilterSelect({
   const ref = useRef(null);
   const { createRipple, RippleContainer } = useRipple();
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  useClickOutside(ref, () => setOpen(false));
 
   const current = options.find((o) => o.value === value) || options[0];
 
@@ -59,10 +53,10 @@ export function FilterSelect({
         {open && (
           <motion.div
             className="filter-select__menu"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.15 }}
+            initial={ANIMATION_CONFIG.dropdown.initial}
+            animate={ANIMATION_CONFIG.dropdown.animate}
+            exit={ANIMATION_CONFIG.dropdown.exit}
+            transition={ANIMATION_CONFIG.dropdown.transition}
           >
             {options.map((option) => {
               const isActive = option.value === value;

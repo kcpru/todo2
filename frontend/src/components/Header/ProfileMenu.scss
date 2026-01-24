@@ -49,12 +49,17 @@
   overflow: hidden;
   transition:
     background 0.18s,
-    border-color 0.18s;
+    border-color 0.18s,
+    transform 0.15s;
   background: rgba(var(--md-primary-rgb), 0.05);
   border: 2.5px solid rgba(var(--md-primary-rgb), 0.1);
 
   &:hover {
     border: 2.5px solid rgba(var(--md-primary-rgb), 0.2);
+  }
+
+  &:active {
+    transform: translateY(0.5rem);
   }
 }
 .profile-avatar {

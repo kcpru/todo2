@@ -16,11 +16,11 @@ export const ANIMATION_CONFIG = {
   },
   // Dropdown menu - quick fade in/out
   dropdown: {
-    initial: { opacity: 0, y: -8 },
+    initial: { opacity: 0, y: -10 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -8 },
     transition: {
-      opacity: { duration: 0.15 },
+      opacity: { duration: 0.1 },
       y: { duration: 0.2, ease: EASES.snappy },
     },
   },

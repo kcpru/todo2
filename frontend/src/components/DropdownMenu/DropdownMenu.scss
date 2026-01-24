@@ -1,31 +1,11 @@
-/* Dropdown Menu Styles */
 .dropdown-menu {
-  position: absolute;
+  position: fixed;
   background: var(--md-surface);
   border: 2px solid rgba(var(--md-primary-rgb), 0.2);
   border-radius: 12px;
   padding: 1rem;
   z-index: 1001;
   min-width: 220px;
-}
-
-/* Position variants */
-.dropdown-bottom-right {
-  top: calc(100% + 0.5rem);
-  right: 0;
-}
-
-.dropdown-bottom-left {
-  top: calc(100% + 0.5rem);
-  left: 0;
-}
-
-.dropdown-top-right {
-  bottom: calc(100% + 0.5rem);
-  right: 0;
-}
-
-.dropdown-top-left {
-  bottom: calc(100% + 0.5rem);
-  left: 0;
+  top: 9rem;
+  right: 1.5rem;
 }
