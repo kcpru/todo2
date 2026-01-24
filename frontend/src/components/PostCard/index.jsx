@@ -10,7 +10,7 @@ export function PostCard({ post, onClick, isSelected, currentUserId }) {
 
   return (
     <motion.div
-      className="post-card"
+      className={`post-card${isSelected ? " is-selected" : ""}`}
       onClick={onClick}
       layoutId={`post-${post.id}`}
       layout

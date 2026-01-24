@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { LayoutGroup } from "motion/react";
 import { useAuth } from "@context/AuthContext";
@@ -15,6 +15,7 @@ export function Home() {
   const [error, setError] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeTimeoutRef = useRef(null);
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -35,6 +36,10 @@ export function Home() {
 
   const handlePostClick = async (post) => {
     try {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
       const fullPost = await getPost(post.id);
       setSelectedPost(fullPost);
       setIsModalOpen(true);
@@ -45,7 +50,13 @@ export function Home() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedPost(null);
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = setTimeout(() => {
+      setSelectedPost(null);
+      closeTimeoutRef.current = null;
+    }, 320);
   };
 
   const handlePostUpdate = async (postId) => {

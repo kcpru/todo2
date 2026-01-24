@@ -9,9 +9,17 @@
   position: relative;
   z-index: 1;
 
-  &:hover {
+  &:not(.is-selected):hover {
     border-color: rgba(var(--md-primary-rgb), 0.4);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &.is-selected {
+    pointer-events: none;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    opacity: 0;
   }
 }
 
