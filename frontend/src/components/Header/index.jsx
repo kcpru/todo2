@@ -1,8 +1,10 @@
-import { useTheme } from "@context/ThemeContext";
 import { useDopamine } from "@context/DopamineContext";
+import { useTheme } from "@context/ThemeContext";
+
 import { NavTabs } from "../NavTabs";
-import ProfileMenu from "./ProfileMenu";
+
 import { AppLogoLottie } from "./AppLogoLottie";
+import ProfileMenu from "./ProfileMenu";
 import "./Header.scss";
 
 export function Header() {

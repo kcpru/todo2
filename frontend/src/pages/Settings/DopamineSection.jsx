@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import ToggleRow from "@components/ToggleRow";
-import HeaderRow from "@components/HeaderRow";
-import { useDopamine } from "@context/DopamineContext";
+import { MdCelebration } from "react-icons/md";
+
 import { Button } from "@components/Button";
 import { CustomSlider } from "@components/CustomSlider";
 import { FilterSelect } from "@components/FilterSelect";
-import { MdCelebration } from "react-icons/md";
+import HeaderRow from "@components/HeaderRow";
+import ToggleRow from "@components/ToggleRow";
+import { useDopamine } from "@context/DopamineContext";
+
 import "./Settings.scss";
 
 export default function DopamineSection() {

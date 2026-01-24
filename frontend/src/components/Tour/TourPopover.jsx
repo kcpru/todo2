@@ -1,5 +1,6 @@
-import { Button } from "../Button";
 import { motion } from "framer-motion";
+
+import { Button } from "../Button";
 import "./TourPopover.scss";
 
 export function TourPopover({

@@ -1,3 +1,4 @@
+import { motion, AnimatePresence, Reorder } from "motion/react";
 import { useState, useEffect } from "react";
 import {
   MdDelete,
@@ -6,14 +7,16 @@ import {
   MdRadioButtonUnchecked,
   MdSearch,
 } from "react-icons/md";
-import { motion, AnimatePresence, Reorder } from "motion/react";
-import { useLocalStorage } from "@hooks/useLocalStorage";
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { ConfirmDialog } from "@components/ConfirmDialog";
-import { CreateListModal } from "../CreateListModal";
+
 import { ActionMenu } from "@components/ActionMenu";
+import { Button } from "@components/Button";
+import { ConfirmDialog } from "@components/ConfirmDialog";
+import { Input } from "@components/Input";
+import { useLocalStorage } from "@hooks/useLocalStorage";
 import { useRipple } from "@hooks/useRipple.jsx";
+
+import { CreateListModal } from "../CreateListModal";
+
 import "./ListsSidebar.scss";
 
 function ListItem({ list, isActive, onSelect, onDelete }) {

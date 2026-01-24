@@ -1,7 +1,9 @@
 import { useRef } from "react";
-import { useRipple } from "@hooks/useRipple";
-import "./Comment.scss";
 import { GoHeartFill } from "react-icons/go";
+
+import { useRipple } from "@hooks/useRipple";
+
+import "./Comment.scss";
 
 export function Comment({ comment, onDoubleTap }) {
   const lastTapRef = useRef(0);

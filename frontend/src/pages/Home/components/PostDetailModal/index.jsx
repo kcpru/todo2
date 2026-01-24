@@ -1,14 +1,17 @@
+import confetti from "canvas-confetti";
+import { motion, useAnimationControls } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { MdFavorite, MdSend } from "react-icons/md";
-import { motion, useAnimationControls } from "motion/react";
-import confetti from "canvas-confetti";
-import { ModalForm } from "@components/ModalForm";
-import { Comment } from "../Comment";
+
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
-import { PostContent } from "../PostContent";
+import { ModalForm } from "@components/ModalForm";
 import { useDopamine } from "@context/DopamineContext";
 import { usePostsAPI } from "@hooks/usePostsAPI";
+
+import { Comment } from "../Comment";
+import { PostContent } from "../PostContent";
+
 import "./PostDetailModal.scss";
 
 export function PostDetailModal({ post, isOpen, onClose, onPostUpdate }) {

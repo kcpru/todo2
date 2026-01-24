@@ -1,6 +1,7 @@
 import "./chartjs-setup";
 import { Line } from "react-chartjs-2";
 import { MdTimeline } from "react-icons/md";
+
 import HeaderRow from "@components/HeaderRow";
 import "./Stats.scss";
 

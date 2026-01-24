@@ -1,13 +1,15 @@
-import { useState, useEffect, useRef } from "react";
-import { useLocalStorage } from "@hooks/useLocalStorage";
-import { Outlet, useLocation } from "react-router-dom";
-import { usePageTransition } from "@context/PageTransitionContext";
-import { MdMenu, MdClose } from "react-icons/md";
-import { ListsSidebar } from "../../components/ListsSidebar";
-import { Button } from "@components/Button";
 import { motion } from "motion/react";
-import { useTodo } from "@context/TodoContext";
+import { useState, useEffect, useRef } from "react";
+import { MdMenu, MdClose } from "react-icons/md";
+import { Outlet, useLocation } from "react-router-dom";
+
+import { Button } from "@components/Button";
 import { useAuth } from "@context/AuthContext";
+import { usePageTransition } from "@context/PageTransitionContext";
+import { useTodo } from "@context/TodoContext";
+import { useLocalStorage } from "@hooks/useLocalStorage";
+
+import { ListsSidebar } from "../../components/ListsSidebar";
 import "./MyTodoLayout.scss";
 
 export function MyTodoLayout() {

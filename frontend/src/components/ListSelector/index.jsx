@@ -1,11 +1,12 @@
-import { useState } from "react";
-
 import { motion } from "motion/react";
+import { useState } from "react";
 import { MdAdd, MdDelete } from "react-icons/md";
-import { Button } from "../Button";
-import { Input } from "../Input";
-import { ConfirmDialog } from "../ConfirmDialog";
+
 import { useRipple } from "@hooks/useRipple.jsx";
+
+import { Button } from "../Button";
+import { ConfirmDialog } from "../ConfirmDialog";
+import { Input } from "../Input";
 import "./ListSelector.scss";
 
 function ListItem({ list, isActive, onSelect, onDelete }) {

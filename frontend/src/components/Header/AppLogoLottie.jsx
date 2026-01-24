@@ -1,4 +1,5 @@
 import Lottie from "lottie-react";
+
 import checkLottie from "@assets/lottie/system-solid-31-check-in-reveal.json";
 
 export function AppLogoLottie() {

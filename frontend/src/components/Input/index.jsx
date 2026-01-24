@@ -1,6 +1,7 @@
-import { useRipple } from "@hooks/useRipple.jsx";
 import { useState } from "react";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+
+import { useRipple } from "@hooks/useRipple.jsx";
 
 export function Input({
   withRipple = true,

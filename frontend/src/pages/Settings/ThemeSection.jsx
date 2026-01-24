@@ -1,7 +1,9 @@
-import { useTheme } from "@context/ThemeContext";
-import ToggleRow from "@components/ToggleRow";
-import HeaderRow from "@components/HeaderRow";
 import { MdPalette } from "react-icons/md";
+
+import HeaderRow from "@components/HeaderRow";
+import ToggleRow from "@components/ToggleRow";
+import { useTheme } from "@context/ThemeContext";
+
 import "./Settings.scss";
 
 export default function ThemeSection() {

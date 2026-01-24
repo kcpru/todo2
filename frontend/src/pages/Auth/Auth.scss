@@ -1,0 +1,312 @@
+.auth-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+
+  .search-input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    padding-right: 2.5rem;
+    min-height: 42px;
+    box-sizing: border-box;
+    border: 2px solid rgba(var(--md-primary-rgb), 0.25);
+    border-radius: 10px;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--md-primary-rgb), 0.05) 0%,
+      rgba(var(--md-primary-rgb), 0.03) 100%
+    );
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    transition:
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #646cff;
+    }
+  }
+
+  .input-with-ripple {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: var(--ripple-x, -9999px);
+      top: var(--ripple-y, -9999px);
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(var(--md-primary-rgb), 0.2);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: blur(10px);
+    }
+
+    &.ripple-active::after {
+      animation: list-ripple 0.8s ease-out;
+    }
+  }
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--md-primary);
+  background: linear-gradient(
+    135deg,
+    rgba(85, 104, 211, 0.1) 0%,
+    rgba(107, 122, 230, 0.1) 100%
+  );
+  border-radius: 50%;
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.auth-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+  }
+
+  .search-input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    padding-right: 2.5rem;
+    min-height: 42px;
+    box-sizing: border-box;
+    border: 2px solid rgba(var(--md-primary-rgb), 0.25);
+    border-radius: 10px;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--md-primary-rgb), 0.05) 0%,
+      rgba(var(--md-primary-rgb), 0.03) 100%
+    );
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    transition:
+      border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #646cff;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  input {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #646cff;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+  }
+
+  .form-icon {
+    font-size: 1.1rem;
+    color: var(--md-primary);
+    transition: color 0.2s ease;
+  }
+
+  &.valid .form-icon {
+    color: #51cf66;
+  }
+
+  &.invalid .form-icon {
+    color: #ff6b6b;
+  }
+}
+
+.auth-error {
+  padding: 0.75rem 1rem;
+  background-color: #ff6b6b;
+  color: white;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.auth-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #5568d3 0%, #6b7ae6 100%);
+  color: white;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.auth-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+
+  a {
+    color: var(--border-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(85, 104, 211, 0.05) 0%,
+    rgba(107, 122, 230, 0.05) 100%
+  );
+  border-radius: 12px;
+  border: 1px solid rgba(85, 104, 211, 0.15);
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    text-align: center;
+  }
+}
+
+[data-theme="dark"] {
+  .auth-icon {
+    background: linear-gradient(
+      135deg,
+      rgba(85, 104, 211, 0.2) 0%,
+      rgba(107, 122, 230, 0.2) 100%
+    );
+  }
+
+  .auth-benefits {
+    background: linear-gradient(
+      135deg,
+      rgba(85, 104, 211, 0.1) 0%,
+      rgba(107, 122, 230, 0.1) 100%
+    );
+    border-color: rgba(85, 104, 211, 0.25);
+  }
+}
+
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-title {
+    font-size: 1.5rem;
+  }
+}

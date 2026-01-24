@@ -1,5 +1,6 @@
-import { MdThumbUp, MdComment } from "react-icons/md";
 import { motion } from "motion/react";
+import { MdThumbUp, MdComment } from "react-icons/md";
+
 import { Button } from "@components/Button";
 import { TodoListPreview } from "@components/TodoListPreview";
 import "./PostContent.scss";

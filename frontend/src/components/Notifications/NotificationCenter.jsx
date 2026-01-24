@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   MdErrorOutline,
   MdCheckCircleOutline,
@@ -7,6 +7,7 @@ import {
   MdWarningAmber,
   MdClose,
 } from "react-icons/md";
+
 import { generateRandomAvatar } from "@api/avatar.random";
 import "./NotificationCenter.scss";
 

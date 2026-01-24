@@ -1,6 +1,7 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import { MdAssignmentTurnedIn, MdCalendarToday } from "react-icons/md";
+
 import HeaderRow from "@components/HeaderRow";
 import "./Stats.scss";
 

@@ -1,8 +1,8 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-
 import { MdMoreVert } from "react-icons/md";
-import { AnimatePresence, motion } from "motion/react";
+
 import { Button } from "../Button";
 import "./ActionMenu.scss";
 

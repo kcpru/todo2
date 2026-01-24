@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { WelcomeModal } from "@components/WelcomeModal";
+
 import { TourProviderWrapper, todoTourSteps } from "@components/Tour/TourSetup";
+import { WelcomeModal } from "@components/WelcomeModal";
 
 export default function GlobalWelcomeProvider({ children }) {
   const [showWelcome, setShowWelcome] = useState(false);

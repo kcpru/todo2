@@ -1,10 +1,7 @@
-import { useState } from "react";
 // import MotivationMessage from "../MotivationMessage";
 // import { getMotivationMessage } from "@api/motivation";
 import { motion, AnimatePresence } from "motion/react";
-import { Input } from "@components/Input";
-import { useDopamine } from "@context/DopamineContext";
-import { ANIMATION_CONFIG } from "@constants/animations";
+import { useState } from "react";
 import {
   MdEdit,
   MdDelete,
@@ -12,9 +9,13 @@ import {
   MdAssignmentLate,
   MdShare,
 } from "react-icons/md";
-import { Button } from "@components/Button";
+
 import { ActionMenu } from "@components/ActionMenu";
+import { Button } from "@components/Button";
 import { ConfirmDialog } from "@components/ConfirmDialog";
+import { Input } from "@components/Input";
+import { ANIMATION_CONFIG } from "@constants/animations";
+import { useDopamine } from "@context/DopamineContext";
 import "./TodoList.scss";
 
 export function TodoList({

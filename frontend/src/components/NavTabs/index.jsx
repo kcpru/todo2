@@ -1,12 +1,15 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { usePageTransition } from "@context/PageTransitionContext";
-import React, { useEffect, useId, useMemo } from "react";
 import { motion, LayoutGroup } from "motion/react";
-import { NavTab } from "./NavTab";
-import homeLottie from "@assets/lottie/system-solid-41-home-hover-pinch.json";
-import todoLottie from "@assets/lottie/system-solid-17-assignment-hover-assignment.json";
+import React, { useEffect, useId, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import statsLottie from "@assets/lottie/system-solid-10-analytics-hover-analytics.json";
+import todoLottie from "@assets/lottie/system-solid-17-assignment-hover-assignment.json";
+import homeLottie from "@assets/lottie/system-solid-41-home-hover-pinch.json";
 import settingsLottie from "@assets/lottie/system-solid-63-settings-cog-hover-cog-4.json";
+import { usePageTransition } from "@context/PageTransitionContext";
+
+import { NavTab } from "./NavTab";
+
 import "./NavTabs.scss";
 import "./NavTab.scss";
 

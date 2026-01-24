@@ -1,9 +1,6 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router-dom";
-import { useTheme } from "@context/ThemeContext";
-import { useDopamine } from "@context/DopamineContext";
-import { useAuth } from "@context/AuthContext";
 import {
   MdLightMode,
   MdDarkMode,
@@ -11,11 +8,16 @@ import {
   MdLogout,
   MdSettings,
 } from "react-icons/md";
-import { AnimatePresence, motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
+
 import { ANIMATION_CONFIG } from "@constants/animations";
+import { useAuth } from "@context/AuthContext";
+import { useDopamine } from "@context/DopamineContext";
+import { useTheme } from "@context/ThemeContext";
+import { useClickOutside } from "@hooks/useClickOutside";
+
 import { Button } from "../Button";
 import "./ProfileMenu.scss";
-import { useClickOutside } from "@hooks/useClickOutside";
 
 export function ProfileMenu() {
   const navigate = useNavigate();

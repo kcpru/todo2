@@ -1,6 +1,6 @@
-import React from "react";
-import { motion } from "motion/react";
 import Lottie from "lottie-react";
+import { motion } from "motion/react";
+import React from "react";
 import "./NavTab.scss";
 
 export function NavTab({ tab, idx, isActive, onClick, lottieRef, layoutId }) {

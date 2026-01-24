@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { z } from "zod";
-import { useAuth } from "@context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
 import { motion } from "motion/react";
+import { useState } from "react";
 import { MdLogin, MdMailOutline, MdLockOutline } from "react-icons/md";
-import "../styles/Auth.scss";
-import { Input } from "@components/Input";
+import { useNavigate, Link } from "react-router-dom";
+import { z } from "zod";
+
 import { Button } from "@components/Button";
+import { Input } from "@components/Input";
 import { ANIMATION_CONFIG } from "@constants/animations";
+import { useAuth } from "@context/AuthContext";
 import { useNotifications } from "@context/NotificationsContext";
+
+import "./Auth.scss";
 
 export function Login() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");

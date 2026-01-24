@@ -1,5 +1,6 @@
-import { forwardRef } from "react";
 import { motion } from "motion/react";
+import { forwardRef } from "react";
+
 import { useRipple } from "@hooks/useRipple.jsx";
 import "./Button.scss";
 

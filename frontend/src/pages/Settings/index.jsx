@@ -1,8 +1,8 @@
+import AboutSection from "./AboutSection";
+import DopamineSection from "./DopamineSection";
 import ProfileSection from "./ProfileSection";
 import SecuritySection from "./SecuritySection";
 import ThemeSection from "./ThemeSection";
-import DopamineSection from "./DopamineSection";
-import AboutSection from "./AboutSection";
 import "./Settings.scss";
 
 export function Settings() {

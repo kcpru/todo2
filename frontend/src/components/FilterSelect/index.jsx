@@ -1,10 +1,12 @@
+import { motion, AnimatePresence } from "motion/react";
 import { useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { ANIMATION_CONFIG } from "@constants/animations";
 import { MdExpandMore } from "react-icons/md";
-import { useRipple } from "@hooks/useRipple";
-import "./FilterSelect.scss";
+
+import { ANIMATION_CONFIG } from "@constants/animations";
 import { useClickOutside } from "@hooks/useClickOutside";
+import { useRipple } from "@hooks/useRipple";
+
+import "./FilterSelect.scss";
 
 export function FilterSelect({
   options,

@@ -1,6 +1,7 @@
 import { MdClose } from "react-icons/md";
-import { ModalBase } from "../ModalBase";
+
 import { Button } from "../Button";
+import { ModalBase } from "../ModalBase";
 import "./ModalForm.scss";
 
 export function ModalForm({

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+
 import { PostContent } from "../PostContent";
 import "./PostCard.scss";
 

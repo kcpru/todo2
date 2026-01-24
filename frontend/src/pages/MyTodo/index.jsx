@@ -1,26 +1,28 @@
+import { useTour } from "@reactour/tour";
 import { AnimatePresence, motion } from "motion/react";
 import { useState, useCallback, useEffect } from "react";
-import { useTour } from "@reactour/tour";
-import { Route, Routes } from "react-router-dom";
-
-import { useTodo } from "@context/TodoContext";
-import { TodoList } from "./components/TodoList";
-import { getMotivationMessage } from "@api/motivation";
-import { EditModal } from "./components/EditModal";
-import { DopamineVideo } from "./components/DopamineVideo";
-import { SharePostModal } from "./components/SharePostModal";
-import { Input } from "@components/Input";
-import { FilterSelect } from "@components/FilterSelect";
-import { usePostsAPI } from "@hooks/usePostsAPI";
-import { useNotifications } from "@context/NotificationsContext";
-import { ANIMATION_CONFIG } from "@constants/animations";
 import {
   MdFormatListBulleted,
   MdRadioButtonUnchecked,
   MdCheckCircle,
   MdSearch,
 } from "react-icons/md";
+import { Route, Routes } from "react-router-dom";
+
+import { getMotivationMessage } from "@api/motivation";
+import { FilterSelect } from "@components/FilterSelect";
+import { Input } from "@components/Input";
+import { ANIMATION_CONFIG } from "@constants/animations";
+import { useNotifications } from "@context/NotificationsContext";
+import { useTodo } from "@context/TodoContext";
+import { usePostsAPI } from "@hooks/usePostsAPI";
+
 import Stats from "../Stats";
+
+import { DopamineVideo } from "./components/DopamineVideo";
+import { EditModal } from "./components/EditModal";
+import { SharePostModal } from "./components/SharePostModal";
+import { TodoList } from "./components/TodoList";
 import "./MyTodo.scss";
 
 function MyTodo() {

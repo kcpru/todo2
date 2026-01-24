@@ -1,4 +1,5 @@
 import { MdInfo } from "react-icons/md";
+
 import HeaderRow from "@components/HeaderRow";
 import "./Settings.scss";
 

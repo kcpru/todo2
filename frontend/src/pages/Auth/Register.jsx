@@ -1,19 +1,21 @@
-import { useState } from "react";
-import { z } from "zod";
-import { useAuth } from "@context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
 import { motion } from "motion/react";
+import { useState } from "react";
 import {
   MdPersonAdd,
   MdMailOutline,
   MdLockOutline,
   MdCheckCircleOutline,
 } from "react-icons/md";
-import "../styles/Auth.scss";
-import { Input } from "@components/Input";
+import { useNavigate, Link } from "react-router-dom";
+import { z } from "zod";
+
 import { Button } from "@components/Button";
+import { Input } from "@components/Input";
 import { ANIMATION_CONFIG } from "@constants/animations";
+import { useAuth } from "@context/AuthContext";
 import { useNotifications } from "@context/NotificationsContext";
+
+import "./Auth.scss";
 
 export function Register() {
   const [username, setUsername] = useState("");
@@ -266,7 +268,6 @@ export function Register() {
               disabled={isLoading}
               size="md"
               icon={<MdPersonAdd />}
-              variant="success"
             >
               {isLoading ? "Creating account..." : "Create Account"}
             </Button>

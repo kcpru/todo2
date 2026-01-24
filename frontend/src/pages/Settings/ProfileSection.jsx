@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
+import { MdPhotoCamera, MdPerson, MdShuffle } from "react-icons/md";
+
+import { uploadAvatar } from "@api/avatar";
+import { Button } from "@components/Button";
+import HeaderRow from "@components/HeaderRow";
+import { Input } from "@components/Input";
 import { useAuth } from "@context/AuthContext";
 import { useNotifications } from "@context/NotificationsContext";
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { MdPhotoCamera, MdPerson, MdShuffle } from "react-icons/md";
-import { uploadAvatar } from "@api/avatar";
+
 import { RandomAvatarModal } from "./RandomAvatarModal";
-import HeaderRow from "@components/HeaderRow";
+
 import "./Settings.scss";
 
 export default function ProfileSection() {

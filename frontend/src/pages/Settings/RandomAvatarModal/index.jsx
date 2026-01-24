@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { useNotifications } from "@context/NotificationsContext";
-import { ModalForm } from "@components/ModalForm";
-import { Button } from "@components/Button";
 import { MdShuffle } from "react-icons/md";
+
 import { generateRandomAvatar } from "@api/avatar.random";
+import { Button } from "@components/Button";
+import { ModalForm } from "@components/ModalForm";
 import { Spinner } from "@components/Spinner";
+import { useNotifications } from "@context/NotificationsContext";
 import "./RandomAvatarModal.scss";
 
 export function RandomAvatarModal({ isOpen, onClose, onSave }) {

@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { MdLock } from "react-icons/md";
+
+import { Button } from "@components/Button";
+import HeaderRow from "@components/HeaderRow";
+import { Input } from "@components/Input";
 import { useAuth } from "@context/AuthContext";
 import { useNotifications } from "@context/NotificationsContext";
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
-import { MdLock } from "react-icons/md";
-import HeaderRow from "@components/HeaderRow";
+
 import "./Settings.scss";
 
 export default function SecuritySection() {

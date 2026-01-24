@@ -1,7 +1,8 @@
 import { useState } from "react";
-import TasksWeekCard from "./TasksWeekCard";
+
 import ActivityCard from "./ActivityCard";
 import ProductivityCard from "./ProductivityCard";
+import TasksWeekCard from "./TasksWeekCard";
 import "./Stats.scss";
 
 export default function Stats() {
