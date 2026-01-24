@@ -48,26 +48,16 @@ export function NavTabs() {
     <div className="nav-tabs-header">
       {TABS.map((tab, idx) => {
         const isActive = location.pathname === tab.path;
+
         return (
-          <motion.div
+          <NavTab
             key={tab.path}
-            initial={{ opacity: 0, y: 32, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 420,
-              damping: 32,
-              delay: 0.15 + idx * 0.05,
-            }}
-            style={{ display: "inline-block" }}
-          >
-            <NavTab
-              tab={tab}
-              isActive={isActive}
-              onClick={() => handleTabClick(idx, tab.path)}
-              lottieRef={lottieRefs.current[idx]}
-            />
-          </motion.div>
+            idx={idx}
+            tab={tab}
+            isActive={isActive}
+            onClick={() => handleTabClick(idx, tab.path)}
+            lottieRef={lottieRefs.current[idx]}
+          />
         );
       })}
     </div>

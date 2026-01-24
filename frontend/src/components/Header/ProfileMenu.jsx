@@ -23,7 +23,9 @@ export function ProfileMenu() {
   const { isDopamineMode, toggleDopamineMode } = useDopamine();
   const profileRef = useRef(null);
 
-  useClickOutside(profileRef, () => setShowProfile(false));
+  useClickOutside(profileRef, () => setShowProfile(false), {
+    ignoreSelf: true,
+  });
 
   useEffect(() => {
     if (user?.id) {

@@ -99,3 +99,13 @@
   -ms-user-select: none;
   user-drag: none;
 }
+
+@media (max-width: 768px) {
+  .profile-avatar-btn {
+    $size: 44px;
+    min-height: $size;
+    min-width: $size;
+    height: $size;
+    width: $size;
+  }
+}

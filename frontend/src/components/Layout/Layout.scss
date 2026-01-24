@@ -22,6 +22,10 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .layout-wrapper {
+    padding: 5.5rem 1rem 7.5rem 1rem;
+  }
+
   .main-content {
     flex-direction: column;
   }

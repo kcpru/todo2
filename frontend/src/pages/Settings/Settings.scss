@@ -1,6 +1,7 @@
-// Modern card layout for settings
 .settings-cards {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .settings-card {
   background: var(--md-surface);
@@ -9,13 +10,9 @@
   box-shadow: 0 8px 32px rgba(9, 12, 20, 0.06);
   padding: 1.5rem 1.2rem 1.2rem 1.2rem;
   margin-bottom: 0;
-  transition:
-    box-shadow 0.18s,
-    border-color 0.18s;
   position: relative;
 }
 
-// Video size preview box in video position
 .video-size-preview {
   position: fixed;
   right: 1rem;
@@ -296,7 +293,6 @@
   background: rgba(var(--md-primary-rgb), 0.01);
   padding: 1.25rem;
   border-radius: 12px;
-  margin-bottom: 1.25rem;
   box-shadow: 0 8px 24px rgba(9, 12, 20, 0.04);
 }
 

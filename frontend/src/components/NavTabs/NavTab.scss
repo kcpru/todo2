@@ -58,8 +58,25 @@
 }
 
 .nav-tab-icon {
-  font-size: 1.55rem;
   margin-bottom: 0.13rem;
-  color: var(--accent-primary);
-  transition: color 0.3s;
+}
+
+@media (max-width: 768px) {
+  .nav-tab-header {
+    flex: 1;
+    padding: 0.55rem 0.8rem 0.4rem 0.8rem;
+
+    .nav-tab-header {
+      flex: 1;
+    }
+
+    .nav-tab-label-main {
+      font-size: 0.9rem;
+    }
+  }
+
+  .nav-tab-icon {
+    margin-bottom: 0.05rem;
+    transform: scale(0.8);
+  }
 }

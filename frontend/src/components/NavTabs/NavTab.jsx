@@ -3,14 +3,23 @@ import { motion } from "motion/react";
 import Lottie from "lottie-react";
 import "./NavTab.scss";
 
-export function NavTab({ tab, isActive, onClick, lottieRef }) {
+export function NavTab({ tab, idx, isActive, onClick, lottieRef }) {
   return (
-    <button
+    <motion.button
       className={`nav-tab-header${isActive ? " active" : ""}`}
       data-tab={tab.label}
       onClick={onClick}
+      initial={{ opacity: 0, y: 32, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{
+        type: "spring",
+        stiffness: 420,
+        damping: 32,
+        delay: 0.15 + idx * 0.05,
+      }}
     >
       {isActive && <motion.div className="tab-bg" layoutId="tab-bg" />}
+
       <span className="nav-tab-icon lottie-color">
         <Lottie
           lottieRef={lottieRef}
@@ -22,6 +31,6 @@ export function NavTab({ tab, isActive, onClick, lottieRef }) {
         />
       </span>
       <span className="nav-tab-label-main">{tab.label}</span>
-    </button>
+    </motion.button>
   );
 }

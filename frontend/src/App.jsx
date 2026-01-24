@@ -11,6 +11,7 @@ import GlobalWelcomeProvider from "@components/GlobalWelcomeProvider.jsx";
 import ProtectedRoute from "@components/ProtectedRoute.jsx";
 import MyTodo from "@pages/MyTodo/index.jsx";
 import "./index.scss";
+import { MobileNavTabsPanel } from "@components/NavTabs/MobileNavTabsPanel.jsx";
 
 export default function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ export default function App() {
           </Route>
         </Route>
       </Routes>
+      <MobileNavTabsPanel />
     </>
   );
 }
