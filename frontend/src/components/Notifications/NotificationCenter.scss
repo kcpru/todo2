@@ -96,6 +96,13 @@
     }
   }
 
+  &.motivation {
+    .notification-icon {
+      color: #51cf66;
+      background: rgba(81, 207, 102, 0.18);
+    }
+  }
+
   &.error {
     .notification-icon {
       color: #ff6b6b;

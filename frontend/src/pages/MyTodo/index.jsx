@@ -109,7 +109,7 @@ function MyTodo() {
     );
     if (allCompleted && filteredTodos.length > 0) {
       getMotivationMessage(todo?.title || "").then((msg) => {
-        if (msg) notify({ message: msg, type: "success", duration: 6000 });
+        if (msg) notify({ message: msg, type: "motivation", duration: 6000 });
       });
     }
   }
