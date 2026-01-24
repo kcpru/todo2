@@ -99,10 +99,21 @@
   background: rgba(var(--md-primary-rgb), 0.01);
   padding: 0.6rem 0.8rem 0.6rem 0.8rem;
   border-radius: 10px;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
   width: 100%;
   box-sizing: border-box;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  user-select: none;
+  flex: 1;
+  transition: background 0.2s;
+  border-radius: 8px;
+  border: 2px solid rgba(var(--md-primary-rgb), 0.1);
+  background: rgba(var(--md-primary-rgb), 0.05);
 }
 .dopamine-video-size-row .dopamine-label {
   margin-right: 0.7rem;
@@ -116,10 +127,6 @@
   display: flex;
   align-items: center;
   gap: 1.1rem;
-  border: 1.5px solid rgba(var(--md-primary-rgb), 0.07);
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(9, 12, 20, 0.04);
-  padding: 0.6rem 0.8rem;
   border-radius: 10px;
   margin-top: 0.5rem;
   margin-bottom: 0.2rem;
@@ -128,7 +135,6 @@
 }
 .dopamine-video-row .dopamine-label {
   margin-right: auto;
-  min-width: 90px;
 }
 .dopamine-video-row .Button {
   min-width: 64px;
@@ -157,10 +163,9 @@
 }
 
 .speed-preview-bar {
-  width: 100px;
-  height: 12px;
-  border-radius: 6px;
-  margin-top: 0.7rem;
+  width: 8rem;
+  height: 0.8rem;
+  border-radius: 1rem;
   background: var(--md-primary-container, #dde1ff);
   position: relative;
   overflow: hidden;
@@ -278,8 +283,8 @@
 }
 .dopamine-label {
   font-size: 1rem;
+  font-weight: 600;
   color: var(--text-primary);
-  font-weight: 500;
 }
 
 .settings-page {
@@ -320,6 +325,7 @@
   gap: 1rem;
   align-items: center;
   flex-wrap: wrap;
+  align-items: normal;
 }
 
 .avatar-preview {
@@ -405,8 +411,8 @@
   color: var(--accent-primary);
 }
 .profile-email-large {
-  font-size: 0.98rem;
   color: var(--text-secondary);
+  font-weight: 500;
 }
 .profile-actions-row {
   display: flex;
@@ -429,8 +435,7 @@
 .dopamine-controls {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  align-items: stretch;
+  gap: 1rem;
 }
 .dopamine-field .value {
   min-width: 36px;
@@ -439,12 +444,8 @@
 
 .dopamine-with-preview {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
   align-items: center;
-  border: 1.5px solid rgba(var(--md-primary-rgb), 0.07);
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(9, 12, 20, 0.04);
-  padding: 0.6rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -469,14 +470,10 @@
   width: 100%;
   max-width: 360px;
   height: 140px;
-  background: linear-gradient(
-    180deg,
-    rgba(var(--md-primary-rgb), 0.02),
-    rgba(var(--md-primary-rgb), 0.01)
-  );
   border-radius: 8px;
-  border: 1px solid rgba(var(--md-primary-rgb), 0.06);
   box-shadow: 0 8px 20px rgba(9, 12, 20, 0.04);
+  border: 2px solid rgba(var(--md-primary-rgb), 0.1);
+  background: rgba(var(--md-primary-rgb), 0.05);
 }
 .preview-box {
   width: 72px;
@@ -529,15 +526,9 @@
   justify-content: flex-start;
 }
 @media (max-width: 880px) {
-  .dopamine-controls {
-    grid-template-columns: 1fr;
-  }
   .preview-canvas {
     width: 100%;
     height: 100px;
-  }
-  .profile-row {
-    gap: 0.8rem;
   }
 }
 @media (max-width: 700px) {
@@ -548,7 +539,7 @@
   .profile-avatar-card,
   .profile-fields-card {
     min-width: 0;
-    width: 100%;
+    width: calc(100% - 2rem);
     padding: 1rem 0.7rem;
   }
 }

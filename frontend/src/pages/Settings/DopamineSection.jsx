@@ -168,20 +168,28 @@ export default function DopamineSection() {
                 />
               </div>
               <div className="dopamine-video-size-row">
-                <span className="dopamine-label">Size</span>
-                <FilterSelect
-                  options={[
+                <span className="dopamine-label">Video size</span>
+                <div className="dopamine-video-size-buttons">
+                  {[
                     { value: "small", label: "Small" },
                     { value: "medium", label: "Medium" },
                     { value: "large", label: "Large" },
-                  ]}
-                  value={videoSize}
-                  onChange={updateVideoSize}
-                  ariaLabel="Dopamine video size"
-                  size="sm"
-                  onMouseEnter={() => setVideoPreviewSize(videoSize)}
-                  onMouseLeave={() => setVideoPreviewSize(null)}
-                />
+                  ].map((opt) => (
+                    <Button
+                      key={opt.value}
+                      variant={
+                        videoSize === opt.value ? "primary" : "secondary"
+                      }
+                      size="sm"
+                      onClick={() => updateVideoSize(opt.value)}
+                      onMouseEnter={() => setVideoPreviewSize(opt.value)}
+                      onMouseLeave={() => setVideoPreviewSize(null)}
+                      style={{ marginRight: 8 }}
+                    >
+                      {opt.label}
+                    </Button>
+                  ))}
+                </div>
                 {videoPreviewSize && (
                   <div
                     className={`video-size-preview video-size-preview--${videoPreviewSize}`}

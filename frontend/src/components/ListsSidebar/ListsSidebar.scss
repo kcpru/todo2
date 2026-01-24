@@ -305,3 +305,11 @@
 .new-list-input-row .gradient-button {
   flex: 0 0 auto;
 }
+
+@media (max-width: 768px) {
+  .lists-sidebar {
+    margin: 1rem;
+    padding: 0.9rem 0.9rem 0.6rem;
+    background: var(--md-surface);
+  }
+}

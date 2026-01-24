@@ -19,22 +19,10 @@
 .sidebar-toggle {
   display: none;
   position: fixed;
-  top: 7.5rem;
-  left: 1rem;
+  bottom: 7.5rem;
+  right: 1rem;
   z-index: 40;
-  background: var(--accent-primary);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  width: 40px;
-  height: 40px;
-  font-size: 1.25rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
 
   @media (max-width: 768px) {
     display: flex;
@@ -43,24 +31,10 @@
   }
 }
 
-/* Sidebar Overlay (mobile) */
-.sidebar-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 39;
-  top: 6.5rem;
-
-  @media (max-width: 768px) {
-    display: block;
-  }
-}
-
 /* Sidebar */
 .sidebar {
   width: 280px;
-  background: transparent;
+  background: var(--bg-surface);
   border-right: none;
   overflow-y: auto;
   flex-shrink: 0;
@@ -69,14 +43,8 @@
   flex-direction: column;
   position: relative;
 
-  @media (max-width: 768px) {
-    position: fixed;
-    left: 0;
-    top: 6.5rem;
-    height: calc(100vh - 6.5rem);
-    z-index: 41;
-    box-shadow: none;
-    padding: 0;
+  .closed {
+    display: block;
   }
 }
 
@@ -89,31 +57,17 @@
   cursor: ew-resize;
   z-index: 10;
   transition: background-color 0.2s ease;
-  margin: 0.75rem 0;
+  margin: 2rem 0;
   border-radius: 3px;
 
   &:hover {
-    background: linear-gradient(
-      135deg,
-      rgba(var(--md-primary-rgb), 0.2) 0%,
-      rgba(var(--md-primary-rgb), 0.15) 100%
-    );
+    background: rgba(var(--md-primary-rgb), 0.15);
   }
 
   &:active {
-    background: linear-gradient(
-      135deg,
-      rgba(var(--md-primary-rgb), 0.35) 0%,
-      rgba(var(--md-primary-rgb), 0.25) 100%
-    );
+    background: rgba(var(--md-primary-rgb), 0.35);
   }
 
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
-.sidebar.closed {
   @media (max-width: 768px) {
     display: none;
   }
@@ -128,23 +82,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  @media (max-width: 768px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .main-content {
-    flex-direction: column;
+    margin: 5.5rem 1rem 7.5rem 1rem;
   }
 
   .sidebar {
     width: 100%;
     max-height: 100%;
-    border-right: none;
-    border-bottom: 1px solid rgba(var(--md-primary-rgb), 0.15);
+    position: fixed;
+    left: 0;
+    top: 4rem;
+    height: calc(100vh - 10rem);
+    z-index: 41;
+    box-shadow: none;
+    padding: 0;
+
+    .closed {
+      display: none;
+    }
+  }
+
+  .content-wrapper {
+    padding: 0;
   }
 }

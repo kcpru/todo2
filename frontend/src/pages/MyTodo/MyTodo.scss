@@ -124,8 +124,9 @@
 
 @media (max-width: 768px) {
   .app-todo-wrapper {
-    padding: 1rem;
+    padding: 0;
     max-width: 100%;
+    width: calc(100% - 2rem);
   }
 
   .container {

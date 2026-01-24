@@ -4,6 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { usePageTransition } from "@context/PageTransitionContext";
 import { MdMenu, MdClose } from "react-icons/md";
 import { ListsSidebar } from "@components/ListsSidebar";
+import { Button } from "@components/Button";
 import { motion } from "motion/react";
 import { useTodo } from "@context/TodoContext";
 import { useAuth } from "@context/AuthContext";
@@ -78,15 +79,12 @@ export function MyTodoLayout() {
   const location = useLocation();
   const { directionRef } = usePageTransition();
 
-  // Ustal animację na podstawie kierunku (lewo/prawo)
   let initial, animate, exit;
   if (directionRef.current === "down") {
-    // Przejście w prawo
     initial = { opacity: 0, x: 60 };
     animate = { opacity: 1, x: 0 };
     exit = { opacity: 0, x: -60 };
   } else {
-    // "up" lub domyślnie: przejście w lewo
     initial = { opacity: 0, x: -60 };
     animate = { opacity: 1, x: 0 };
     exit = { opacity: 0, x: 60 };
@@ -103,24 +101,13 @@ export function MyTodoLayout() {
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
         {/* Sidebar Toggle Button */}
-        <button
+        <Button
           className="sidebar-toggle"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-        >
-          {sidebarOpen ? <MdClose /> : <MdMenu />}
-        </button>
-
-        {/* Sidebar Overlay (mobile) */}
-        {sidebarOpen && (
-          <motion.div
-            className="sidebar-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
+          iconOnly
+          icon={sidebarOpen ? <MdClose /> : <MdMenu />}
+        />
 
         {/* Sidebar */}
         <motion.aside

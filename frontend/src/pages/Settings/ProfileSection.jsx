@@ -153,10 +153,7 @@ export default function ProfileSection() {
         </div>
         <div className="profile-fields-card">
           <div className="profile-fields">
-            <div className="profile-user-row">
-              <span className="profile-username-large">{user?.username}</span>
-              <span className="profile-email-large">{user?.email}</span>
-            </div>
+            <Input value={user?.email || ""} disabled placeholder="Email" />
             <Input
               value={username}
               onChange={(e) => {
@@ -175,7 +172,7 @@ export default function ProfileSection() {
                 disabled={savingProfile}
                 title="Save display name"
               >
-                {savingProfile ? "Saving..." : "Save Name"}
+                {savingProfile ? "Saving..." : "Save"}
               </Button>
               <Button size="sm" variant="danger" onClick={handleLogout}>
                 Logout
